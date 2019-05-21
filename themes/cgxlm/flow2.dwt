@@ -1,0 +1,1985 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+<!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+<!--{if $store_id} 判断是否是门店订单--><link rel="stylesheet" type="text/css" href="../js/calendar/calendar.min.css" /><!--{/if}-->
+<link rel="stylesheet" type="text/css" href="../js/perfect-scrollbar/perfect-scrollbar.min.css" />
+</head>
+
+<body class="bg-ligtGary">
+    <!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+    <!-- {if $step eq "cart"} -->
+    <div class="content b2b-content">
+        <!--{if $goods_data}-->
+        <form name="formCart" method="post" action="flow.php" onsubmit="return submit_order();">
+
+            <div class="w w1200">
+                <div class="b2b-cart">
+                    <div class="b2b-cart-filter">
+                        <i class="iconfont icon-b2b-cart"></i>
+                        <div class="tit">我的进货单（<em class="org" ectype="cartNum">{$cart_info.rec_count}</em>）</div>
+                    </div>
+                    <div class="cart-table b2b-cart-table">
+                        <div class="cart-head">
+                            <div class="column c-checkbox">
+                                <div class="cart-checkbox cart-all-checkbox" ectype="ckList">
+                                    <input type="checkbox" id="cart-selectall" class="ui-checkbox checkboxshopAll" ectype="ckAll">
+                                    <label for="cart-selectall" class="ui-label-14">全选</label>
+                                </div>
+                            </div>
+                            <div class="column c-goods">货品</div>
+                            <div class="column c-quantity">数量</div>
+                            <div class="column c-price">单价（元）</div>
+                            <div class="column c-pay">交易方式</div>
+                            <div class="column c-sum">小计</div>
+                        </div>
+                        <div class="cart-tbody" ectype="cartTboy">
+                            {foreach from=$goods_data item=data}
+                            <div class="cart-item" ectype="shopItem">
+                                <div class="shop">
+                                    <div class="cart-checkbox" ectype="ckList">
+                                        <input type="checkbox" id="shopid_{$data.ru_id}" name="checkShop" class="ui-checkbox CheckBoxShop" ectype="ckShopAll">
+                                        <label for="shopid_{$data.ru_id}" class="ui-label-14">&nbsp;</label>
+                                    </div>
+                                    <div class="shop-txt">
+                                        <a href="merchants_store.php?merchant_id={$data.ru_id}" target="_blank" class="shop-name">{$data.shop_name}</a>
+                                        <!--<a href="#" class="p-kefu p-c-org" target="_blank"><i class="iconfont icon-kefu"></i></a>-->
+                                        <!--start 在线客服 -->
+                                        {if $data.is_IM eq 1 || $data.is_dsc}
+                                        <a href="javascript:;" id="IM" onclick="openWin(this)" goods_id="{$goods.goods_id}" class="p-kefu{if $data.ru_id eq 0} p-c-violet{/if}" target="_blank"><i class="iconfont icon-kefu"></i></a>
+                                        {else}
+                                        {if $data.kf_type eq 1}
+                                        <a href="http://www.taobao.com/webww/ww.php?ver=3&touid={$data.kf_ww}&siteid=cntaobao&status=1&charset=utf-8" class="p-kefu{if $data.ru_id eq 0} p-c-violet{/if}" target="_blank"><i class="iconfont icon-kefu"></i></a>
+                                        {else}
+                                        <a href="http://wpa.qq.com/msgrd?v=3&uin={$data.kf_qq}&site=qq&menu=yes" class="p-kefu{if $data.ru_id eq 0} p-c-violet{/if}" target="_blank"><i class="iconfont icon-kefu"></i></a>
+                                        {/if}
+                                        {/if}
+                                        <!--end 在线客服 -->
+                                    </div>
+                                </div>
+                                {foreach from=$data.goods_list item=goods}
+                                <div class="item-list" ectype="itemList" data-goods_id="{$goods.goods_id}" data-moq="{$goods.moq}">
+                                    <div class="item-single">
+                                        <div class="item-item" ectype="item">
+                                            <div class="item-form">
+                                                <div class="cell s-checkbox">
+                                                    <div class="cart-checkbox" ectype="ckList">
+                                                        <input type="checkbox" id="checkItem_{$goods.goods_id}" value="{$goods.goods_id}" name="checkItem" class="ui-checkbox" ectype="ckGoods">
+                                                        <label for="checkItem_{$goods.goods_id}" class="ui-label-14">&nbsp;</label>
+                                                    </div>
+                                                </div>
+                                                <div class="cell s-image">
+                                                    <a href="{$goods.url}" target="_blank">
+                                                        <img src="{$goods.goods_thumb}">
+                                                    </a>
+                                                </div>
+                                                <div class="cell s-name">
+                                                    <a href="{$goods.url}" target="_blank">{$goods.goods_name}</a>
+                                                </div>
+                                                <div class="sg-warp">
+                                                    <div class="sgw-section" ectype="attrItems">
+                                                        <table class="table">
+                                                            <colgroup>
+                                                                <col width="180">
+                                                                <col width="180">
+                                                                <col width="120">
+                                                                <col width="60">
+                                                                <col width="180">
+                                                                <col width="150">
+                                                                <col>
+                                                            </colgroup>
+                                                            {foreach from=$goods.list item=one name=one}
+                                                            <tr data-goods_id="{$goods.goods_id}" data-rec_id="{$one.rec_id}">
+                                                                <td class="row">
+                                                                    {foreach from=$one.goods_attr item=attr name=attr}
+                                                                    {if !$smarty.foreach.attr.last}
+                                                                    <span class="area">{$attr.attr_name}：<em>{$attr.attr_value}</em></span>
+                                                                    {/if}
+                                                                    {/foreach}
+                                                                </td>
+                                                                <td class="row">
+                                                                    {foreach from=$one.goods_attr item=attr name=attr}
+                                                                    {if $smarty.foreach.attr.last}
+                                                                    <div class="lie">
+                                                                        <div class="cart-checkbox{if !$attr.attr_value} hide{/if}" ectype="">
+                                                                            <input type="checkbox" id="attr_item_{$one.rec_id}" value="{$one.rec_id}" name="rec_ids[]" class="ui-checkbox" ectype="attrItem">
+                                                                            <label for="attr_item_{$one.rec_id}" class="ui-label-14">{$attr.attr_name}：</label>
+                                                                        </div>
+                                                                        <div class="value">{if $attr.attr_value}{$attr.attr_value}{/if}</div>
+                                                                    </div>
+                                                                    {/if}
+                                                                    {/foreach}
+                                                                </td>
+                                                                <td class="row is-size" ectype="buyNum">
+                                                                    <div class="lie">
+                                                                        <div class="number">
+                                                                            <a href="javascript:void(0)" class="decrement btn-reduce">-</a>
+                                                                            <input name="goods_number[{$one.rec_id}]" type="text" id="quantity" class="itxt buy-num" value="{$one.goods_number}" size="10">
+                                                                            <a href="javascript:void(0)" class="increment btn-add">+</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="row td-delete">
+                                                                    <a class="" ectype="attr_del" href="javascript:void(0);" data-goods_id="{$goods.goods_id}" data-extension_code="{$goods.extension_code}" data-extension_id="{$goods.extension_id}" data-rec_id="{$one.rec_id}">
+                                                                        <i class="iconfont icon-remove-alt"></i>
+                                                                    </a>
+
+                                                                </td>
+                                                                {if $smarty.foreach.one.first}
+                                                                <td rowspan="{$goods.count}" class="row" ectype="rec_volume_price">
+                                                                    {include file=library/cart_volume_price.lbi}
+                                                                </td>
+                                                                {/if}
+                                                                <td class="row" ectype="rec_total_price"><div class="lie"><div class="p-price">{$one.total_price_formatted}</div></div></td>
+                                                            </tr>
+                                                            {/foreach}
+                                                        </table>
+                                                        <div class="row-delete"><a href="javascript:void(0);" ectype="delete" data-goods_id="{$goods.goods_id}" data-extension_code="{$goods.extension_code}" data-extension_id="{$goods.extension_id}"><i class="iconfont icon-remove-alt"></i></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/foreach}
+                            </div>
+                            {/foreach}
+                        </div>
+                        <div class="cart-tfoot">
+                            <div class="cart-toolbar">
+                                <div class="w w1200">
+                                    <div class="cart-checkbox cart-all-checkbox" ectype="ckList">
+                                        <input type="checkbox" id="toggle-checkboxes-down" class="ui-checkbox checkboxshopAll" ectype="ckAll">
+                                        <label for="toggle-checkboxes-down" class="ui-label-14">全选</label>
+                                    </div>
+                                    <div class="operation">
+                                        <a href="javascript:void(0);" class="cart-remove-batch" ectype="batch_delete">删除选中的商品</a>
+                                    </div>
+                                    <div class="toolbar-right">
+                                        <div class="comm-right">
+                                            <div class="btn-area">
+                                                <input name="step" value="checkout2" type="hidden">
+                                                <input name="goPay" type="button" class="submit-btn" value="去下单" ectype="submit">
+                                            </div>
+                                            <div class="price-sum" id="total_desc">
+                                                <span class="txt">货品金额总计：</span>
+                                                <span class="price sumPrice org" id="cart_goods_amount" ectype="total_price">{$cart_info.total_price_formatted|default:￥0.00}</span>
+                                            </div>
+                                            <div class="amount-sum"><span class="ftx-03">数量总数：</span><em ectype="total_number">{$cart_info.total_number|default:0}</em>件</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hide" ectype="daDialog">
+                <div class="deliveryAddress">
+                    <div class="items">
+                        <div class="item">
+                            <div class="label"><em class="org">*</em>联系人：</div>
+                            <div class="value">
+                                <input type="text" class="text" name="consignee" value="" autocomplete="off">
+                                <!--<div class="checkbox_item">
+                                    <input type="radio" class="ui-radio" name="gender" value="1" id="gender_1" autocomplete="off" checked="checked">
+                                    <label for="gender_1" class="ui-b2b-radio-label">男士</label>
+                                </div>
+                                <div class="checkbox_item">
+                                    <input type="radio" class="ui-radio" name="gender" value="2" id="gender_2" autocomplete="off">
+                                    <label for="gender_2" class="ui-b2b-radio-label">女士</label>
+                                </div>-->
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="label"><em class="org">*</em>联系电话：</div>
+                            <div class="value"><input type="text" class="text" name="mobile" value=""></div>
+                        </div>
+                        <div class="item">
+                            <div class="label"><em class="org">*</em>收货地址：</div>
+                            <div class="value"><input type="text" class="text" name="address" value=""></div>
+                        </div>
+                        <div class="item">
+                            <div class="label">是否开发票：</div>
+                            <div class="value">
+                                <div class="checkbox_items">
+                                    <div class="checkbox_item">
+                                        <input type="radio" class="ui-radio" name="inv_type" value="0" id="need_invoice_0" ectype="invPayee" autocomplete="off" checked="checked">
+                                        <label for="need_invoice_0" class="ui-b2b-radio-label">不需要发票</label>
+                                    </div>
+                                    <div class="checkbox_item">
+                                        <input type="radio" class="ui-radio" name="inv_type" value="1" id="need_invoice_1" ectype="invPayee" autocomplete="off">
+                                        <label for="need_invoice_1" class="ui-b2b-radio-label">普通发票</label>
+                                    </div>
+                                    <div class="checkbox_item">
+                                        <input type="radio" class="ui-radio" name="inv_type" value="2" id="need_invoice_2" ectype="invPayee" autocomplete="off">
+                                        <label for="need_invoice_2" class="ui-b2b-radio-label">增值税发票</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item" style="display:none;" id="inv_payee">
+                            <div class="label">发票抬头：</div>
+                            <div class="value"><input type="text" class="text" name="inv_payee" value=""></div>
+                        </div>
+                        <div class="item" style="display:none;" id="tax_id">
+                            <div class="label">纳税人识别号：</div>
+                            <div class="value"><input type="text" class="text" name="tax_id" value=""></div>
+                        </div>
+                        <div class="item">
+                            <div class="label">支付方式：</div>
+                            <div class="value">
+                                <div class="checkbox_items">
+                                    <div class="checkbox_item">
+                                        <input type="radio" class="ui-radio" name="pay_id" value="0" id="pay_id_0" autocomplete="off" checked="checked">
+                                        <label for="pay_id_0" class="ui-b2b-radio-label">线下支付</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="label">备注：</div>
+                            <div class="value"><textarea name="postscript" class="textarea"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--{else} 进货单为空-->
+        <div class="w w1200">
+            <div class="cart-empty">
+                <div class="cart-message">
+                    <div class="txt">进货单快饿瘪了，主人快给我挑点宝贝吧</div>
+                    <div class="info">
+                        <a href="./wholesale.php" class="btn sc-redBg-btn">马上去逛逛</a>
+                        {if !$user_id}<a href="javascript:void(0);" id="go_pay" data-url="wholesale_flow.php" class="login">去登录</a>{/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--{/if}-->
+    </div>
+    <!--{elseif $step eq "checkout"}-->
+    <div class="container">
+        <form action="flow.php" method="post" name="doneTheForm"  class="validator" id="theForm" onsubmit="return checkOrderForm(this)">
+            <div class="w w1200">
+                <div class="checkout-warp">
+                    <!--收货人信息 start-->
+                    <div class="ck-step" id="consignee_list">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.consignee_info}</h3>
+                            <a href="user.php?act=address_list" class="extra-r" target="_blank">管理收货人地址</a>
+                        </div>
+                        <div class="ck-step-cont" id="consignee-addr">
+                            <!-- #BeginLibraryItem "/library/consignee_flow.lbi" --><!-- #EndLibraryItem -->
+                        </div>
+                    </div>
+                    <!--收货人信息 end-->
+
+                    <!--{if $seller_store || $store_seller eq 'store_seller'} by kong 20160721 门店 start-->
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.offline_store_information}</h3>
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="store-warp" ectype="storeWarp">
+                                <div class="item{if $store_seller} hide{/if}" ectype="seller_address">
+                                    {if !$store_seller}
+                                    <div class="item_label">{$lang.offline_store_information}：</div>
+                                    <div class="item_value">
+                                        <span class="sp ftxt-01">{$seller_store.stores_name}</span>
+                                        <span class="sp">({$seller_store.country}&nbsp;{$seller_store.stores_address})</span>
+                                        <a href="javascript:void(0);" id="store_button" ectype="storeBtn">{$lang.edit}</a>
+                                    </div>
+                                    {/if}
+                                </div>
+                                <div class="item{if !$store_seller} hide{/if}" ectype="get_seller_sotre">
+                                    <div class="item_label">{$lang.offline_store_information}：</div>
+                                    <div class="item_value">
+                                        <select id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
+                                            <option value=''>{$lang.all_option}</option>
+                                            {foreach from=$provinces item=region}
+                                            <option value="{$region.region_id}" {if $region.region_id eq 2}selected{/if}> {$region.region_name}</option>
+                                            {/foreach}
+                                        </select>
+
+                                        <select  id="selCities" style="display:none" onchange="region.changed(this, 3, 'selDistricts')">
+                                            <option value=''>{$lang.all_option}</option>
+                                            {foreach from=$cities item=region}
+                                            <option value="{$region.region_id}" {if $region.region_id eq 35}selected{/if}>{$region.region_name}</option>
+                                            {/foreach}
+                                        </select>
+
+                                        <select  id="selDistricts" style="display:none" onchange="get_store_list(this,'flow','{$cart_value}')">
+                                            <option value=''>{$lang.all_option}</option>
+                                            {foreach from=$city item=region}
+                                            <option value="{$region.region_id}" {if $region.region_id eq 369}selected{/if}>{$region.region_name}</option>
+                                            {/foreach}
+                                        </select>
+                                        <span id="seller_soter" ectype="seller_soter"></span>
+                                        <span class="error" for="region"></span>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item_label">{$lang.time_shop}：</div>
+                                    <div class="item_value">
+                                        <div class="text_time"><input name="take_time" id="time_shop" type="text" class="text" data-val="{$store_info.take_time}" value="{$store_info.take_time}" readonly></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item_label">{$lang.phone_con}：</div>
+                                    <div class="item_value"><input type="text" class="text text-2" data-val="{$store_info.store_mobile}" value="{$store_info.store_mobile}" name='store_mobile' placeholder="{$lang.store_take_mobile}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--{/if}-->
+
+                    <!--支付方式 start-->
+                    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
+                    <div class="ck-step checkout">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.payment_method}</h3>
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="payment-warp">
+                                <div class="payment-list" ectype="paymentType">
+                                    <!--{if $is_presale_goods neq 1 && !$store_id}--> <!-- 门店订单只能使用余额支付和在线支付 -->
+                                    <!-- {foreach from=$payment_list item=payment name=payment} 循环支付方式 -->
+                                    <!-- {if $smarty.foreach.payment.total eq 1}  -->
+                                    <div class="p-radio-item payment-item item-selected" data-value='{"type":"{$payment.pay_code}","payid":"{$payment.pay_id}","allow":"{$allow_use_surplus}"}'>
+										<span>
+                                            <input type="radio" checked isCod="{$payment.is_cod}" name="payment" class="ui-radio" value="{$payment.pay_id}" />
+                                            <input type="radio" checked name="pay_code" class="ui-radio" value="{$payment.pay_code}" />
+                                            {$payment.pay_name}
+                                        </span>
+                                        <b></b>
+                                    </div>
+                                    <!-- {else} -->
+                                    <div class="p-radio-item payment-item{if $order.pay_id eq $payment.pay_id} item-selected{if $cod_disabled and $payment.is_cod eq 1} hide{/if}{else}{if $cod_disabled and $payment.is_cod eq 1} hide{/if}{/if}" data-value='{"type":"{$payment.pay_code}","payid":"{$payment.pay_id}","allow":"{$allow_use_surplus}"}'>
+										<span>
+                                            <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" name="payment" class="ui-radio" value="{$payment.pay_id}" />
+                                            <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} name="pay_code" class="ui-radio" value="{$payment.pay_code}" />
+                                            {$payment.pay_name}
+                                        </span>
+                                        <b></b>
+                                    </div>
+                                    <!-- {/if} -->
+                                    <!-- {/foreach} 循环支付方式 -->
+                                    <!--{else}-->
+                                    <!-- {foreach from=$payment_list item=payment} 循环支付方式 -->
+                                    <!--{if $payment.pay_code eq 'onlinepay' || $payment.pay_code eq 'balance'}-->
+                                    <div class="p-radio-item payment-item{if $order.pay_id eq $payment.pay_id} item-selected {if $cod_disabled and $payment.is_cod eq 1}hide{/if}{else}{if $cod_disabled and $payment.is_cod eq 1}hide{/if}{/if}" data-value='{"type":"{$payment.pay_code}","payid":"{$payment.pay_id}"}'>
+                                                <span>
+                                                    <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" name="payment" class="ui-radio" value="{$payment.pay_id}" />
+                                                    <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} name="pay_code" class="ui-radio" value="{$payment.pay_code}" />
+                                                    {$payment.pay_name}
+                                                </span>
+                                        <b></b>
+                                    </div>
+                                    <!--{/if}-->
+                                    <!-- {/foreach} 循环支付方式 -->
+                                    <!--{/if}-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--{/if}-->
+                    <!--支付方式 end-->
+
+                    <!--商品信息 start-->
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.goods_info}</h3>
+                            {if $order.extension_code eq ''}
+                            <a href="flow.php" class="extra-r">{$lang.back_cart}</a>
+                            {else}
+                            <a href="javascript:history.go(-1);" class="extra-r">返回上一页</a>
+                            {/if}
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="ck-goods-warp" id="goods_inventory">
+                                <!-- #BeginLibraryItem "/library/flow_cart_goods.lbi" --><!-- #EndLibraryItem -->
+                            </div>
+                            <div class="ck-order-remark">
+                                <input name="postscript" type="text" id="remarkText" maxlength="45" size="15" class="text" placeholder="{$lang.order_Remarks_desc}" autocomplete="off" onblur="if(this.value==''||this.value=='{$lang.order_Remarks_desc}'){this.value='{$lang.order_Remarks_desc}';this.style.color='#cccccc'}" onfocus="if(this.value=='{$lang.order_Remarks_desc}') {this.value='';};this.style.color='#666';">
+                                <span class="prompt">{$lang.order_Remarks_desc_one}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--商品信息 end-->
+
+                    <!--发票信息 start-->
+                    {if $config.can_invoice && $is_exchange_goods neq 1}
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.Invoice_information}</h3>
+                            <div class="tips-new-white">
+                                <b></b><span><i></i>开企业抬头发票须填写纳税人识别号，以免影响报销</span>
+                            </div>
+                        </div>
+                        <div class="ck-step-cont" id='inv_content'>
+                            <div class="invoice-warp">
+                                <div class="invoice-part">
+                                <span>
+                                	<em class="invoice_type">{$lang.Ordinary_invoice}</em>
+                                    <em class="inv_payee">{$lang.personal}</em>
+                                    <em class="inv_content">{$inv_content}</em>
+                                </span>
+                                    <a href="javascript:void(0);" class="i-edit" ectype="invEdit" data-value='{"divid":"edit_invoice","url":"ajax_dialog.php?act=edit_invoice","title":"{$lang.Invoice_information}"}'>{$lang.edit}</a>
+                                    <input type="hidden" name="inv_payee" value="{$lang.personal}">
+                                    <input type="hidden" name="inv_content" value="{$inv_content}">
+                                    <input type="hidden" name="invoice_type" value="0">
+                                    <input type="hidden" name="tax_id" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                    <!--发票信息 end-->
+
+                    <!--其他信息 start-->
+                    <!--{if $smarty.session.flow_type != 5}-->
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.Other_information}</h3>
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="other-warp">
+                                <div class="other-list">
+                                    <!-- {if $allow_use_surplus} 是否使用余额 -->
+                                    <div class="qt_item" id="qt_balance" {if $disable_surplus} style="display:none"{/if}>
+                                    <div class="item_label">{$lang.use_surplus}：</div>
+                                    <div class="item_value">
+                                        <input type="text" class="qt_text" name="surplus" id="ECS_SURPLUS" size="10" value="{$order.surplus}" data-yoursurplus="{$your_surplus|default:0}" onblur="changeSurplus(this.value)" />
+                                        <input type="hidden" class="sur" value="{$total.goods_price_formated}" />
+                                        <input type="hidden" class="shipping" value="{$total.shipping_fee_formated}" />
+                                        <div class="sp"><span>当前{$lang.your_surplus}</span><em>￥{$your_surplus|default:0}</em></div>
+                                        <div class="sp ftx-01" id="ECS_SURPLUS_NOTICE"></div>
+                                    </div>
+                                </div>
+                                <!-- {/if} 是否使用余额 -->
+
+                                <!-- {if $allow_use_integral} 是否使用积分 -->
+                                <div class="qt_item" id="qt_integral">
+                                    <div class="item_label">{$lang.use_integral}：</div>
+                                    <div class="item_value">
+                                        <input type="text" class="qt_text" name="integral" id="ECS_INTEGRAL" data-maxinteg="{$order_max_integral}" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10"/>
+                                        <div class="sp">
+                                            <span>{$lang.can_use_integral}</span>
+                                            <span>{$your_integral|default:0}</span>
+                                            <span>，{$lang.noworder_can_integral}</span>
+                                            <span>{$order_max_integral}</span>
+                                        </div>
+                                        <div class="sp ftx-01" id="ECS_INTEGRAL_NOTICE"></div>
+                                    </div>
+                                </div>
+                                <!-- {/if} 是否使用积分 -->
+
+                                <!-- {if $open_pay_password} 开启支付密码 -->
+                                <div class="qt_item" id="qt_onlinepay">
+                                    <div class="item_label">{$lang.pay_password}：</div>
+                                    <div class="item_value">
+                                        <input type="password"   style="display:none" autocomplete="off" />
+                                        <input type="password" class="qt_text" name="pay_pwd" size="20" value="" onblur="get_pay_pwd(this.value, 0);"  autocomplete="off" />
+                                        <input name="pay_pwd_error" type="hidden" id="pwd_error" value="{$pay_pwd_error}" autocomplete="off" />
+                                        <div class="sp ftx-01" id="ECS_PAY_PAYPWD"></div>
+                                    </div>
+                                </div>
+                                <!-- {/if} 支付密码 -->
+
+                                <!-- {if $how_oos_list} 是否使用缺货处理 -->
+                                <div class="qt_item">
+                                    <div class="item_label">{$lang.booking_process}：</div>
+                                    <div class="item_value">
+                                        <!-- {foreach from=$how_oos_list key=how_oos_id item=how_oos_name} -->
+
+                                        <div class="radio-item">
+                                            <input type="radio" name="how_oos" class="ui-radio" value="{$how_oos_id}" {if $order.how_oos eq $how_oos_id}checked{/if} id="checkbox_{$how_oos_id}" onclick="changeOOS(this)" autocomplete="off" />
+                                            <label for="checkbox_{$how_oos_id}" class="ui-radio-label">{$how_oos_name}</label>
+                                        </div>
+                                        <!-- {/foreach} -->
+                                    </div>
+                                </div>
+                                <!-- {/if} 缺货处理结束 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--{/if}-->
+                <!--其他信息 end-->
+
+                <!--使用优惠券/储值卡/红包 start-->
+                <!--{if $value_card_list && $is_value_cart neq 0 || $user_coupons || $coupons_list || $bonus_list || $no_bonuslist}-->
+                <div class="ck-step">
+                    <div class="ck-step-tit ck-toggle ck-toggle-off" ectype="ck-toggle">
+                        <h3>{$lang.preferential}/{$lang.value_card}/{$lang.bonus}</h3>
+                        <i class="iconfont icon-down"></i>
+                        <!--{if $user_coupons || $value_card_list && $is_value_cart eq 1 || $bonus_list}--><span class="tag">有可用</span><!--{/if}-->
+                    </div>
+                    <div class="ck-step-cont" style="display:none;">
+                        <div class="order-virtual-tabs">
+                            <ul>
+                                <!--{if $user_coupons || $coupons_list}--><li class="curr"><span>{$lang.preferential}</span>{if $user_coupons}<b></b>{/if}</li><!--{/if}-->
+                                <!--{if $allow_use_value_card && $is_value_cart eq 1} 储值卡使用绑定 --><li><span>{$lang.value_card}</span>{if $value_card_list}<b></b>{/if}</li><!--{/if}-->
+                                <!--{if $bonus_list || $no_bonuslist}--><li><span>{$lang.bonus}</span>{if $bonus_list}<b></b>{/if}</li><!--{/if}-->
+                            </ul>
+                        </div>
+
+                        <div class="toggle-panel-main">
+                            <!--{if $user_coupons || $coupons_list}-->
+                            <div class="toggle-panl-warp panl-coupon">
+                                <!--{if $user_coupons}-->
+                                <div class="panl-top">
+                                    <div class="panl-items">
+                                        <!--{foreach from=$user_coupons item=vo name=user_coupons}-->
+                                        <div class="panl-item{if $smarty.foreach.user_coupons.iteration % 4 == 0} panl-item-last{/if}" ectype="panlItem" data-ucid="{$vo.uc_id}" data-type="coupons">
+                                            <i class="i-left"></i>
+                                            <div class="panl-item-warp">
+                                                <div class="panl-item-top">
+                                                    {if $vo.cou_type_name neq 5}<strong>￥{$vo.cou_money}</strong>{else}<em class="icon-my"></em>{/if}
+                                                    <span>{$lang.full}{$vo.cou_man}</span>
+                                                </div>
+                                                <div class="panl-item-bot">
+                                                    <p>{$lang.range_bonus}：[{$vo.cou_type}][{$vo.cou_goods_name}]</p>
+                                                    <p>商家：{$vo.shop_name}</p>
+                                                    <p>{$lang.overdue_time}{$vo.cou_end_time}</p>
+                                                </div>
+                                            </div>
+                                            <i class="i-right"></i>
+                                            <b></b>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+
+                                <!--{if $coupons_list}-->
+                                <div class="panl-bot">
+                                    <div class="panl-items">
+                                        <!--{foreach from=$coupons_list item=vo name=coupons_list}-->
+                                        <div class="panl-item panl-item-disabled{if $smarty.foreach.coupons_list.iteration % 4 == 0} panl-item-last{/if}">
+                                            <i class="i-left"></i>
+                                            <div class="panl-item-warp">
+                                                <div class="panl-item-top">
+                                                    {if $vo.cou_type_name neq 5}<strong>￥{$vo.cou_money}</strong>{else}<em class="icon-my"></em>{/if}
+                                                    <span>{$lang.full}{$vo.cou_man}</span>
+                                                </div>
+                                                <div class="panl-item-bot">
+                                                    <p>{$lang.range_bonus}：[{$vo.cou_type}][{$vo.cou_goods_name}]</p>
+                                                    <p>商家：{$vo.shop_name}</p>
+                                                    <p>{$lang.overdue_time}：{$vo.cou_end_time}</p>
+                                                </div>
+                                            </div>
+                                            <i class="i-right"></i>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+                            </div>
+                            <!--{/if}-->
+
+                            <!-- {if $allow_use_value_card && $is_value_cart eq 1} 储值卡使用绑定 -->
+                            <div class="toggle-panl-warp panl-stored">
+                                <div class="panl-warp">
+                                    <!-- {foreach from=$value_card_list item=value_card} -->
+                                    <div class="panl-item" ectype="panlItem" data-ucid="{$value_card.vc_id}"data-type="value_card">
+                                        <p class="tit">{$value_card.name}</p>
+                                        <strong>{$value_card.card_money_formated}</strong>
+                                        <span class="p-total">{$value_card.card_limit}</span>
+                                        <b></b>
+                                    </div>
+                                    <!-- {/foreach} -->
+                                    <input name="value_card_psd" id="value_card_psd" type="text" class="qt_text2 order_vc_psd hide" size="15" value="" autocomplete="off" />
+                                    <input name="validate_value_card" type="button" class="hide" id="bnt_bonus_sn" value="{$lang.bind_value_card}" onclick="validateVcard($('.order_vc_psd').val())" autocomplete="off" />
+                                    <div class="panl-item panl-item-new">
+                                        <a href="user.php?act=value_card" target="_blank" class="add-new-stored">
+                                            <i class="iconfont icon-jia"></i>
+                                            <em>去添加储值卡</em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--{/if}-->
+
+                            <!--{if $bonus_list || $no_bonuslist}-->
+                            <div class="toggle-panl-warp panl-redBag">
+                                <!--{if $bonus_list}-->
+                                <div class="panl-top">
+                                    <div class="panl-items">
+                                        <!-- {foreach from=$bonus_list item=bonus name=bonus_list} -->
+                                        <div class="panl-item{if $smarty.foreach.bonus_list.iteration % 4 == 0} panl-item-last{/if}" ectype="panlItem" data-ucid="{$bonus.bonus_id}" data-type="bonus" title="{$lang.full}￥{$bonus.min_goods_amount}{$lang.keyong}">
+                                            <strong>{$bonus.bonus_money_formated}</strong>
+                                            <p>{$lang.bonus_card_number}：{$bonus.type_name}</p>
+                                            <p>{$lang.overdue_time}：{$bonus.use_end_date}</p>
+                                            <b></b>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+                                <!--{if $no_bonuslist}-->
+                                <div class="panl-bot">
+                                    <div class="panl-items">
+                                        <!-- {foreach from=$no_bonuslist item=bonus name=no_bonuslist} -->
+                                        <div class="panl-item panl-item-disabled{if $smarty.foreach.no_bonuslist.iteration % 4 == 0} panl-item-last{/if}" title="满{$bonus.min_goods_amount_old}￥{$lang.keyong}">
+                                            <strong>{$bonus.type_money}</strong>
+                                            <p>{$lang.bonus_card_number}：{$bonus.type_name}</p>
+                                            <p>{$lang.overdue_time}：{$bonus.use_enddate}</p>
+                                            <b></b>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+                            </div>
+                            <!--{/if}-->
+                        </div>
+                        <input type="hidden" name="uc_id" id="uc_id" value="0" autocomplete="off">
+                        <input type="hidden" name="not_freightfree" id="not_freightfree" value="0" autocomplete="off">
+
+                        <input type="hidden" name="bonus" id="bonus_id" value="0" autocomplete="off">
+                        <input type="hidden" name="vc_id" id="ECS_VALUE_CARD" value="0" autocomplete="off">
+                    </div>
+                </div>
+                <!--{/if}-->
+                <!--使用优惠券/储值卡/红包 end-->
+
+            </div>
+            <div id="ECS_ORDERTOTAL">
+                <!-- #BeginLibraryItem "/library/order_total.lbi" --><!-- #EndLibraryItem -->
+            </div>
+
+            <input name="sc_guid" value="{$sc_guid|default:0}" type="hidden" autocomplete="off">
+            <input name="sc_rand" value="{$sc_rand|default:0}" type="hidden" autocomplete="off">
+            <input type="hidden" name="user_id" value="{$user_id}" autocomplete="off" />
+            <input type="hidden" name="done_cart_value" value="{$cart_value}" autocomplete="off" />
+            <input type="hidden" name="step" value="done" autocomplete="off" />
+            <input type="hidden" name="is_address" value="0" autocomplete="off" />
+    </div>
+    </form>
+    </div>
+    <!--{elseif $step eq "checkout2"}-->
+    <div class="container">
+        <form action="flow.php" method="post" name="doneTheForm"  class="validator" id="theForm" onsubmit="return checkOrderForm(this)">
+            <div class="w w1200">
+                <div class="checkout-warp">
+                    <!--收货人信息 start-->
+                    <div class="ck-step" id="consignee_list">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.consignee_info}</h3>
+                            <a href="user.php?act=address_list" class="extra-r" target="_blank">管理收货人地址</a>
+                        </div>
+                        <div class="ck-step-cont" id="consignee-addr">
+                            <!-- #BeginLibraryItem "/library/consignee_flow.lbi" --><!-- #EndLibraryItem -->
+                        </div>
+                    </div>
+                    <!--收货人信息 end-->
+
+                    <!--{if $seller_store || $store_seller eq 'store_seller'} by kong 20160721 门店 start-->
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.offline_store_information}</h3>
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="store-warp" ectype="storeWarp">
+                                <div class="item{if $store_seller} hide{/if}" ectype="seller_address">
+                                    {if !$store_seller}
+                                    <div class="item_label">{$lang.offline_store_information}：</div>
+                                    <div class="item_value">
+                                        <span class="sp ftxt-01">{$seller_store.stores_name}</span>
+                                        <span class="sp">({$seller_store.country}&nbsp;{$seller_store.stores_address})</span>
+                                        <a href="javascript:void(0);" id="store_button" ectype="storeBtn">{$lang.edit}</a>
+                                    </div>
+                                    {/if}
+                                </div>
+                                <div class="item{if !$store_seller} hide{/if}" ectype="get_seller_sotre">
+                                    <div class="item_label">{$lang.offline_store_information}：</div>
+                                    <div class="item_value">
+                                        <select id="selProvinces" onchange="region.changed(this, 2, 'selCities')">
+                                            <option value=''>{$lang.all_option}</option>
+                                            {foreach from=$provinces item=region}
+                                            <option value="{$region.region_id}" {if $region.region_id eq 2}selected{/if}> {$region.region_name}</option>
+                                            {/foreach}
+                                        </select>
+
+                                        <select  id="selCities" style="display:none" onchange="region.changed(this, 3, 'selDistricts')">
+                                            <option value=''>{$lang.all_option}</option>
+                                            {foreach from=$cities item=region}
+                                            <option value="{$region.region_id}" {if $region.region_id eq 35}selected{/if}>{$region.region_name}</option>
+                                            {/foreach}
+                                        </select>
+
+                                        <select  id="selDistricts" style="display:none" onchange="get_store_list(this,'flow','{$cart_value}')">
+                                            <option value=''>{$lang.all_option}</option>
+                                            {foreach from=$city item=region}
+                                            <option value="{$region.region_id}" {if $region.region_id eq 369}selected{/if}>{$region.region_name}</option>
+                                            {/foreach}
+                                        </select>
+                                        <span id="seller_soter" ectype="seller_soter"></span>
+                                        <span class="error" for="region"></span>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item_label">{$lang.time_shop}：</div>
+                                    <div class="item_value">
+                                        <div class="text_time"><input name="take_time" id="time_shop" type="text" class="text" data-val="{$store_info.take_time}" value="{$store_info.take_time}" readonly></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="item_label">{$lang.phone_con}：</div>
+                                    <div class="item_value"><input type="text" class="text text-2" data-val="{$store_info.store_mobile}" value="{$store_info.store_mobile}" name='store_mobile' placeholder="{$lang.store_take_mobile}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--{/if}-->
+
+                    <!--支付方式 start-->
+                    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
+                    <div class="ck-step checkout">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.payment_method}</h3>
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="payment-warp">
+                                <div class="payment-list" ectype="paymentType">
+                                    <!--{if $is_presale_goods neq 1 && !$store_id}--> <!-- 门店订单只能使用余额支付和在线支付 -->
+                                    <!-- {foreach from=$payment_list item=payment name=payment} 循环支付方式 -->
+                                    <!-- {if $smarty.foreach.payment.total eq 1}  -->
+                                    <div class="p-radio-item payment-item item-selected" data-value='{"type":"{$payment.pay_code}","payid":"{$payment.pay_id}","allow":"{$allow_use_surplus}"}'>
+										<span>
+                                            <input type="radio" checked isCod="{$payment.is_cod}" name="payment" class="ui-radio" value="{$payment.pay_id}" />
+                                            <input type="radio" checked name="pay_code" class="ui-radio" value="{$payment.pay_code}" />
+                                            {$payment.pay_name}
+                                        </span>
+                                        <b></b>
+                                    </div>
+                                    <!-- {else} -->
+                                    <div class="p-radio-item payment-item{if $order.pay_id eq $payment.pay_id} item-selected{if $cod_disabled and $payment.is_cod eq 1} hide{/if}{else}{if $cod_disabled and $payment.is_cod eq 1} hide{/if}{/if}" data-value='{"type":"{$payment.pay_code}","payid":"{$payment.pay_id}","allow":"{$allow_use_surplus}"}'>
+										<span>
+                                            <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" name="payment" class="ui-radio" value="{$payment.pay_id}" />
+                                            <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} name="pay_code" class="ui-radio" value="{$payment.pay_code}" />
+                                            {$payment.pay_name}
+                                        </span>
+                                        <b></b>
+                                    </div>
+                                    <!-- {/if} -->
+                                    <!-- {/foreach} 循环支付方式 -->
+                                    <!--{else}-->
+                                    <!-- {foreach from=$payment_list item=payment} 循环支付方式 -->
+                                    <!--{if $payment.pay_code eq 'onlinepay' || $payment.pay_code eq 'balance'}-->
+                                    <div class="p-radio-item payment-item{if $order.pay_id eq $payment.pay_id} item-selected {if $cod_disabled and $payment.is_cod eq 1}hide{/if}{else}{if $cod_disabled and $payment.is_cod eq 1}hide{/if}{/if}" data-value='{"type":"{$payment.pay_code}","payid":"{$payment.pay_id}"}'>
+                                                <span>
+                                                    <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" name="payment" class="ui-radio" value="{$payment.pay_id}" />
+                                                    <input type="radio" {if $order.pay_id eq $payment.pay_id}checked{/if} name="pay_code" class="ui-radio" value="{$payment.pay_code}" />
+                                                    {$payment.pay_name}
+                                                </span>
+                                        <b></b>
+                                    </div>
+                                    <!--{/if}-->
+                                    <!-- {/foreach} 循环支付方式 -->
+                                    <!--{/if}-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--{/if}-->
+                    <!--支付方式 end-->
+
+                    <!--商品信息 start-->
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.goods_info}</h3>
+                            {if $order.extension_code eq ''}
+                            <a href="flow.php" class="extra-r">{$lang.back_cart}</a>
+                            {else}
+                            <a href="javascript:history.go(-1);" class="extra-r">返回上一页</a>
+                            {/if}
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="ck-goods-warp" id="goods_inventory">
+                                <!-- #BeginLibraryItem "/library/flow_cart_goods.lbi" --><!-- #EndLibraryItem -->
+                            </div>
+                            <div class="ck-order-remark">
+                                <input name="postscript" type="text" id="remarkText" maxlength="45" size="15" class="text" placeholder="{$lang.order_Remarks_desc}" autocomplete="off" onblur="if(this.value==''||this.value=='{$lang.order_Remarks_desc}'){this.value='{$lang.order_Remarks_desc}';this.style.color='#cccccc'}" onfocus="if(this.value=='{$lang.order_Remarks_desc}') {this.value='';};this.style.color='#666';">
+                                <span class="prompt">{$lang.order_Remarks_desc_one}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--商品信息 end-->
+
+                    <!--发票信息 start-->
+                    {if $config.can_invoice && $is_exchange_goods neq 1}
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.Invoice_information}</h3>
+                            <div class="tips-new-white">
+                                <b></b><span><i></i>开企业抬头发票须填写纳税人识别号，以免影响报销</span>
+                            </div>
+                        </div>
+                        <div class="ck-step-cont" id='inv_content'>
+                            <div class="invoice-warp">
+                                <div class="invoice-part">
+                                <span>
+                                	<em class="invoice_type">{$lang.Ordinary_invoice}</em>
+                                    <em class="inv_payee">{$lang.personal}</em>
+                                    <em class="inv_content">{$inv_content}</em>
+                                </span>
+                                    <a href="javascript:void(0);" class="i-edit" ectype="invEdit" data-value='{"divid":"edit_invoice","url":"ajax_dialog.php?act=edit_invoice","title":"{$lang.Invoice_information}"}'>{$lang.edit}</a>
+                                    <input type="hidden" name="inv_payee" value="{$lang.personal}">
+                                    <input type="hidden" name="inv_content" value="{$inv_content}">
+                                    <input type="hidden" name="invoice_type" value="0">
+                                    <input type="hidden" name="tax_id" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                    <!--发票信息 end-->
+
+                    <!--其他信息 start-->
+                    <!--{if $smarty.session.flow_type != 5}-->
+                    <div class="ck-step">
+                        <div class="ck-step-tit">
+                            <h3>{$lang.Other_information}</h3>
+                        </div>
+                        <div class="ck-step-cont">
+                            <div class="other-warp">
+                                <div class="other-list">
+                                    <!-- {if $allow_use_surplus} 是否使用余额 -->
+                                    <div class="qt_item" id="qt_balance" {if $disable_surplus} style="display:none"{/if}>
+                                    <div class="item_label">{$lang.use_surplus}：</div>
+                                    <div class="item_value">
+                                        <input type="text" class="qt_text" name="surplus" id="ECS_SURPLUS" size="10" value="{$order.surplus}" data-yoursurplus="{$your_surplus|default:0}" onblur="changeSurplus(this.value)" />
+                                        <input type="hidden" class="sur" value="{$total.goods_price_formated}" />
+                                        <input type="hidden" class="shipping" value="{$total.shipping_fee_formated}" />
+                                        <div class="sp"><span>当前{$lang.your_surplus}</span><em>￥{$your_surplus|default:0}</em></div>
+                                        <div class="sp ftx-01" id="ECS_SURPLUS_NOTICE"></div>
+                                    </div>
+                                </div>
+                                <!-- {/if} 是否使用余额 -->
+
+                                <!-- {if $allow_use_integral} 是否使用积分 -->
+                                <div class="qt_item" id="qt_integral">
+                                    <div class="item_label">{$lang.use_integral}：</div>
+                                    <div class="item_value">
+                                        <input type="text" class="qt_text" name="integral" id="ECS_INTEGRAL" data-maxinteg="{$order_max_integral}" onblur="changeIntegral(this.value)" value="{$order.integral|default:0}" size="10"/>
+                                        <div class="sp">
+                                            <span>{$lang.can_use_integral}</span>
+                                            <span>{$your_integral|default:0}</span>
+                                            <span>，{$lang.noworder_can_integral}</span>
+                                            <span>{$order_max_integral}</span>
+                                        </div>
+                                        <div class="sp ftx-01" id="ECS_INTEGRAL_NOTICE"></div>
+                                    </div>
+                                </div>
+                                <!-- {/if} 是否使用积分 -->
+
+                                <!-- {if $open_pay_password} 开启支付密码 -->
+                                <div class="qt_item" id="qt_onlinepay">
+                                    <div class="item_label">{$lang.pay_password}：</div>
+                                    <div class="item_value">
+                                        <input type="password"   style="display:none" autocomplete="off" />
+                                        <input type="password" class="qt_text" name="pay_pwd" size="20" value="" onblur="get_pay_pwd(this.value, 0);"  autocomplete="off" />
+                                        <input name="pay_pwd_error" type="hidden" id="pwd_error" value="{$pay_pwd_error}" autocomplete="off" />
+                                        <div class="sp ftx-01" id="ECS_PAY_PAYPWD"></div>
+                                    </div>
+                                </div>
+                                <!-- {/if} 支付密码 -->
+
+                                <!-- {if $how_oos_list} 是否使用缺货处理 -->
+                                <div class="qt_item">
+                                    <div class="item_label">{$lang.booking_process}：</div>
+                                    <div class="item_value">
+                                        <!-- {foreach from=$how_oos_list key=how_oos_id item=how_oos_name} -->
+
+                                        <div class="radio-item">
+                                            <input type="radio" name="how_oos" class="ui-radio" value="{$how_oos_id}" {if $order.how_oos eq $how_oos_id}checked{/if} id="checkbox_{$how_oos_id}" onclick="changeOOS(this)" autocomplete="off" />
+                                            <label for="checkbox_{$how_oos_id}" class="ui-radio-label">{$how_oos_name}</label>
+                                        </div>
+                                        <!-- {/foreach} -->
+                                    </div>
+                                </div>
+                                <!-- {/if} 缺货处理结束 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--{/if}-->
+                <!--其他信息 end-->
+
+                <!--使用优惠券/储值卡/红包 start-->
+                <!--{if $value_card_list && $is_value_cart neq 0 || $user_coupons || $coupons_list || $bonus_list || $no_bonuslist}-->
+                <div class="ck-step">
+                    <div class="ck-step-tit ck-toggle ck-toggle-off" ectype="ck-toggle">
+                        <h3>{$lang.preferential}/{$lang.value_card}/{$lang.bonus}</h3>
+                        <i class="iconfont icon-down"></i>
+                        <!--{if $user_coupons || $value_card_list && $is_value_cart eq 1 || $bonus_list}--><span class="tag">有可用</span><!--{/if}-->
+                    </div>
+                    <div class="ck-step-cont" style="display:none;">
+                        <div class="order-virtual-tabs">
+                            <ul>
+                                <!--{if $user_coupons || $coupons_list}--><li class="curr"><span>{$lang.preferential}</span>{if $user_coupons}<b></b>{/if}</li><!--{/if}-->
+                                <!--{if $allow_use_value_card && $is_value_cart eq 1} 储值卡使用绑定 --><li><span>{$lang.value_card}</span>{if $value_card_list}<b></b>{/if}</li><!--{/if}-->
+                                <!--{if $bonus_list || $no_bonuslist}--><li><span>{$lang.bonus}</span>{if $bonus_list}<b></b>{/if}</li><!--{/if}-->
+                            </ul>
+                        </div>
+
+                        <div class="toggle-panel-main">
+                            <!--{if $user_coupons || $coupons_list}-->
+                            <div class="toggle-panl-warp panl-coupon">
+                                <!--{if $user_coupons}-->
+                                <div class="panl-top">
+                                    <div class="panl-items">
+                                        <!--{foreach from=$user_coupons item=vo name=user_coupons}-->
+                                        <div class="panl-item{if $smarty.foreach.user_coupons.iteration % 4 == 0} panl-item-last{/if}" ectype="panlItem" data-ucid="{$vo.uc_id}" data-type="coupons">
+                                            <i class="i-left"></i>
+                                            <div class="panl-item-warp">
+                                                <div class="panl-item-top">
+                                                    {if $vo.cou_type_name neq 5}<strong>￥{$vo.cou_money}</strong>{else}<em class="icon-my"></em>{/if}
+                                                    <span>{$lang.full}{$vo.cou_man}</span>
+                                                </div>
+                                                <div class="panl-item-bot">
+                                                    <p>{$lang.range_bonus}：[{$vo.cou_type}][{$vo.cou_goods_name}]</p>
+                                                    <p>商家：{$vo.shop_name}</p>
+                                                    <p>{$lang.overdue_time}{$vo.cou_end_time}</p>
+                                                </div>
+                                            </div>
+                                            <i class="i-right"></i>
+                                            <b></b>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+
+                                <!--{if $coupons_list}-->
+                                <div class="panl-bot">
+                                    <div class="panl-items">
+                                        <!--{foreach from=$coupons_list item=vo name=coupons_list}-->
+                                        <div class="panl-item panl-item-disabled{if $smarty.foreach.coupons_list.iteration % 4 == 0} panl-item-last{/if}">
+                                            <i class="i-left"></i>
+                                            <div class="panl-item-warp">
+                                                <div class="panl-item-top">
+                                                    {if $vo.cou_type_name neq 5}<strong>￥{$vo.cou_money}</strong>{else}<em class="icon-my"></em>{/if}
+                                                    <span>{$lang.full}{$vo.cou_man}</span>
+                                                </div>
+                                                <div class="panl-item-bot">
+                                                    <p>{$lang.range_bonus}：[{$vo.cou_type}][{$vo.cou_goods_name}]</p>
+                                                    <p>商家：{$vo.shop_name}</p>
+                                                    <p>{$lang.overdue_time}：{$vo.cou_end_time}</p>
+                                                </div>
+                                            </div>
+                                            <i class="i-right"></i>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+                            </div>
+                            <!--{/if}-->
+
+                            <!-- {if $allow_use_value_card && $is_value_cart eq 1} 储值卡使用绑定 -->
+                            <div class="toggle-panl-warp panl-stored">
+                                <div class="panl-warp">
+                                    <!-- {foreach from=$value_card_list item=value_card} -->
+                                    <div class="panl-item" ectype="panlItem" data-ucid="{$value_card.vc_id}"data-type="value_card">
+                                        <p class="tit">{$value_card.name}</p>
+                                        <strong>{$value_card.card_money_formated}</strong>
+                                        <span class="p-total">{$value_card.card_limit}</span>
+                                        <b></b>
+                                    </div>
+                                    <!-- {/foreach} -->
+                                    <input name="value_card_psd" id="value_card_psd" type="text" class="qt_text2 order_vc_psd hide" size="15" value="" autocomplete="off" />
+                                    <input name="validate_value_card" type="button" class="hide" id="bnt_bonus_sn" value="{$lang.bind_value_card}" onclick="validateVcard($('.order_vc_psd').val())" autocomplete="off" />
+                                    <div class="panl-item panl-item-new">
+                                        <a href="user.php?act=value_card" target="_blank" class="add-new-stored">
+                                            <i class="iconfont icon-jia"></i>
+                                            <em>去添加储值卡</em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--{/if}-->
+
+                            <!--{if $bonus_list || $no_bonuslist}-->
+                            <div class="toggle-panl-warp panl-redBag">
+                                <!--{if $bonus_list}-->
+                                <div class="panl-top">
+                                    <div class="panl-items">
+                                        <!-- {foreach from=$bonus_list item=bonus name=bonus_list} -->
+                                        <div class="panl-item{if $smarty.foreach.bonus_list.iteration % 4 == 0} panl-item-last{/if}" ectype="panlItem" data-ucid="{$bonus.bonus_id}" data-type="bonus" title="{$lang.full}￥{$bonus.min_goods_amount}{$lang.keyong}">
+                                            <strong>{$bonus.bonus_money_formated}</strong>
+                                            <p>{$lang.bonus_card_number}：{$bonus.type_name}</p>
+                                            <p>{$lang.overdue_time}：{$bonus.use_end_date}</p>
+                                            <b></b>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+                                <!--{if $no_bonuslist}-->
+                                <div class="panl-bot">
+                                    <div class="panl-items">
+                                        <!-- {foreach from=$no_bonuslist item=bonus name=no_bonuslist} -->
+                                        <div class="panl-item panl-item-disabled{if $smarty.foreach.no_bonuslist.iteration % 4 == 0} panl-item-last{/if}" title="满{$bonus.min_goods_amount_old}￥{$lang.keyong}">
+                                            <strong>{$bonus.type_money}</strong>
+                                            <p>{$lang.bonus_card_number}：{$bonus.type_name}</p>
+                                            <p>{$lang.overdue_time}：{$bonus.use_enddate}</p>
+                                            <b></b>
+                                        </div>
+                                        <!--{/foreach}-->
+                                    </div>
+                                </div>
+                                <!--{/if}-->
+                            </div>
+                            <!--{/if}-->
+                        </div>
+                        <input type="hidden" name="uc_id" id="uc_id" value="0" autocomplete="off">
+                        <input type="hidden" name="not_freightfree" id="not_freightfree" value="0" autocomplete="off">
+
+                        <input type="hidden" name="bonus" id="bonus_id" value="0" autocomplete="off">
+                        <input type="hidden" name="vc_id" id="ECS_VALUE_CARD" value="0" autocomplete="off">
+                    </div>
+                </div>
+                <!--{/if}-->
+                <!--使用优惠券/储值卡/红包 end-->
+
+            </div>
+            <div id="ECS_ORDERTOTAL">
+                <!-- #BeginLibraryItem "/library/order_total.lbi" --><!-- #EndLibraryItem -->
+            </div>
+
+            <input name="sc_guid" value="{$sc_guid|default:0}" type="hidden" autocomplete="off">
+            <input name="sc_rand" value="{$sc_rand|default:0}" type="hidden" autocomplete="off">
+            <input type="hidden" name="user_id" value="{$user_id}" autocomplete="off" />
+            <input type="hidden" name="done_cart_value" value="{$cart_value}" autocomplete="off" />
+            <input type="hidden" name="step" value="done" autocomplete="off" />
+            <input type="hidden" name="is_address" value="0" autocomplete="off" />
+    </div>
+    </form>
+    </div>
+    <!--{/if}-->
+
+    <!-- {if $step eq "done" || $step eq "order_reload" } -->
+    <div class="container">
+        <div class="w w1200">
+            {if $is_onlinepay}
+            <!--  在线支付 -->
+            <div class="payOrder-warp" id="pay_main">
+                <div class="payOrder-desc">
+                    <div class="pay-top">
+                        <h3>{if $order.order_amount gt 0}订单提交成功，去付款咯！{else}订单提交成功！{/if}</h3>
+                        <div class="pay-total">
+                            <span>应付{$stages_info.stages_qishu}总额：</span>
+                            <div class="pay-price">￥{$order.order_amount}</div>
+                        </div>
+                    </div>
+                    <div class="pay-txt">
+                        <p>{$lang.order_number}：<em id="nku">{$order.order_sn}</em></p>
+                        <p>{$lang.Select_payment}：<span id="paymode">{$order.pay_name}</span></p>
+                        <!--{if $stores_info}-->
+                        <p>{$lang.store_name}：<span>{$stores_info.stores_name}</span></p>
+                        <!--{else}-->
+                        	{if $child_order eq 0}
+                            <!--{if $order.shipping_name && $order.shipping_isarr eq 0}-->
+                            <p>配送方式: <span id="express">{$order.shipping_name}</span></p>
+                            <!--{/if}-->
+                            {else}
+                            <p><span class="txt">{$lang.checkout_success_six}<em>{$child_order}</em>{$lang.checkout_success_three}：</span></p>
+                            {/if}
+                        <!--{/if}-->
+                    </div>
+                    {if $child_order eq 0}
+                    <div class="o-list">
+                        <div class="o-list-info">
+                            <span id="shdz">{$lang.Send_to}：{$order.region}&nbsp;&nbsp;{$order.address}</span>
+                            <span id="shr">{$lang.Consignee}：{$order.consignee}</span>
+                            <span id="mobile">{$order.mobile}</span>
+                        </div>
+                    </div>
+                    {/if}
+                    <a href="flow.php?step=pdf&order={$order.order_id}" target="_blank" class="orderPrint ftx-05">{$lang.orders_print}</a>&nbsp;&nbsp;
+                    <a href="index.php" target="_blank" class="orderPrint ftx-05">{$lang.pay_qt}</a>
+                </div>
+
+                {if $child_order neq 0}
+                <div class="w1200" style="height:10px; overflow:hidden;">&nbsp;</div>
+                <div class="w1200" style="background:#FFF;">
+                    <div class="shopend-info-many mt10" style="text-align:center; padding-top:20px;">
+                        <div class="shopend-info-items">
+                        {foreach from=$child_order_info item=c_order}
+                        <div class="shopend-info-item">
+                            <p>{$lang.order_number}：<em class="nku" id="nku">{$c_order.order_sn}</em></p>
+
+                            {if $c_order.order_amount > 0}
+                            <p>应付金额：<em>{$c_order.amount_formated}</em></p>
+                            {/if}
+
+                            {if $c_order.pay_total > 0}
+                            <p>已付金额：<em>{$c_order.total_formated}</em></p>
+                            {/if}
+
+                            {if !$is_group_buy}
+                            <p>{$lang.shipping_method}：<em>{$c_order.shipping_name}</em>&nbsp;&nbsp;&nbsp;&nbsp;{$lang.freight}：<em>{$c_order.shipping_fee_formated}</em></p>
+                            {/if}
+                            <!--{if $stores_info}-->
+                            <p>{$lang.store_name}：<em>{$stores_info.stores_name}</em></p>
+                            <!--{else}-->
+                            <p>收货人：<span id="username">{$order.consignee}</span><span id="tel" class="ml20">{$order.mobile}</span></p>
+                            <p>寄送至：<span id="address">{$address_info}&nbsp;{$order.address}</span></p>
+                            <!--{/if}-->
+                        </div>
+                        {/foreach}
+                        </div>
+                    </div>
+                </div>
+                {/if}
+
+                {if $is_onlinepay}
+                <div class="payOrder-mode">
+                    {if $stages_info && $stages_info.stages_qishu && $is_chunsejinrong}
+                        <div class="payOrder-list">
+                            <div class="p-mode-list">
+                                <div class="p-mode-item chunsejinrong">
+                                    <a href="flow.php?step=done&act=chunsejinrong&order_sn={$order.order_sn}" id="chunsejinrong" order_sn="{$order.order_sn}" style="height: 36px;line-height: 36px;float: left;" flag="chunsejinrong" >1111{$lang.ious_pay}</a>
+                                </div>
+                                <div class="bt-desc">
+                                	<p>
+                                        <span class="mr10">{$lang.Available_Credit}：{$stages_info.baitiao}元</span>
+                                        <span>下次还款日：{$stages_info.repay_date}</span>
+                                    </p>
+                                	<p class="qishu">{$stages_info.stages_qishu}{$lang.qi} | {$stages_info.stages_one_price}{$lang.yuan}/{$lang.qi}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {else}
+                        {if $is_alipay_bank}
+                        <div class="payOrder-list">
+                            <!--有支付宝直连才显示银行卡列表 bylu-->
+                            <div class="p-mode-tit">
+                                <h3>{$lang.bank_cord}支付</h3>
+                            </div>
+                            <div class="p-mode-list bank_list" ectype="bankList">
+                            	<ul>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CMB"><input checked="checked" type="hidden" value="alipay_cmb" id="CMB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_zsyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="ICBCB2C"><input type="hidden" value="alipay_icbcb2c" id="ICBCB2C" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_gsyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CCB"><input type="hidden" value="alipay_ccb" id="CCB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_jsyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="ABC"><input type="hidden" value="alipay_abc" id="ABC" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_nyyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="BOC-DEBIT"><input type="hidden" value="alipay_bocb2c" id="BOC-DEBIT" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_zgyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="COMM"><input type="hidden" value="alipay_comm" id="COMM" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_jtyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="PSBC-DEBIT"><input type="hidden" value="alipay_psbc" id="PSBC-DEBIT" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_youzheng.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="GDB"><input type="hidden" value="alipay_gdb" id="GDB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_gfyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="SPDB"><input type="hidden" value="alipay_spdb" id="SPDB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_pufa.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CEBBANK"><input type="hidden" value="alipay_cebbank" id="CEBBANK" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_gdyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="SPABANK"><input type="hidden" value="alipay_spabank" id="SPABANK" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_payh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CIB"><input type="hidden" value="alipay_cib" id="CIB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_xyyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CMBC"><input type="hidden" value="alipay_cmbc" id="CMBC" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_msyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CITIC"><input type="hidden" value="alipay_citic" id="CITIC" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_zxyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="SHBANK"><input type="hidden" value="alipay_shbank" id="SHBANK" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_shyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="BJRCB"><input type="hidden" value="alipay_bjrcb" id="BJRCB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_bjnsyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="NBBANK"><input type="hidden" value="alipay_nbbank" id="NBBANK" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_nbyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="HZCBB2C"><input type="hidden" value="alipay_hzcbb2c" id="HZCBB2C" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_hzyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="SHRCB"><input type="hidden" value="alipay_shrcb" id="SHRCB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_shnsyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="FDB"><input type="hidden" value="alipay_fdb" id="FDB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_fcyh.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="BJBANK"><input type="hidden" value="alipay_bjbank" id="BJBANK" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_bjbank.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="WZCB"><input type="hidden" value="alipay_wzcb" id="WZCB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_wzcb.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="ZJNX"><input type="hidden" value="alipay_zjnx" id="ZJNX" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_zjnx.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CDCB"><input type="hidden" value="alipay_cdcb" id="CDCB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_cdcb.gif"></label></a></li>
+                                    <li><a href="javascript:void(0);" class="b-pay"><label for="CSRCB"><input type="hidden" value="alipay_csrcb" id="CSRCB" name="alipay_bank"> <img alt="" src="images/alipay_bank/payOnline_CSRCB.gif"></label></a></li>
+                            	</ul>
+                            </div>
+
+                            <div class="pay_button" id="alipay_bank" order_sn="{$order.order_sn}" flag="alipay_bank">
+                                <!--假 支付按钮-->
+                                <a href="javascript:void(0);" class="noBtn">{$lang.immediately_pay}</a>
+                                <!--真 支付按钮-->
+                                {$is_alipay_bank}
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="payOrder-list">
+                            <div class="p-mode-tit">
+                                <h3>其他支付</h3>
+                            </div>
+                            <div class="p-mode-list">
+                                {if $is_presale_goods}
+                                    {foreach from=$pay_online_button key=key item=vo}
+                                    {if $key neq 'chunsejinrong'}
+                                        <div class="p-mode-item {$key}" order_sn="{$order.order_sn}" flag="{$key}">{$vo}</div>
+                                    {else}
+                                        {if $seller_grade eq 1}
+                                        <div class="p-mode-item {$key}" order_sn="{$order.order_sn}" flag="{$key}">{$vo}</div>
+                                        {/if}
+                                    {/if}
+                                    {/foreach}
+                                {else}
+                                    {foreach from=$pay_online_button key=key item=vo}
+                                    {if $key eq 'chunsejinrong'}
+                                        {if $seller_grade eq 1 && $stages_info && $stages_info.stages_qishu && $is_chunsejinrong}
+                                        <div class="p-mode-item {$key}">
+                                        	<a href="flow.php?step=done&act=chunsejinrong&order_sn={$order.order_sn}" id="chunsejinrong" order_sn="{$order.order_sn}" style="height: 36px;line-height: 36px;float: left;" flag="chunsejinrong" >{$lang.ious_pay}</a>
+                                        </div>
+                                        {/if}
+                                    {else}
+                                        <div class="p-mode-item {$key}" order_sn="{$order.order_sn}" flag="{$key}">{$vo}</div>
+                                    {/if}
+                                    {/foreach}
+                                {/if}
+                            </div>
+                        </div>
+                    {/if}
+                </div>
+                {else}
+                    <div class="single-btn">
+                        <!-- {if $pay_online} -->
+                        <!-- 如果是线上支付则显示支付按钮 -->
+                        {$pay_online}
+                        <!-- {/if} -->
+                    </div>
+                {/if}
+            </div>
+            {else}
+            <!--  非在线支付 -->
+            <div class="shopend-warp">
+                <!--下单成功-->
+                {if $child_order neq 0}
+                <div class="shopend-info-many">
+                    <div class="shopend-info">
+                        <div class="s-i-left"><i class="ico-success"></i></div>
+                        <div class="s-i-right">
+                            <h3>
+                            {if $order.pay_code eq 'cod'}
+                                您选择的是货到付款，请联系客服
+                            {elseif $order.pay_code eq 'bank'}
+                                您选择的是线下转账请转账后联系客服
+                            {else}
+                            	{if $order.pay_code eq 'balance'}
+                                {$lang.payment_Success}
+                                {else}
+                                您选择在线支付，请查看订单继续完成支付订单
+                                {/if}
+                            {/if}
+                            </h3>
+                            <span class="txt">{$lang.checkout_success_six}<em>{$child_order}</em>{$lang.checkout_success_three}：</span>
+                        </div>
+                    </div>
+                    <div class="shopend-info-items">
+                    {foreach from=$child_order_info item=c_order}
+                    <div class="shopend-info-item">
+                        <p>{$lang.order_number}：<em class="nku" id="nku">{$c_order.order_sn}</em></p>
+
+                        {if $c_order.order_amount > 0}
+                        <p>应付金额：<em>{$c_order.amount_formated}</em></p>
+                        {/if}
+
+                        {if $c_order.pay_total > 0}
+                        <p>已付金额：<em>{$c_order.total_formated}</em></p>
+                        {/if}
+
+                        {if !$is_group_buy}
+                        <p>{$lang.shipping_method}：<em>{$c_order.shipping_name}</em>&nbsp;&nbsp;&nbsp;&nbsp;{$lang.freight}：<em>{$c_order.shipping_fee_formated}</em></p>
+                        {/if}
+                        <!--{if $stores_info}-->
+                        <p>{$lang.store_name}：<em>{$stores_info.stores_name}</em></p>
+                        <!--{else}-->
+                        <p>收货人：<span id="username">{$order.consignee}</span><span id="tel" class="ml20">{$order.mobile}</span></p>
+                        <p>寄送至：<span id="address">{$address_info}&nbsp;{$order.address}</span></p>
+                        <!--{/if}-->
+                    </div>
+                    {/foreach}
+                    </div>
+                    {if $order.pay_code eq 'bank'}
+                    <p class="yh-zz">{$order.pay_desc}</p>
+                    {/if}
+                    <div class="clear"></div>
+                    <div class="s-i-btn">
+                        <a href="{if $is_zc_order}user.php?act=crowdfunding{else}user.php?act=order_list{/if}" class="btn sc-redBg-btn">查看订单</a>
+                        <a href="index.php" class="btn sc-red-btn">返回首页</a>
+                    </div>
+                </div>
+                {else}
+                <div class="shopend-info">
+                    <div class="s-i-left"><i class="ico-success"></i></div>
+                    <div class="s-i-right">
+                    	<h3>
+                        {if $order.pay_code eq 'cod'}
+                            您选择的是货到付款，请联系客服
+                        {elseif $order.pay_code eq 'bank'}
+                            您选择的是线下转账请转账后联系客服
+                        {else}
+                            {if $order.pay_code eq 'balance' || $order.order_amount eq 0}
+                            {$lang.payment_Success}
+                            {else}
+                            您选择在线支付，请查看订单继续完成支付订单
+                            {/if}
+                        {/if}
+                        </h3>
+                        <div class="s-i-tit">
+                            <p>{$lang.order_number}：<em id="nku">{$order.order_sn}</em></p>
+                            {if !$is_group_buy}
+                            <p>{$lang.shipping_method}：<em>{$order.shipping_name}</em></p>
+                            <p>{$lang.freight}：<em>{$order.format_shipping_fee}</em></p>
+                            {/if}
+                            <!--{if $stores_info}-->
+                            <p>{$lang.store_name}：<em>{$stores_info.stores_name}</em></p>
+                            <!--{else}-->
+                            <p>{$lang.Total_amount_payable}：<em>{$order.format_order_amount}</em></p>
+                            <p>收货人：<span id="username">{$order.consignee}</span><span id="tel" class="ml20">{$order.mobile}</span></p>
+                            <p>寄送至： <span id="address">{$address_info}&nbsp;{$order.address}</span></p>
+                            <!--{/if}-->
+                        </div>
+                        {if $order.pay_code eq 'bank'}
+                        <p class="yh-zz">{$order.pay_desc}</p>
+                        {/if}
+                        <div class="s-i-btn">
+                            {if $is_zc_order}
+                            <a href="user.php?act=crowdfunding" class="btn sc-redBg-btn">查看订单</a>
+                            {else}
+                            <a href="user.php?act=order_list" class="btn sc-redBg-btn">查看订单</a>
+                            {/if}
+                            <a href="index.php" class="btn sc-red-btn">返回首页</a>
+                        </div>
+                    </div>
+                </div>
+                {/if}
+            </div>
+            {/if}
+        </div>
+    </div>
+    <div id="pay_Dialog" class="hide">
+    	<div class="pat">{$lang.pat}</div>
+        <div class="paydia-warp">
+        	<i></i>
+            <div class="con">
+            	<div class="con-warp con-success">
+                    <h3>{$lang.pay_dialog_success}</h3>
+                    <a href="user.php?act=order_list" class="ftx-05">{$lang.order_detail}></a>
+                </div>
+                <div class="con-warp con-fail">
+                	<h3>{$lang.pay_dialog_fail}</h3>
+                	<a href="article.php?id=17" class="ftx-05">{$lang.pay_problem}></a>
+                    <a href="index.php" class="ftx-05">{$lang.pay_qt}></a>
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- {if $ajax_send_mail} -->
+	<script type="text/javascript">
+		var send_time = '{$send_time}';
+		var order_id = '{$order_id}';
+		Ajax.call('ajax_dialog.php?act=ajax_send_mail', 'send_time=' + send_time + '&order_id=' + order_id, '', 'POST','JSON');        
+	</script>
+	<!-- {/if} -->
+    <!--{/if}-->
+
+    <!--@author-bylu 支付款成功页 start-->
+    <!--{if $pay_success}-->
+    <div class="shopend-warp">
+        <!--下单成功-->
+        {if $child_order neq 0}
+        <div class="shopend-info-many">
+        	<div class="shopend-info">
+                <div class="s-i-left"><i class="ico-success"></i></div>
+                <div class="s-i-right">
+                    <h3>{$lang.payment_Success}</h3>
+                    <span class="txt">{$lang.checkout_success_six}<em>{$child_order}</em>{$lang.checkout_success_three}：</span>
+                </div>
+            </div>
+            <div class="shopend-info-items">
+            {foreach from=$child_order_info item=c_order}
+            <div class="shopend-info-item">
+                <p>{$lang.order_number}：<em class="nku" id="nku">{$c_order.order_sn}</em></p>
+                <p>{$lang.Total_amount_payable}：<em>{$c_order.order_amount}</em></p>
+                {if !$is_group_buy}
+                <p>{$lang.shipping_method}：<em>{$c_order.shipping_name}</em>&nbsp;&nbsp;&nbsp;&nbsp;{$lang.freight}：<em>￥{$c_order.shipping_fee}</em></p>
+                {/if}
+                <!--{if $stores_info}-->
+                <p>{$lang.store_name}：<em>{$stores_info.stores_name}</em></p>
+                <!--{else}-->
+                <p>收货人：<span id="username">{$order.consignee}</span><span id="tel" class="ml20">{$order.mobile}</span></p>
+                <p>寄送至：<span id="address">{$address_info}&nbsp;{$order.address}</span></p>
+                <!--{/if}-->
+            </div>
+            {/foreach}
+            </div>
+            <div class="clear"></div>
+            <div class="s-i-btn">
+                {if $is_zc_order}
+                <a href="user.php?act=crowdfunding" class="btn sc-redBg-btn">查看订单</a>
+                {else}
+                <a href="user.php?act=order_list" class="btn sc-redBg-btn">查看订单</a>
+                {/if}
+                <a href="index.php" class="btn sc-red-btn">返回首页</a>
+            </div>
+        </div>
+        {else}
+        <div class="shopend-info">
+            <div class="s-i-left"><i class="ico-success"></i></div>
+            <div class="s-i-right">
+                <h3>{$lang.payment_Success}</h3>
+                <div class="s-i-tit">
+                    <p>{$lang.order_number}：<em id="nku">{$order.order_sn}</em></p>
+                    <p>{$lang.Total_amount_payable}：<em>{$order.order_amount}</em></p>
+                    {if !$is_group_buy}
+                    <p>{$lang.shipping_method}：<em>{$order.shipping_name}</em></p>
+                    <p>{$lang.freight}：<em>￥{$order.shipping_fee}</em></p>
+                    {/if}
+                    <!--{if $stores_info}-->
+                    <p>{$lang.store_name}：<em>{$stores_info.stores_name}</em></p>
+                    <!--{else}-->
+                    <p>收货人：<span id="username">{$order.consignee}</span><span id="tel" class="ml20">{$order.mobile}</span></p>
+                    <p>寄送至： <span id="address">{$address_info}&nbsp;{$order.address}</span></p>
+                    <!--{/if}-->
+                </div>
+                <div class="s-i-btn">
+                    {if $is_zc_order}
+                    <a href="user.php?act=crowdfunding" class="btn sc-redBg-btn">查看订单</a>
+                    {else}
+                    <a href="user.php?act=order_list" class="btn sc-redBg-btn">查看订单</a>
+                    {/if}
+                    <a href="index.php" class="btn sc-red-btn">返回首页</a>
+                </div>
+            </div>
+        </div>
+        {/if}
+
+        {if $goods_buy_list}
+        <div class="p-panel-main c-history">
+            <div class="ftit ftit-delr"><h3>继续剁手</h3></div>
+            <div class="gl-list clearfix">
+                <ul class="clearfix">
+                    {foreach from=$goods_buy_list item=goods name=goodsbuy}
+                    {if $smarty.foreach.goodsbuy.iteration < 7 }
+                    <li class="opacity_img">
+                        <div class="p-img"><a href="{$goods.url}" target="_blank"><img src="{$goods.goods_thumb}" width="190" height="190"></a></div>
+                        <div class="p-price">
+                            {if $goods.promote_price eq ''}
+                                {$goods.shop_price}
+                            {else}
+                                {$goods.promote_price}
+                            {/if}
+                        </div>
+                        <div class="p-name"><a href="{$goods.url}" target="_blank">{$goods.goods_name}</a></div>
+                        <div class="p-num">已售<em>{$goods.sales_volume}</em>件</div>
+                    </li>
+                    {/if}
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+        {/if}
+    </div>
+    <!--{/if}-->
+    <!--@author-bylu 付款成功页 end-->
+
+    <!-- #BeginLibraryItem "/library/cart_html.lbi" --><!-- #EndLibraryItem -->
+
+    <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+    {insert_scripts files='jquery.SuperSlide.2.1.1.js,common.js,shopping_flow.js,warehouse.js,jquery.nyroModal.js,perfect-scrollbar/perfect-scrollbar.min.js'}
+    <!--{if $store_id} 判断是否是门店订单-->{insert_scripts files='calendar.php'}<!--{/if}-->
+
+	<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+    <script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+    <script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/region.js"></script>
+
+	<!-- {if $step eq "cart"} -->
+    <script type="text/javascript">
+        cartScroll();
+
+        function submit_order(){
+            return true;
+        }
+
+        //打开弹窗
+        $(document).on('click', "[ectype='submit']", function(){
+            //取出所有rec_id
+            var rec_ids = new Array();
+            $("[ectype='cartTboy']").find("[ectype='attrItem']").each(function(){
+                if($(this).prop("checked") == true){
+                    rec_ids.push($(this).val());
+                }
+            });
+
+            //判断选中和起订量
+            if(rec_ids.length == 0){
+                pbDialog("请选择采购商品","",0);
+                return false;
+            }
+            var checkMoq = true;
+            $("[ectype='itemList']").each(function(){
+                var moq = $(this).data('moq');
+                var item = $(this);
+                if(item.find("[ectype='attrItem']:checked").length > 0){
+                    var goods_number = 0;
+                    item.find("[ectype='attrItem']:checked").each(function(){
+                        var num_obj = $(this).parents("tr:first").find(".buy-num");
+                        goods_number += parseInt(num_obj.val());
+                    })
+                    if(goods_number < moq){
+                        checkMoq = false;
+                        //警告
+                        if(item.find(".text-warning").length == 0){
+                            var html = '<p class="org fl mt10 text-warning">数量或金额不满足商家混批规则</p>';
+                            item.find("[ectype='buyNum']:last").append(html);
+                        }
+                    }else{
+                        item.find(".text-warning").remove();
+                    }
+                }
+            })
+            if(checkMoq == false){
+                pbDialog("采购商品数量不得小于最小起订量","",0,"","",80);
+                return false;
+            }
+
+            $("form[name='formCart']").submit();
+        });
+
+        function b2bCart(){
+            var ck = "*[ectype='ckList'] input[type='checkbox']",	//所有ckList单选框
+                    ckGoods = "*[ectype='ckGoods']",         			//单个商品
+                    ckAll = "*[ectype='ckAll']",	  					//全选
+                    ckShopAll = "*[ectype='ckShopAll']", 				//每个店铺
+                    ckAttr = "*[ectype='attrItem']";					//商品属性单选
+
+            //初始化全选状态
+//            $(ck).prop("checked",true);
+
+            //全选
+            $(document).on("click",ckAll,function(){
+                var t = $(this);
+                if(t.prop("checked")==true){
+                    $(ck).prop("checked",true);
+                }else{
+                    $(ck).prop("checked",false);
+                }
+
+                //所有商品下的属性全部选中
+                if(t.prop("checked") == true){
+                    $(ckAttr).prop("checked",true);
+                }else{
+                    $(ckAttr).prop("checked",false);
+                }
+
+                calculate_cart_info();
+            });
+
+            //每个店铺商品全选
+            $(document).on("click",ckShopAll,function(){
+                var t = $(this);
+                var shopItem = t.parents("*[ectype='shopItem']");
+                if(t.prop("checked")==true){
+                    shopItem.find(ck).prop("checked",true);
+                }else{
+                    shopItem.find(ck).prop("checked",false);
+                }
+
+                //每个店铺下的属性全部选中
+                if(t.prop("checked") == true){
+                    shopItem.find(ckAttr).prop("checked",true);
+                }else{
+                    shopItem.find(ckAttr).prop("checked",false);
+                }
+
+                //判断是否已经全选
+                sfAll();
+            });
+
+            //单个商品勾选
+            $(document).on("click",ckGoods,function(){
+                var t = $(this);
+                var Item = t.parents("*[ectype='item']");
+                var shopItem = t.parents("*[ectype='shopItem']");
+                var itemlist = shopItem.find("*[ectype='itemList']");
+                var length = itemlist.find(ck).length;
+
+                //判断店铺商品是否全选
+                if(itemlist.find(ck).filter(":checked").length == length){
+                    shopItem.find(ckShopAll).prop("checked",true);
+                }else{
+                    shopItem.find(ckShopAll).prop("checked",false);
+                }
+
+                //选中单个商品，单个商品下的属性全部选中
+                if(t.prop("checked") == true){
+                    Item.find(ckAttr).prop("checked",true);
+                }else{
+                    Item.find(ckAttr).prop("checked",false);
+                }
+
+                //判断全部商品是否全选
+                sfAll();
+            });
+
+            //单个属性选择
+            $(document).on("click",ckAttr,function(){
+                var t = $(this);
+                var itemlist = t.parents("*[ectype='itemList']");
+                var items = t.parents("*[ectype='attrItems']");
+                var length = items.find(ckAttr).length;
+                var shopItem = t.parents("*[ectype='shopItem']");
+
+
+                //判断当前商品属性是否全选
+                if(items.find(ckAttr).filter(":checked").length == items.find(ckAttr).length){
+                    itemlist.find(ck).prop("checked",true);
+                }else{
+                    itemlist.find(ck).prop("checked",false);
+
+                }
+
+                //判断店铺商品是否全选
+                if(shopItem.find(ckGoods).filter(":checked").length == shopItem.find(ckGoods).length){
+                    shopItem.find(ckShopAll).prop("checked",true);
+                }else{
+                    shopItem.find(ckShopAll).prop("checked",false);
+                }
+
+                //判断全部商品是否全选
+                sfAll();
+            });
+
+
+
+            //判断是否全选了
+            function sfAll(){
+                var c = $("*[ectype='cartTboy']").find(ck);
+                var length = c.filter(":checked").length;
+                if(length == c.length){
+                    $(ckAll).prop("checked",true);
+                }else{
+                    $(ckAll).prop("checked",false);
+                }
+
+                calculate_cart_info();
+            }
+
+        }
+
+        b2bCart();
+
+
+        //删除商品
+        $(document).on('click', "[ectype='delete']", function(){
+            var goods_id = $(this).data('goods_id');
+            var extension_code = $(this).data('extension_code');
+            var extension_id = $(this).data('extension_id');
+
+            pbDialog("是否确定删除商品？","",0,"","","",true,function(){
+                $.jqueryAjax('flow.php?step=remove', 'goods_id='+goods_id+'&extension_code='+extension_code+'&extension_id='+extension_id, function(data){
+                    location.reload();
+                });
+            });
+        });
+        //删除属性
+        $(document).on('click', "[ectype='attr_del']", function(){
+            var rec_id = $(this).data('rec_id');
+            var extension_code = $(this).data('extension_code');
+            var extension_id = $(this).data('extension_id');
+
+
+            pbDialog("是否确定删除商品？","",0,"","","",true,function(){
+                $.jqueryAjax('flow.php?step=remove', 'extension_code='+extension_code+'&extension_id='+extension_id+'&rec_id='+rec_id, function(data){
+                    location.reload();
+                });
+            });
+        });
+
+        //批量删除商品
+        $(document).on('click', "[ectype='batch_delete']", function(){
+            var goods_id = new Array();
+            $("input[ectype='ckGoods']:checked").each(function(){
+                goods_id.push($(this).val());
+            });
+
+            goods_id = goods_id.join(',');
+
+            if(goods_id == ""){
+                pbDialog("请选择删除商品","",0);
+            }else{
+                pbDialog("是否确定删除商品？","",0,"","","",true,function(){
+                    $.jqueryAjax('wholesale_flow.php?step=batch_remove', 'goods_id='+goods_id, function(data){
+                        location.reload();
+                    });
+                });
+            }
+        });
+
+        $(document).on('click', '.btn-add',function(){
+            var num = $(this).siblings('.buy-num').val();
+            num = parseInt(num);
+            $(this).siblings('.buy-num').val(num+1);
+
+            $("*[ectype='whodet']").show();
+            update_rec_number($(this));
+        });
+
+        $(document).on('click', '.btn-reduce',function(){
+            var num = $(this).siblings('.buy-num').val();
+            num = parseInt(num);
+            if(num>1){
+                $(this).siblings('.buy-num').val(num-1);
+            }
+            update_rec_number($(this));
+        });
+
+        $(document).on('keyup', '.buy-num', function(){
+            if($(this).val() < 0 || isNaN($(this).val()) || $(this).val() == ''){
+                $(this).val(0);
+            }
+            update_rec_number($(this));
+        });
+
+        //设置全局时间戳变量
+        var timestamp = new Date().getTime();
+
+        function update_rec_number(obj){
+            //转换对象
+            if(!obj.hasClass('buy-num')){
+                obj = obj.siblings('.buy-num');
+            }
+            var rec_num = obj.val(); //数量
+            var rec_id = obj.parents("tr:first").data('rec_id');
+            $.jqueryAjax('flow.php?step=update_rec_num', 'rec_id='+rec_id+'&goods_number='+rec_num, function(data){
+                if(data.error > 0){
+                    obj.val(data.goods_number);
+                    //警告
+                    if(obj.parents("[ectype='buyNum']:first").find(".text-warning").length == 0){
+                        var html = '<p class="org fl mt10 text-warning">'+data.message+'</p>';
+                        obj.parents("[ectype='buyNum']:first").append(html);
+                        setTimeout(function(){
+                            obj.parents("[ectype='buyNum']:first").find(".text-warning").remove();
+                        }, 2000); //延迟执行
+                    }
+                }
+//
+                //calculate_cart_info();
+                timestamp = new Date().getTime(); //更新时间戳
+                setTimeout("calculate_cart_info()", 500); //延迟执行
+            })
+        }
+
+        //更新并计算价格
+        function calculate_cart_info(){
+            //延迟时间内不执行
+            if(new Date().getTime() - timestamp < 500){
+                return false;
+            }
+
+            var rec_ids = new Array();
+            var obj = $("*[ectype='cartTboy']");
+
+            obj.find("*[ectype='attrItem']:checked").each(function() {
+                var val = $(this).val();
+                rec_ids.push(val);
+            });
+
+            $.ajax({
+                url: 'flow.php?step=calculate_info',
+                data: {rec_ids: rec_ids},
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    var ck = "*[ectype='ckList'] input[type='checkbox']",
+                            ckShopAll = "*[ectype='ckShopAll']",
+                            ckAll = "*[ectype='ckAll']"
+                    if (data.error) {
+                        //警告
+                        var rec_ids = data.rec_ids;
+                        for (var rec_id in rec_ids) {
+                            var t = $('#attr_item_'+rec_id);
+                            t.prop("checked",false);
+                            t.parents("*[ectype='itemList']").find(ck).prop("checked",false);
+                            t.parents("*[ectype='shopItem']").find(ckShopAll).prop("checked",false);
+                            $(ckAll).prop("checked",false);
+
+                            var obj = t.parents('*[data-rec_id="'+rec_id+'"]')
+
+                            if(obj.find("[ectype='buyNum']:first").find(".text-warning").length == 0){
+                                var html = '<p class="org fl mt10 text-warning">'+rec_ids[rec_id]+'</p>';
+                                obj.find("[ectype='buyNum']:first").append(html);
+                            }
+
+                        }
+                    }
+                    _calculate_cart_info()
+                }
+            })
+
+
+        }
+
+
+        function _calculate_cart_info(){
+            //延迟时间内不执行
+            if(new Date().getTime() - timestamp < 500){
+                return false;
+            }
+
+            var rec_ids = new Array();
+            var obj = $("*[ectype='cartTboy']");
+
+            obj.find("*[ectype='attrItem']:checked").each(function() {
+                var val = $(this).val();
+                rec_ids.push(val);
+            });
+
+
+            //全部不选中价格清零
+            if(rec_ids.length == 0){
+                $("[ectype='total_number']").html('0');
+                $("[ectype='total_price']").html('￥0.00');
+                $("[ectype='cartNum']").html('0');
+                return false;
+            }
+
+
+            $.ajax({
+                url:'flow.php?step=ajax_update_cart2',
+                data:{rec_ids:rec_ids},
+                type:'post',
+                dataType:'json',
+                success:function(data){
+                    $("[ectype='total_number']").html(data.cart_info.total_number);
+                    $("[ectype='total_price']").html(data.cart_info.total_price_formatted);
+                    $("[ectype='cartNum']").html(rec_ids.length);
+                    //更新阶梯价和单品总价
+                    var goods_list = data.goods_list;
+                    for(goods_id in goods_list){
+                        var this_goods = goods_list[goods_id]; //单商品
+                        //更新阶梯价
+                        var this_tr = $("[ectype=attrItems] tr[data-goods_id='"+this_goods.goods_id+"']");
+                        this_tr.find("[ectype='rec_volume_price']").html(this_goods.volume_price_lbi);
+                        for(rec_id in this_goods.list){
+                            var this_rec = this_goods.list[rec_id]; //单记录
+                            //更新单品总价
+                            var this_row = $("[ectype=attrItems] tr[data-rec_id='"+this_rec.rec_id+"']"); //单行
+                            this_row.find("[ectype='rec_total_price'] .p-price").html(this_rec.formatted_total_price);
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+
+	<!--{elseif $step eq "checkout2"}-->
+	<script type="text/javascript">
+		$(function(){
+			/* 门店订单显示信息 start*/
+			if($("*[ectype='storeWarp']").length > 0){
+				$("#consignee_list,.d-address").addClass("hide");
+				$("input[name='is_address']").val(1);
+			}else{
+				$("#selProvinces").val(0);
+				$("#store_id").val(0);
+			}
+			/* 门店订单显示信息 end*/
+
+			/* 优惠券/储值卡/红包切换 */
+			$(".ck-step-cont").slide({titCell:".order-virtual-tabs li",mainCell:".toggle-panel-main",titOnClassName:"curr",trigger:"click"});
+
+			//点击查看图片
+			$('.nyroModal').nyroModal();
+		});
+
+		//门店时间选择
+		<!--{if $store_id} 判断是否是门店订单-->
+		var opts1 = {
+			'targetId':'time_shop',
+			'triggerId':['time_shop'],
+			'alignId':'time_shop',
+			'zIndex':999999,
+			'format':'-',
+                        'min':'{$now_time}' //最小时间
+		}
+		xvDate(opts1);
+		<!--{/if}-->
+
+		$(".panl-items").perfectScrollbar("destroy");
+		$(".panl-items").perfectScrollbar();
+
+		//超值礼包
+		$(".package_goods ul").perfectScrollbar("destroy");
+		$(".package_goods ul").perfectScrollbar();
+    </script>
+
+    <!--{elseif $step eq "done" || $step eq "order_reload"}-->
+    <script type="text/javascript">
+    	$(function(){
+			$(".p-mode-list .p-mode-item").click(function(){
+				var onlinepay_type = $(this).attr('flag');
+				var order_sn = $(this).attr('order_sn');
+				$.ajax({
+					async: false,
+					url:"flow.php?act=onlinepay_edit&onlinepay_type="+onlinepay_type+"&order_sn="+order_sn,
+				});
+			});
+
+
+			$(".p-mode-item input").click(function(){
+				var content = $("#pay_Dialog").html();
+				pb({
+					id:"payDialog",
+					title:json_languages.payTitle,
+					width:550,
+					height:300,
+					content:content,
+					drag:false,
+					foot:false
+				});
+			});
+
+			//微信支付定时查询订单状态 by wanglu
+    		checkOrder();
+
+			//微信扫码
+			$("[data-type='wxpay']").on("click",function(){
+				var content = $("#wxpay_dialog").html();
+				pb({
+					id: "scanCode",
+					title: "",
+					width: 716,
+					content: content,
+					drag: true,
+					foot: false,
+					cl_cBtn: false,
+					cBtn: false
+				});
+			});
+		});
+
+		var timer;
+		function checkOrder(){
+			var pay_name = "{$order.pay_name}";
+			var pay_status = "{$order.pay_status}";
+			var url = "flow.php?step=checkorder&order_id={$order.order_id}";
+			if(pay_name == "在线支付" && pay_status == 0){
+				$.get(url, {}, function(data){
+					//已付款
+					if(data.code > 0 && data.pay_code == 'wxpay'){
+						clearTimeout(timer);
+						location.href = "respond.php?code=" + data.pay_code + "&status=1";
+					}
+				},'json');
+			}
+			timer = setTimeout("checkOrder()", 5000);
+		}
+    </script>
+	<!--{/if}-->
+</body>
+</html>

@@ -1,0 +1,45 @@
+{include file="supplier/header"}
+<div class="con order-manage">
+    <div>
+        {foreach from=$delivery_list item=delivery key=dkey}
+        <section class="flow-checkout-pro  m-top08">
+            <header class="b-color-f dis-box padding-all" style="font-size: 1.4rem">
+                <span class=" box-flex">
+                    <label class="t-remark">发货流水号：</label>{$delivery.delivery_sn}
+                </span>
+            </header>
+            <div class="f-c-p-orderid padding-all m-top1px b-color-f">
+                <p class="t-remark3 m-top04" style="font-size: 1.4rem">
+                    订单号：<em class="t-first">{$delivery.order_sn}</em>
+                </p>
+                <p class="t-remark3 m-top04" style="font-size: 1.4rem">
+                    下单时间：<em class="t-first">{$delivery.add_time}</em>
+                </p>
+                <p class="t-remark3 m-top04" style="font-size: 1.4rem">
+                    发货时间：<em class="t-first">{$delivery.update_time}</em>
+                </p>
+                <p class="t-remark3 m-top04" style="font-size: 1.4rem">
+                    状态：<em class="t-first">{$delivery.status_name}</em>
+                </p>
+                <p class="t-remark3 m-top04" style="font-size: 1.4rem">
+                    操作人：<em class="t-first">{$delivery.operator}</em>
+                </p>
+            </div>
+            <footer class="padding-all b-color-f m-top1px of-hidden dis-box">
+                <h4 class="t-remark2 box-flex"></h4>
+                <p class="ect-button-more ect-button-more-dete n-br-5">
+                    <a class="btn-default-new br-5 min-btn" href="{url('order/delivery_info', ['delivery_id'=>$delivery.delivery_id])}">查看</a>
+                </p>
+            </footer>
+        </section>
+        {/foreach}
+    </div>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav"}
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    //订单列表
+</script>
+</body>
+</html>

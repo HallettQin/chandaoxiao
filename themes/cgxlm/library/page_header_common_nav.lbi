@@ -1,0 +1,105 @@
+<script type="text/javascript">
+    var process_request = "正在处理您的请求...";
+</script>
+<div class="site-nav" id="site-nav">
+    <div id="sn-bd">
+        <div class="sn-container">
+            <script type="text/javascript" src="themes/cgxlm/js/utils.js"></script><script type="text/javascript" src="themes/cgxlm/js/common.min.js"></script>
+            {insert name='member_info'}
+            <ul class="sn-quick-menu">
+                <li class="sn-mytaobao menu-item j_MyTaobao">
+                    <div class="sn-menu">
+                        <a aria-haspopup="menu-2" tabindex="0" class="menu-hd" href="user.php" target="_top" rel="nofollow">我的信息<b></b></a>
+                        <div id="menu-2" class="menu-bd">
+                            <div class="menu-bd-panel" id="myTaobaoPanel">
+                                <a href="user.php?act=order_list" target="_top" rel="nofollow">已买到的商品</a>
+                                <a href="user.php?act=address_list" target="_top" rel="nofollow">我的地址管理</a>
+                            </div>
+                        </div>
+                        <i class="sn-separator"></i>
+                    </div>
+                </li>
+                <li class="sn-mybrand" style="display: none;">
+                    <a target="_top" id="J_SnMyBrand" class="sn-mybrand-link mui-global-iconfont" href="user.php?act=follow_shop">我关注的店铺</a>
+                </li>
+                <li class="menu-item">
+                    <div class="sn-menu">
+                        <a aria-haspopup="menu-6" tabindex="0" class="menu-hd sn-mobile-link" href="" target="_top">手机版<b></b></a>
+                        <div class="menu-bd sn-qrcode" id="menu-5">
+                            <ul>
+                                <li class="app_xiazai">
+                                    <a href="#" target="_top" class="app_store"></a>
+                                    <img src="themes/68ecshopcom_360buy/images/app.jpg" alt="手机客户端" width="76px" height="76px">
+                                </li>
+                                <li class="app_xiazai1">
+                                    <a href="#" target="_top" class="app_android"></a>
+                                    <img src="themes/68ecshopcom_360buy/images/android.jpg" alt="手机客户端" width="76px" height="76px">
+                                </li>
+                            </ul>
+                        </div>
+                        <i class="sn-separator"></i>
+                    </div>
+                </li>
+                <li class="sn-cart mini-cart menu">
+                    <a id="mc-menu-hd" class="sn-cart-link mui-global-iconfont" href="flow.php" target="_top" rel="nofollow">我的进货单</a>
+                    <i class="sn-separator"></i>
+                </li>
+                <!--<li class="sn-favorite menu-item">
+                  <div class="sn-menu">
+                      <a aria-haspopup="menu-4" tabindex="0" class="menu-hd" href="user.php?act=collection_list" target="_top" rel="nofollow">收藏夹<b></b></a>
+                        <div id="menu-4" class="menu-bd">
+                          <div class="menu-bd-panel">
+                              <a href="user.php?act=collection_list" target="_top" rel="nofollow">收藏的商品</a>
+                              <a href="user.php?act=follow_shop" target="_top" rel="nofollow">收藏的店铺</a>
+                          </div>
+                    </div>
+                  </div>
+                </li> -->
+                <script type="text/javascript">
+                    function show_qcord(){
+                        var qs=document.getElementById('sn-qrcode');
+                        qs.style.display="block";
+                    }
+                    function hide_qcord(){
+                        var qs=document.getElementById('sn-qrcode');
+                        qs.style.display="none";
+                    }
+                </script>
+                <li class="sn-seller menu-item" style="display: none;">
+                    <div class="sn-menu J_DirectPromo">
+                        <a aria-haspopup="menu-6" tabindex="0" class="menu-hd" href="" target="_top">商家支持<b></b></a>
+                        <div class="menu-bd" id="menu-6">
+                            <ul>
+                                <li>
+                                    <h3>商家：</h3>
+
+                                    <a href="help.php?id=9">售后流程</a>
+
+                                    <a href="help.php?id=10">购物流程</a>
+
+                                    <a href="help.php?id=18">常见问题</a>
+
+                                    <a href="article_list.php">文章资讯</a>
+
+                                </li>
+                                <li>
+                                    <h3>帮助：</h3>
+                                    <a href="help.php" target="_top" title="帮助中心">帮助中心</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div></li>
+                <li class="sn-sitemap">
+                    <div class="sn-menu">
+                        <h3 class="menu-hd" tabindex="0" aria-haspopup="menu-8"><a target="_blank" class="sn-site-link" href="merchants.php">制造商入驻</a></h3>
+                    </div>
+                </li>
+                <li class="sn-sitemap">
+                    <div class="sn-menu">
+                        <h3 class="menu-hd" tabindex="0" aria-haspopup="menu-8"><a target="_blank" class="sn-site-link" href="seller/privilege.php?act=login">制造商后台管理</a></h3>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

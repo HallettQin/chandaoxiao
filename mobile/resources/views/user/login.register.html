@@ -1,0 +1,286 @@
+{include file="page_header"}
+<style>
+    .drp-settled-select2 select {
+        border: none;
+        width: 100%;
+        font-size: 1.5rem;
+        color: #555;
+        padding-left: 1rem;
+        line-height: 3rem;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        background: none;
+    }
+</style>
+<div class="con">
+    <div class="user-center user-register of-hidden">
+        <div class="hd j-tab-title">
+            <ul class="dis-box">
+                {if $show}
+                <li class="box-flex active">会员注册</li>
+                {else}
+                <li class="box-flex active">邮箱注册</li>
+                {/if}
+            </ul>
+        </div>
+        <div id="j-tab-con">
+            <div class="swiper-wrapper">
+                {if $show}
+                <section class="swiper-slide swiper-no-swiping">
+                    <form action="{url('register')}" method="post" class="validation">
+                        <div class="b-color-f  user-login-ul user-register-ul">
+
+                            <!-- {foreach from=$extend_info_list item=field} -->
+                            <!-- {if $field.id eq 7} -->
+                            <div class="text-all dis-box j-text-all login-li m-top10">
+                                <div class="box-flex input-text">
+                                    <div class="drp-settled-select2" style="position: static">
+                                        <select name="extend_field{$field.id}">
+                                            <option value="">--请选择公司类型--</option>
+                                            <option value="purchasers">终端零售商</option>
+                                            <option value="supplier">生产制造商</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- {elseif $field.id eq 8} -->
+                            <div class="text-all dis-box j-text-all login-li m-top10">
+                                <div class="box-flex input-text">
+                                    <div class="drp-settled-select2" style="position: static">
+                                        <select name="extend_field{$field.id}">
+                                            <option value="0">--请选择行业--</option>
+                                            {foreach $category as $cat}
+                                            <option value="{$cat.cat_id}">{$cat.cat_name}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--{/if}-->
+                            <!--{/foreach}-->
+                            <div class="text-all dis-box j-text-all login-li" style="margin-top:1rem;">
+                                <div class="box-flex input-text">
+                                    <input class="j-input-text" name="verify" datatype="*" nullmsg="请输入图片验证码" type="text"
+                                           placeholder="请输入验证码"/>
+                                    <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                </div>
+                                <img src="{url('captcha/index/index')}" onclick="this.src='{url('captcha/index/index')}'"
+                                     height="36" class="ipt-check-btn j-verify-img"/>
+                            </div>
+                            <div class="text-all dis-box j-text-all login-li m-top10" name="mobilediv">
+                                <div class="box-flex input-text">
+                                    <input class="j-input-text" id="mobile_phone" name="mobile" datatype="m"
+                                           nullmsg="请输入手机号码" errormsg="手机号码格式不正确" type="tel" placeholder="请输入手机号"/>
+                                    <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                </div>
+                                <a type="button" class="ipt-check-btn ipt-check-btn-new" href="#" id="sendsms">获取短信验证码</a>
+                            </div>
+                            <div class="text-all dis-box j-text-all login-li m-top10" name="mobile_codediv">
+                                <div class="box-flex input-text">
+                                    <input class="j-input-text" name="mobile_code" datatype="*" nullmsg="请输入短信验证码"
+                                           type="number" placeholder="请输入短信验证码"/>
+                                    <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                </div>
+                            </div>
+                            <div class="text-all dis-box j-text-all login-li m-top10" name="smspassworddiv">
+                                <div class="box-flex input-text">
+                                    <input class="j-input-text" name="smspassword" datatype="*6-20" nullmsg="请设置6-20位登录密码"
+                                           errormsg="密码至少6位数" type="password" placeholder="请设置6-20位登录密码"/>
+                                    <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                                </div>
+                                <i class="iconfont icon-yanjing is-yanjing j-yanjing disabled"></i>
+                            </div>
+                            
+                        </div>
+                        <div style="clear: both"></div>
+                        <input name="enabled_sms" type="hidden" value="1"/>
+                        <input type="hidden" name="back_act" value="{$back_act}"/>
+                        <input type="hidden" id="flag" value="{$flag}">
+                        <button type="submit" class="btn-submit min-two-btn br-5">注册</button>
+                        <div class="u-l-register fl">注册即视为同意《<a href="{url('article/index/detail', array('id'=>6))}" class="a-first">用户注册协议</a>》</div>
+                    </form>
+                </section>
+                {else}
+                <section class="swiper-slide swiper-no-swiping">
+                    <form action="{url('register')}" method="post" class="validation">
+                     <div class="b-color-f  user-login-ul user-register-ul">
+                        <div class="text-all dis-box j-text-all login-li" name="mobilediv">
+                            <div class="box-flex input-text">
+                                <input class="j-input-text" id="username" name="username" datatype="z"  nullmsg="请输入您的用户名" errormsg="请输入4-15位用户名" type="name" placeholder="请输入4-15位用户名"/>
+                                <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                            </div>
+                        </div>
+                        <div class="text-all dis-box j-text-all login-li m-top10" name="emaildiv">
+                            <div class="box-flex input-text">
+                                <input class="j-input-text" name="email" type="text" datatype="e" nullmsg="请输入您的邮箱地址" errormsg="电子邮箱格式不正确" placeholder="请输入邮箱"/>
+                                <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                            </div>
+                        </div>
+                        <div class="text-all dis-box j-text-all login-li  m-top10" name="passworddiv">
+                            <div class="box-flex input-text">
+                                <input class="j-input-text" name="password" type="password" datatype="*6-20" nullmsg="请设置6-20位登录密码" errormsg="密码至少6位数" placeholder="请输入6-20位登录密码"/>
+                                <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                            </div>
+                            <i class="iconfont icon-yanjing is-yanjing j-yanjing disabled"></i>
+                        </div>
+                        <div class="text-all dis-box j-text-all login-li m-top10" name="confirm_passworddiv">
+                            <div class="box-flex input-text">
+                                <input class="j-input-text" name="confirm_password" type="password" datatype="*" recheck="password" nullmsg="请再次输入密码" errormsg="再次输入的密码不正确" placeholder="请再次输入密码"/>
+                                <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                            </div>
+                            <i class="iconfont icon-yanjing is-yanjing j-yanjing disabled"></i>
+                        </div>
+                        {if $enabled_captcha}
+                        <div class="text-all dis-box j-text-all login-li m-top10">
+                            <div class="box-flex input-text">
+                                <input class="j-input-text" name="captcha" datatype="*" nullmsg="请输入图片验证码" type="text" placeholder="请输入验证码"/>
+                                <i class="iconfont icon-guanbi1 close-common j-is-null"></i>
+                            </div>
+                            <img src="{url('captcha/index/index')}" onclick="this.src='{url('captcha/index/index')}'"
+                                 height="36" class="ipt-check-btn j-verify-img"/>
+                        </div>
+                        {/if}
+                          </div>
+                        <input type="hidden" name="enabled_sms" value="2"/>
+                        <input type="hidden" name="back_act" value="{$back_act}"/>
+                        <button type="submit" class="btn-submit min-two-btn br-5">注册</button>
+                        <a href="{url('user/login/index',array('back_act' => $back_act))}" class="a-first u-l-register fr">已注册直接登录</a>
+
+                    </form>
+                </section>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="div-messages"></div>
+
+<!--引用js-->
+<script>
+    $(function () {
+        $.Tipmsg.r = null;
+        $(".validation").Validform({
+            tiptype: function (msg) {
+                d_messages(msg);
+            },
+            // 自定义扩展datatype
+            datatype:{
+                "z" : function(gets,obj,curform,regxp){
+                    //参数gets是获取到的表单元素值
+                    var length = getStrLenght(gets);
+                    if (length < 4 || length > 15) {
+                        d_messages('请输入4-15位用户名');
+                        return false;
+                    }
+                    return true;
+                }
+            },
+            tipSweep: true,
+            ajaxPost: true,
+            callback: function (data) {
+                // {"info":"demo info","status":"y"}
+                if (data.status === 'y') {
+                    window.location.href = data.url;
+                } else {
+                    d_messages(data.info);
+                }
+            }
+        });
+    });
+
+    function getStrLenght(message) {
+        var strlenght = 0;
+        var txtval = $.trim(message);
+        for (var i = 0; i < txtval.length; i++) {
+            if (isCN(txtval.charAt(i)) == true) {
+                strlenght = strlenght + 2; //中文为2个字符
+            } else {
+                strlenght = strlenght + 1; //英文一个字符
+            }
+        }
+        return strlenght;
+    }
+
+    function isCN(str) {
+        //判断是不是中文
+        var regexCh = /[^\u4e00-\u9fa5]/;
+        return !regexCh .test(str);
+    }
+
+    var time = 60;
+    var c = 1;
+    function data() {
+        if (time == 0) {
+            c = 1;
+            $("#sendsms").html("发送验证码");
+            time = 60;
+            return;
+        }
+
+        if (time != 0) {
+            if ($(".ipt-check-btn").attr("class").indexOf("disabled") < 0) {
+                $(".ipt-check-btn").addClass('disabled');
+            }
+            c = 0;
+            $("#sendsms").html("<span>重新获取(" + time + ")</span>");
+            time--;
+        }
+        setTimeout(data, 1000);
+    }
+
+    $("#sendsms").click(function () {
+       var myreg = /^1\d{10}$/;
+        var mobile = $("input[name=mobile]").val();
+        var verify_code = $("input[name=verify]").val();
+
+        if (verify_code == '') {
+            d_messages('请输入图片验证码');
+            return false;
+        }
+        if (mobile == '') {
+            d_messages('请输入手机号');
+            return false;
+        }
+        if (!myreg.test(mobile)) {
+            d_messages('请输入有效的手机号');
+            return false;
+        }
+        if (c == 0) {
+            d_messages('发送频繁');
+            return;
+        }
+
+        $.post(ROOT_URL + 'index.php?m=sms&a=send', {
+            mobile: mobile,
+            verify_code: verify_code,
+            flag: 'register'
+        }, function (res) {
+            d_messages(res.msg);
+            if (res.code == 2) {
+                data();
+            }
+            $('.j-verify-img').click();
+        }, 'json');
+    })
+
+    /*切换*/
+    var tabsSwiper = new Swiper('#j-tab-con', {
+        speed: 0,
+        noSwiping: true,
+        autoHeight: true
+    })
+    $(".j-tab-title li").on('touchstart mousedown', function (e) {
+        e.preventDefault()
+        $(".j-tab-title .active").removeClass('active')
+        $(this).addClass('active')
+        tabsSwiper.slideTo($(this).index())
+    })
+    $(".j-tab-title li").click(function (e) {
+        e.preventDefault()
+    })
+
+</script>
+</body>
+
+</html>

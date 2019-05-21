@@ -1,0 +1,17 @@
+<div class="globa-nav">
+    <div class="w">
+        <div class="allGoodsCat Left" **onmouseover="_show_(this)" onmouseout="_hide_(this) **/">
+            <a href="categoryall.php?mode={$act_type}" class="menuEvent" title="查看全部商品分类">
+                <img src="themes/68ecshopcom_360buy/images/header/hg_th.png" id="hg">
+                <strong class="catName">全部商品分类</strong>
+            </a>
+        </div>
+        <ul class="allMenu Left">
+            <li><a href="index.php" class="nav" title="首页" target="_blank">首页</a></li>
+            <li><a href="group_buy.php" class="nav {if $act_type eq 'group_buy'}current{/if}" title="拼单专区" target="_blank">拼单专区</a></li>
+            <li><a href="presale.php" class="nav {if $act_type eq 'presale'}current{/if}" title="预定专区" target="_blank">预定专区</a></li>
+            <li><a href="sample.php" class="nav {if $act_type eq 'sample'}current{/if}" title="样品专区" target="_blank">样品专区</a></li>
+            <li><a href="wholesale.php" class="nav {if $act_type eq 'wholesale'}current{/if}" title="现货专区" target="_blank">现货专区</a></li>
+        </ul>
+    </div>
+</div>

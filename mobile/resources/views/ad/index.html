@@ -1,0 +1,41 @@
+{include file="page_header"}
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+            <div class="h-mid">{$position.position_name}</div>
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onclick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+    </header>
+
+<section class="j-get-i-more j-money-divided">
+    <style>
+    </style>
+    {if $ads}
+    <ul class="seller_banner">
+        {foreach $ads as $list}
+        <li>
+            <a href="{$list.ad_link}">
+                <div class="thumb"><img src="{if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}" width="1" height="1" border="0"></div>
+                <div class="b_title"><p>{$list.b_title}</p></div>
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+    {else}
+    <div class="no-div-message">
+        <i class="iconfont icon-biaoqingleiben"></i>
+        <p>亲，此处没有内容～！</p>
+    </div>
+    {/if}
+</section>
+<!--快捷导航-->
+{include file="float_nav"}
+{include file="float_nav_footer"}
+</body>
+</html>

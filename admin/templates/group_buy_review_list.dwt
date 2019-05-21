@@ -1,0 +1,219 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">模式 - {$ur_here}</div>
+        <div class="content">
+            <div class="tabs_info" >
+                <ul>
+                    <li {if $menu_select.current eq '01_goods_list'}class="curr"{/if}>
+                    <a href="group_buy.php?act=list">普通商品 {if $menu_select.current neq '01_goods_list'}{if $goods_list_type}<em class="li_color"></em>{/if}{/if}</a>
+                    </li>
+                    <li {if $menu_select.current eq '01_review_status'}class="curr"{/if}>
+                    <a href="group_buy.php?act=review_status">商品审核 {if $menu_select.current neq '01_review_status'}{if $goods_list_type}<em class="li_color"></em>{/if}{/if}</a>
+                    </li>
+                </ul>
+            </div>
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6542.html" target="_blank">商城拼单活动说明</a>
+                        </div>
+                    </div>
+                    {/if}
+				</div>
+                <ul>
+                	<li>拼单活动列表展示商品的拼单相关信息。</li>
+                    <li>可根据条件，如商品名称、店铺名称等搜索团购商品。</li>
+                    <li>可查看拼单商品的订单列表（可进行订单相关操作）。</li>
+					<li>可添加、编辑、删除或批量删除拼单活动。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="group_buy.php?act=review_status&type=not_audit"><div class="fbutton"><div class="edit" title="未审核"><span><i class="icon icon-edit"></i>未审核 ({$goods_list_type.not_status|default:0})</span></div></div></a>
+                        <a href="group_buy.php?act=review_status&type=not_pass"><div class="fbutton"><div class="add" title="审核未通过"><span><i class="icon icon-edit"></i>审核未通过 ({$goods_list_type.not_pass|default:0})</span></div></div></a>
+                    </div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+                </div>
+                <div class="common-content">
+				<form method="post" onsubmit="return confirmSubmit(this)">
+                	<div class="list-div" id="listDiv">
+                    	<div class="flexigrid ht_goods_list">
+						{/if}
+                    	<table cellpadding="1" cellspacing="1" class="table_layout">
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="38%"><div class="tDiv">{$lang.goods_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.end_date}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.deposit}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.restrict_amount}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.valid_goods}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.valid_order}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.current_price}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$list item=group_buy}
+                            	<tr>
+                                	<td class="sign">
+                                        <div class="tDiv">
+                                            <input type="checkbox" name="checkboxes[]" value="{$group_buy.act_id}" class="checkbox" id="checkbox_{$group_buy.act_id}" />
+                                            <label for="checkbox_{$group_buy.act_id}" class="checkbox_stars"></label>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{$group_buy.act_id}</div></td>
+                                	<td>
+                                        <div class="tDiv overflow_view">
+                                            <a href="../group_buy.php?id={$group_buy.act_id}&act=view" target="_blank"><span title="{$group_buy.goods_name|escape:html}" data-toggle="tooltip">{$group_buy.goods_name|escape:html}</span></a>
+                                            <p class="red">{$group_buy.cur_status}</p>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{if $group_buy.user_name}<font class="red">{$group_buy.user_name}</font>{else}{$lang.self}{/if}</div></td>
+                                    <td><div class="tDiv">{$group_buy.end_time}</div></td>
+                                    <td><div class="tDiv"><span onclick="listTable.edit(this, 'edit_deposit', {$group_buy.act_id})">{$group_buy.deposit}</span></div></td>
+                                    <td><div class="tDiv"><span onclick="listTable.edit(this, 'edit_restrict_amount', {$group_buy.act_id})">{$group_buy.restrict_amount}</span></div></td>
+                                    <td><div class="tDiv">{$group_buy.valid_goods}</div></td>
+                                    <td><div class="tDiv">{$group_buy.valid_order}</div></td>
+                                    <td><div class="tDiv">{$group_buy.cur_price}</div></td>
+                                    <td>
+                                    	<div class="tDiv">
+                                            {if $group_buy.review_status eq 1}
+                                            <font class="org2">{$lang.not_audited}</font>
+                                            {elseif $group_buy.review_status eq 2}
+                                            <font class="red">{$lang.audited_not_adopt}</font><br/>
+                                            <i class="tip yellow" title="{$group_buy.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                            {elseif $group_buy.review_status eq 3}
+                                            <font class="blue">{$lang.audited_yes_adopt}</font>
+                                            {/if}
+                                        </div>
+                                    </td>
+                                </tr>
+							{foreachelse}
+								<tr><td class="no-records" align="center" colspan="12">{$lang.no_records}</td></tr>
+							{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+									<td colspan="12">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                              <div class="shenhe">
+                                                  <input type="submit" name="audited" id="btnSubmit" value="{$lang.audited}" class="btn btn_disabled" disabled="true" ectype="btnSubmit" />
+                                              </div>
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                        </div>
+                    </div>
+				</form>
+                </div>
+            </div>
+        </div>
+    </div>
+ 	{include file ='library/pagefooter.lbi'}
+	<script type="text/javascript">
+        //分页传值
+        listTable.recordCount = {$record_count|default:0};
+        listTable.pageCount = {$page_count|default:1};
+
+
+        <!--{foreach from=$filter item=item key=key}-->
+        listTable.filter.{$key} = '{$item}';
+        <!--{/foreach}-->
+        /** **/
+
+        function confirmSubmit(frm) {
+            return false
+        }
+
+        $(document).on("click","input[ectype='btnSubmit']",function(){
+            var checkboxs = $('form input[name="checkboxes[]"]:checked')
+
+            var ids = [];
+            for (var i = 0; i < checkboxs.length; i++) {
+                ids.push($(checkboxs[i]).val())
+            }
+
+            var content  = 	'<form id="reviewForm" enctype="multipart/form-data" method="post" action="group_buy.php?act=update_review_status">' +
+                '<div class="item fl" style="width:333px">' +
+                '<div class="fl" style="padding-top:9px">商品审核：</div>' +
+                '<div class="checkbox_items" style="padding-top:10px; width:80%">' +
+                '<div class="checkbox_item">' +
+                '<input name="review_status" class="ui-radio review_status" id="pro_no" value="3" checked="checked" type="radio" onclick="handleReviewStatus(this);">' +
+                '<label for="pro_no" class="ui-radio-label">审核通过</label>' +
+                '</div>' +
+                '<div class="checkbox_item mr15">' +
+                '<input name="review_status" class="ui-radio review_status" id="pro_yes" value="2" type="radio" onclick="handleReviewStatus(this);">' +
+                '<label for="pro_yes" class="ui-radio-label">审核未通过</label> ' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="item fl hide" id="review_content" style="padding:20px 0px; width:333px">' +
+                '<textarea name="review_content" value="" cols="60" rows="4" class="textarea"></textarea>' +
+                '</div>' +
+                '<input name="ids" type="hidden" value="' + ids.join(',') + '">' +
+                '</form>';
+            pb({
+                id:"review_status_dialog",
+                title:"商品审核",
+                width:403,
+                content:content,
+                ok_title:"确定",
+                cl_title:"取消",
+                drag:true,
+                foot:true,
+                onOk:function(){
+                    insert_review_status();
+                }
+            });
+        })
+
+        function insert_review_status(){
+            var actionUrl = "group_buy.php?act=update_review_status";
+            $("#reviewForm").ajaxSubmit({
+                type: "POST",
+                dataType: "JSON",
+                url: actionUrl,
+                data: { "action": "TemporaryImage" },
+                success: function (data) {
+                    window.location.reload()
+                },
+                async: true
+            });
+        }
+
+        function handleReviewStatus(t){
+            if(t.value == 2){
+                $("#review_content").show();
+            }else{
+                $("#review_content").hide();
+                $(":input[name='review_content']").val('');
+            }
+        }
+    </script>
+</body>
+</html>
+{/if}

@@ -1,0 +1,107 @@
+{include file="supplier/header"}
+<div class="con order-manage">
+    <div class="nav-tab-top">
+        <ul>
+            <li data-composite="-1" data-code="all" {if empty($_GET['composite_status'])}class="cur"{/if}>全部</li>
+            <li data-composite="101" data-code="waitSend" {if $_GET['composite_status'] eq 101}class="cur"{/if}>待发货</li>
+            <li data-composite="4" data-code="waitConfirm" {if $_GET['composite_status'] eq 4}class="cur"{/if}>新退货</li>
+            <li data-composite="6" data-code="all" {if $_GET['composite_status'] eq 6}class="cur"{/if}>部分发货</li>
+            <li data-composite="102" data-code="waitPay" {if $_GET['composite_status'] eq 102}class="cur"{/if}>已完成</li>
+        </ul>
+    </div>
+    <section class="store_info">
+        <script id="j-product" type="text/html">
+            <% if order_list!=""%>
+            <%each order_list as order%>
+            <section class="flow-checkout-pro  m-top08">
+                <header class="b-color-f dis-box padding-all" style="font-size: 1.4rem">
+                        <span class=" box-flex">
+                            <label class="t-remark">订单号：</label><%order.order_sn%>
+                        </span>
+                    <em class="j-goods-coupon t-first f-04"><%order.short_order_time%></em>
+                </header>
+                <div class="f-c-p-orderid padding-all m-top1px b-color-f">
+                    <a class="product-div-link" href="<%order.order_url%>"></a>
+
+                    <h4 class="t-remark2">
+                        <label class="t-remark">订单状态：</label><%order.order_status%>
+                        <!--拼团标识-->
+                        <%if order.team_id > 0%>
+                        <em class="em-promotion b-tag">拼团订单</em>
+                        <%/if%>
+                        <!--拼团标识 end-->
+                        <!--砍价标识-->
+                        <%if order.extension_code == 'bargain_buy'%>
+                        <em class="em-promotion b-tag">砍价订单</em>
+                        <%/if%>
+                        <!--砍价标识 end-->
+
+                        <span class="t-jiantou"></span>
+                    </h4>
+                    <p class="t-remark3 m-top04" style="font-size: 1.4rem">买家：
+                        <em class="t-first"><%order.buyer%></em>
+                    </p>
+                </div>
+
+                <div class="padding-all user-orderlist-shop dis-box text-all-select">
+                    <a class="product-div-link" href="<%order.order_url%>"></a>
+                    <ul class="flow-checkout-smallpic box-flex">
+                        <%each order.goods_list as val %>
+                        <li><img class="product-list-img" src="<%val.goods_thumb%>" /></li>
+                        <%if order.order_goods_num==1 %>
+                        <div class="twolist-hidden f-05 order-name-has"><%val.goods_name%></div>
+                        <%/if%>
+                        <%/each%>
+                    </ul>
+                        <span class="t-jiantou">
+                            <span class="f-c-a-count">共 <%order.order_goods_num%>款</span><i class="iconfont icon-jiantou"></i>
+                        </span>
+                </div>
+                <div class="padding-all f-05 user-order-money b-color-f">共<%order.order_goods_num%>款商品 合计：<em class="t-first"><%#order.total_fee%></em></div>
+                <footer class="padding-all b-color-f m-top1px of-hidden dis-box">
+                    <h4 class="t-remark2 box-flex"></h4>
+                    <p class="ect-button-more ect-button-more-dete n-br-5">
+                        <%if !order.handler%>
+                        <a class="btn-default-new br-5 min-btn" href="<%order.order_url%>">查看订单</a>
+                        <%/if%>
+                        <%if order.delete_yes == 1%>
+                        <!--<a class="btn-default">删除</a>-->
+                        <%/if%>
+
+                        <%if order.order_del%>
+                        <button class="btn-default-new br-5 min-btn del-order" data-item="<%order.order_id%>">删除</button>
+                        <%/if%>
+                        <%#order.handler%>
+
+                    </p>
+                </footer>
+            </section>
+            <%/each%>
+            <%else%>
+            <div class="no-div-message">
+                <i class="iconfont icon-biaoqingleiben"></i>
+                <p>没有找到任何记录</p>
+            </div>
+            <%/if%>
+        </script>
+    </section>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav"}
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    //订单列表
+    $(function(){
+        var infinite = $('.store_info').infinite({url: "{url('supplier/order/index')}", template: 'j-product', params: 'composite_status={$_GET[composite_status]}&code={$_GET[code]}'});
+
+         $('.nav-tab-top ul li').bind('click', function() {
+             $('.nav-tab-top ul li').removeClass('cur')
+             $(this).addClass('cur')
+             var composite_status = $(this).attr('data-composite');
+             var str ="composite_status="+composite_status+'&code={$_GET[code]}';
+             infinite.onload(str);
+         })
+    })
+</script>
+</body>
+</html>

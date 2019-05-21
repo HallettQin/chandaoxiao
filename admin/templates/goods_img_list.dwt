@@ -1,0 +1,97 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">同步 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>检查images下面的文件</li>
+                    <li>同步服务器图片到OSS，根据弹窗提示，耐心等待</li>
+                    <li>由于文件在同步的过程中有部分文件OSS上传会失败，您可重新按F5刷新再次执行即可.</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+						<a href="goods.php?act=img_file_list"><div class="fbutton"><div class="add" ><span>返回上一级</span></div></div></a>
+					</div>
+                </div>
+                <div class="common-content">
+                    <div class="list-div"  id="listDiv"  >
+                        {/if}
+                        <table cellpadding="1" cellspacing="1" id="listTable">
+                            <thead>
+                                <tr>
+                                    <th width="25%"><div class="tDiv">页数</div></th>
+                                    <th width="25%"><div class="tDiv">每页几条</div></th>
+                                    <th width="25%"><div class="tDiv">总共页数</div></th>
+                                    <th width="25%"><div class="tDiv">总共条数</div></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        {if $full_page}
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+ {insert_scripts files="jquery.purebox.js"}
+<script type="text/javascript">
+
+	$(function(){
+		start(1, {$type|default:0});
+		ajax_title();
+	});
+	
+	function start(page, type)
+	{
+		Ajax.call('goods.php?act=ajax_img_list&is_ajax=1&start=1', 'page=' + page + "&type=" + type, start_response, 'GET', 'JSON');
+	}
+	/**
+	 * 处理反馈信息
+	 * @param: result
+	 * @return
+	 */
+	function start_response(result)
+	{
+		if(result.is_stop == 1){
+			var tbl = document.getElementById("listTable"); //获取表格对象
+			var row = tbl.insertRow(-1);
+			
+			cell = row.insertCell(0);
+			cell.innerHTML = "<div class='tDiv'>"+result.filter_page+"</div>";
+			cell = row.insertCell(1);
+			cell.innerHTML = "<div class='tDiv'>"+result.page_size+"</div>";
+			cell = row.insertCell(2);
+			cell.innerHTML = "<div class='tDiv'>"+result.page_count+"</div>";
+			cell = row.insertCell(3);
+			cell.innerHTML = "<div class='tDiv'>"+result.record_count+"</div>";
+			
+			if(result.is_stop == 1){
+				start(result.page, result.type);
+			}	
+		}
+		
+		if(result.is_stop == 0){
+			$("#title_name").addClass("red");
+			
+			var html = '';
+			if(result.record_count > 0){
+				html = "剩余 " + result.record_count + " 条同步失败，重新同步（F5即可），";
+			}
+			
+			$("#title_name").html("已完成同步，" + html + "请关闭该窗口！");
+		}else{
+			$("#title_name").html("正在同步OSS中，总共 <font class='red'>" + result.page_count + "</font> 页，当前第 <font class='red'>" + result.filter_page + "</font> 页，请勿关闭该窗口！");
+		}
+	}
+</script>
+</body>
+</html>
+{/if}

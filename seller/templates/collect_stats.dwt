@@ -1,0 +1,80 @@
+{if $full_page}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>{include file ='library/seller_html_head.lbi'}</head>
+
+<body style="padding: 0px;">
+{include file ='library/seller_header.lbi'}
+<div class="ecsc-layout">
+    <div class="site wrapper">
+        {include file ='library/seller_menu_left.lbi'}
+        <div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+                {include file ='library/url_here.lbi'}
+                {include file ='library/seller_menu_tab.lbi'}
+                <div class="clear"></div>
+                <div class="order_stats">
+                    <div class="order_stats_search clearfix">
+                        <div class="search-info">
+                            <div class="search-form">
+                                <form method="get" action="javascript:searchGoodsList()" name="searchFormList">
+                                    <div class="search-key">
+                                        <input type="text" class="text" name="keyword" value="" placeholder="商品ID/商品关键字">
+                                        <input type="submit" class="submit" value="{$lang.button_search}">
+                                        <input type="hidden" name="act" value="store_goods_online">
+                                        <input type="hidden" name="op" value="index">
+                                        <input type="hidden" name="cat_id" id="cat_id" value="0"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-div" id="listDiv">
+                        {/if}
+                        <table width="100%" class="ecsc-default-table ecsc-table-seller mt20">
+                            <tr>
+                                <th width="80%">商品名称</th>
+                                <th width="20%">累计收藏</th>
+                            </tr>
+                            {foreach from=$data_list item=list}
+                            <tr align="center">
+                                <td class="tl" style="padding-left:10px; padding-right:10px;">{$list.goods_name}</td>
+                                <td align="left">{$list.collect}次</td>
+                            </tr>
+                            {foreachelse}
+                            <tr><td class="no-records" colspan="7">{$lang.no_records}</td></tr>
+                            {/foreach}
+                            <tfoot>
+                            <tr>
+                                <td colspan="7">{include file="page.dwt"}</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        {if $full_page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file ='library/seller_footer.lbi'}
+<script type="text/javascript">
+
+    listTable.recordCount = {$record_count};
+    listTable.pageCount = {$page_count};
+
+    <!--{foreach from=$filter item=item key=key}-->
+    listTable.filter.{$key} = '{$item}';
+    <!--{/foreach}-->
+    function searchGoodsList()
+    {
+        //listTable.filter['review_status'] = Utils.trim(document.forms['searchFormList'].elements['review_status'].value);
+        listTable.filter['keyword'] = Utils.trim(document.forms['searchFormList'].elements['keyword'].value);
+        listTable.filter['page'] = 1;
+
+        listTable.loadList();
+    }
+</script>
+</body>
+</html>
+{/if}

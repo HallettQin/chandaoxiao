@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+ 
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="mass_sms.php?act=log_list&template_id={$template_id}" class="s-back">{$lang.back}</a>{$lang.log_list} - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>使用说明：</h4><span id="explanationZoom" title="使用说明"></span></div>
+                <ul>
+                	<li>批量发送短信</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info">
+						<div class="list-div">
+						当前需要修改的数据有{$record_count|default:0}条
+						</div>
+						<div style=" width:100px; height:10px; clear:both; overflow:hidden;"></div>
+						<div class="list-div">
+						<table id="listTable">
+							<tr>
+                            	<th width="10%"><div class="tDiv">编号</div></th>
+								<th width="10%"><div class="tDiv">用户名</div></th>
+								<th width="10%"><div class="tDiv">手机号码</div></th>
+								<th width="10%"><div class="tDiv">发送状态</div></th>
+                                <th width="10%"><div class="tDiv">发送时间</div></th>
+							</tr>
+						</table>
+						</div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+	{include file ='library/pagefooter.lbi'}
+    {insert_scripts files="jquery.purebox.js"}
+    <script type="text/javascript">
+        $(function(){
+            start('{$log_list}');
+			ajax_title();
+        });
+        
+        function start(list)
+        {
+            Ajax.call('mass_sms.php?act=batch_send', 'list=' + list, start_response, 'POST', 'JSON');
+        }
+        
+        /**
+         * 处理反馈信息
+         * @param: result
+         * @return
+         */
+        function start_response(result)
+        {
+            if(result.is_stop == 1){
+                var tbl = document.getElementById("listTable"); //获取表格对象
+                var row = tbl.insertRow(-1);
+                
+				cell = row.insertCell(0);
+                cell.innerHTML = "<div class='tDiv'>"+result.data.id+"</div>";
+                cell = row.insertCell(1);
+                cell.innerHTML = "<div class='tDiv'>"+result.data.user_name+"</div>";
+                cell = row.insertCell(2);
+                cell.innerHTML = "<div class='tDiv'>"+result.data.mobile_phone+"</div>";
+                cell = row.insertCell(3);
+                cell.innerHTML = "<div class='tDiv'>"+result.data.send_status+"</div>";
+                cell = row.insertCell(4);
+                cell.innerHTML = "<div class='tDiv'>"+result.data.last_send+"</div>";
+				
+                if(result.is_stop == 1){
+                    start(result.list);
+                }	
+            }
+            
+            if(result.is_stop == 0){
+				$("#title_name").addClass("red");
+                $("#title_name").html("发送完成，请关闭该窗口！");
+            }else{
+				$("#title_name").html("正在发送短信中，请勿关闭该窗口！");
+			}
+        }
+    </script>
+</body>
+</html>

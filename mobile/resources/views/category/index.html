@@ -1,0 +1,168 @@
+{include file="page_header"}
+<div class="con">
+    <div class="category-top blur-div">
+        <header>
+            <div class="mode-top">
+                <ul>
+                    <li><a href="{url('category/index/index', array('mode'=>'groupbuy'))}" class="mode-select {if $mode == 'groupbuy'}active{/if}" data-mode="groupbuy">拼单商品</a></li>
+                    <li><a href="{url('category/index/index', array('mode'=>'presale'))}" class="mode-select {if $mode == 'presale'}active{/if}" data-mode="presale" >预定商品</a></li>
+                    <li><a href="{url('category/index/index', array('mode'=>'sample'))}" class="mode-select {if $mode == 'sample'}active{/if}" data-mode="sample" >样品商品</a></li>
+                    <li><a href="{url('category/index/index', array('mode'=>'wholesale'))}" class="mode-select {if $mode == 'wholesale'}active{/if}" data-mode="wholesale">现货商品</a></li>
+                </ul>
+            </div>
+        </header>
+        <aside>
+            <div class="menu-left" id="sidebar">
+                <ul>
+                    <!--{if $mode eq 'groupbuy' || $mode eq 'wholesale'}-->
+                    <li data="{url('ad/index/recommend', array('mode'=>$mode))}" data-id="001">
+                        推荐
+                    </li>
+                    <li data="{url('ad/index/brand', array('mode'=>$mode))}" data-id="002">
+                        品牌
+                    </li>
+                    <!--{/if}-->
+                    {foreach $category as $key=>$val}
+                    <li data="{url('category/index/childcategory', array('id'=>$val['id'], 'mode'=>$mode))}" data-id="{$val.id}">
+                        {sub_str($val['name'], 4,'')}
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+        </aside>
+        <section class="menu-right padding-all padding-god" style="margin-bottom:4.6rem;">
+            {if $ad}
+            <div class="ad_top">
+                <a href="{$ad.ad_link}" class="purchasers">
+                    <img src="{if strpos($ad.ad_code,'www')}{$ad.ad_code}{else}../data/afficheimg/{$ad.ad_code}{/if}">
+                </a>
+            </div>
+            {/if}
+
+            <ul class="child_category"></ul>
+            <script id="category" type="text/html">
+                <%each category as value%>
+                <%if value.cat_id%>
+                <a href="<%value.url%>&mode={$mode}"  class="purchasers"><h5><%value.name%></h5></a>
+                <ul>
+                    <%each value.cat_id as cat%>
+                    <li class="w-3"><a href="<%cat.url%>&mode={$mode}" class="purchasers"></a><img src="<%cat.cat_img%>" alt="<%cat.name%>"/><span><%cat.name%></span>
+                    </li>
+                    <%/each%>
+                </ul>
+                <%else%>
+                <li class="w-3"><a href="<%value.url%>&mode={$mode}" class="purchasers"></a><img src="<%value.cat_img%>" alt="<%value.name%>"/><span><%value.name%></span>
+                </li>
+                <%/if%>
+                <%/each%>
+            </script>
+            <script id="ads" type="text/html">
+                <ul>
+                <%each ads as value%>
+                    <li class="w-3"><a href="<%value.ad_link%>" class="purchasers"></a><img src="<%value.ad_code%>" alt="<%value.b_title%>"/><span><%value.b_title%></span>
+                    </li>
+                <%/each%>
+                </ul>
+            </script>
+        </section>
+    </div>
+    {include file="page_footer_nav"}
+    <!--悬浮菜单e-->
+</div>
+<script type="text/javascript">
+    $(function () {
+        var cat_id = 0;
+        //取出上次位置的值并保存
+        var sLocalCateO = sessionStorage.getItem("sCateO");
+        if (sLocalCateO != "" && sLocalCateO) {
+            var oCate = JSON.parse(sLocalCateO);
+            ajaxAction($("#sidebar li:first"), oCate.sData, oCate.sDataId);
+            $(".menu-left ul li").each(function () {
+                $(this).removeClass("active")
+                if ($(this).attr("data-id") == oCate.sDataId) {
+                    $(this).addClass("active")
+                }
+            })
+        } else {
+            ajaxAction($("#sidebar li:first"), $("#sidebar li:first").attr("data"), $("#sidebar li:first").attr("data-id"));
+        }
+
+        $("#sidebar li").click(function () {
+            var li = $(this);
+            var url = $(this).attr("data");
+            var id = $(this).attr("data-id");
+            ajaxAction(li, url, id);
+        });
+
+
+        function ajaxAction(obj, url, id) {
+            if (cat_id != id) {
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: '',
+                    cache: true,
+                    async: false,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $(".loading").show();
+                    },
+                    success: function (result) {
+                        if (typeof(result.code) == 'undefined') {
+                            $(window).scrollTop(0);
+                            template.config('openTag', '<%');
+                            template.config('closeTag', '%>');
+                            if (result.category) {
+                                var html = template('category', result);
+                            } else {
+                                var html = template('ads', result);
+                            }
+
+                            $(".child_category").html(html);
+                            obj.addClass("active").siblings("li").removeClass("active");
+                            $('.purchasers').bind('click', c_purchasers)
+                        }
+                        else {
+                            d_messages(result.message);
+                        }
+                    },
+                    complete: function () {
+                        $(".loading").hide();
+                    }
+                });
+                cat_id = id;
+            }
+        }
+
+        //返回之前页面的操作位置
+        //将value存储到key字段
+        $(".menu-left").scroll(function () {
+            if ($(".menu-left").scrollTop() != 0) {
+                sessionStorage.setItem("offsetTop", $(".menu-left").scrollTop());//保存滚动位置
+            }
+        });
+        //取出并滚动到上次保存位置
+        var _offset = sessionStorage.getItem("offsetTop");
+        $(".menu-left").scrollTop(_offset);
+
+        //将value存储到key字段
+        $(".menu-left ul li").click(function () {
+            if ($(this).hasClass("active")) {
+                var sDataId = $(this).attr("data-id"),
+                        sData = $(this).attr("data")
+                sO = JSON.stringify({
+                    sDataId: sDataId,
+                    sData: sData
+                })
+                sessionStorage.setItem("sCateO", sO);//保存id,data
+            }
+        });
+        setTimeout(function () {
+            sessionStorage.removeItem("offsetTop");
+            sessionStorage.removeItem("sCateO");
+        }, 10000);
+
+    })
+</script>
+</body>
+</html>

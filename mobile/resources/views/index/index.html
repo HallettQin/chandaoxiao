@@ -1,0 +1,358 @@
+<html>
+<head>
+    <meta name="Generator">
+    <meta charset="UTF-8">
+    <meta name="description" content="{$description}"/>
+    <meta name="keywords" content="{$keywords}"/>
+    <title>{$page_title}</title>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="themesmobile/68ecshopcom_mobile/css/public.css">
+    <link rel="stylesheet" type="text/css" href="themesmobile/68ecshopcom_mobile/css/index.css">
+    <link rel="stylesheet" type="text/css" href="themesmobile/68ecshopcom_mobile/css/swiper.min.css">
+    {global_assets('css')}
+    <script type="text/javascript" src="public/vendor/common/jquery.min.js"></script>
+    <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/TouchSlide.1.1.js"></script>
+    <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/jquery.json.js"></script>
+    <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/transport.js"></script>
+    <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/touchslider.dev.js"></script>
+    <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/jquery.more.js"></script>
+    <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/common.js"></script>
+</head>
+<body>
+<script src="__TPL__/js/jquery.cookie.js"></script>
+<!--{if $popup_ad}-->
+<style>
+    .popup{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        display: none;
+    }
+    .pageview img{
+        width: 100%;
+        min-height: 100%;
+    }
+    .popup .skip{
+        position: absolute;
+        right: .5rem;
+        top: 3rem;
+        font-size: 12px;
+        height: 2em;
+        width: 4em;
+        border: 1px solid #ffffff;
+        border-radius: 3px;
+    }
+    .popup .skip .skip-back{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000000;
+        opacity:0.5;
+        top: 0;
+        left: 0;
+    }
+    .popup .skip .skip-text{
+        position: absolute;
+        width: 100%;
+        z-index: 9999;
+        line-height: 2em;
+        text-align: center;
+        color: #fefefe;
+    }
+</style>
+<div class="popup">
+    <div class="skip">
+        <div class="skip-back"></div>
+        <div class="skip-text">跳过 3</div>
+    </div>
+    <div class="pageview">
+        <a href="{$popup_ad.ad_link}" class="pageview-a">
+            <img src="{if strpos($popup_ad.ad_code,'www')}{$popup_ad.ad_code}{else}../data/afficheimg/{$popup_ad.ad_code}{/if}" onload="go_skip();">
+        </a>
+    </div>
+</div>
+
+<script>
+    function go_skip() {
+        var timestamp =new Date().getTime();
+        if (window.localStorage) {
+            var storage = window.localStorage;
+            if (!storage.popup || timestamp - storage.popup > 2 * 3600 * 1000) {
+                storage.popup = timestamp;
+                $('.popup').show();
+            }
+        } else {
+            var expireDate = new Date();
+            expireDate.setTime( expireDate.getTime() + (2 * 3600 * 1000 ) );
+            if (!$.cookie('popup')) {
+                $.cookie('popup', 1, {expires: expireDate});
+                $('.popup').show();
+            }
+        }
+
+        $('.skip').click(function(){
+            clearInterval(interval);
+            $('.popup').hide();
+        })
+        var t = 3;
+        function d() {
+            t > 1 ? (t--, $('.skip-text').text('跳过 '+t)): (clearInterval(interval), $('.popup').hide());
+        }
+        var interval = setInterval(d, 1000)
+    }
+</script>
+<!--{/if}-->
+
+<div id="page" class="showpage">
+    <div>
+        <header id="header">
+            <script type="text/javascript">
+                var process_request = "正在处理您的请求...";
+            </script>
+            <script language="javascript">
+                <!--
+                /*屏蔽所有的js错误*/
+                function killerrors() {
+                    return true;
+                }
+                window.onerror = killerrors;
+                //-->
+            </script>
+            <div id="fake-search" class="index_search">
+                <a href="{url('index/index/index', ['m'=>search])}">
+                <div class="index_search_mid">
+                    <span><img src="themesmobile/68ecshopcom_mobile/images/xin/icosousuo.png"></span>
+                    <em class="input">请输入您想要的商品</em>
+                </div>
+                </a>
+            </div>
+            <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/swiper.min.js"></script>
+            <script>
+                var gu_id = '';
+                $(".floor_body2").hide();
+            </script>
+        </header>
+        <div class="index_gu">
+            <style>
+                .focus{
+                    position:relative;
+                    overflow:hidden;
+                    margin:0px auto; /* 设置焦点图最大宽度 */
+                }
+                .focus .hd{ width:100%; height:11px;  position:absolute; z-index:1; bottom:5px; text-align:center;  }
+                .focus .hd ul{ display:inline-block; height:10px; padding:4.5px 5px; background-color:rgba(255,255,255,0.7);
+                    -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; font-size:0; vertical-align:top;
+                }
+                .focus .hd ul li{ display:inline-block; width:5px; height:5px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; background:#8C8C8C; margin:0 5px;  vertical-align:top; overflow:hidden;margin-top:-2px;}
+                .focus .hd ul .on{ background:#FE6C9C;  }
+
+                .focus .bd{ position:relative; z-index:0; }
+                .focus .bd li img{ width:100%;}
+                .focus .bd li a{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); /* 取消链接高亮 */  }
+            </style>
+            <div id="focus" class="focus">
+                <div class="hd">
+                    <ul></ul>
+                </div>
+                <div class="bd">
+                    <ul>
+                        {foreach $banner_ads as $list}
+                        <li><a href="{$list.ad_link}" class="purchasers"><img _src="{if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}" src="{if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}" style="width: 100%"/></a></li>
+                        {/foreach}
+                    </ul>
+                </div>
+            </div>
+            <script type="text/javascript">
+                TouchSlide({
+                    slideCell:"#focus",
+                    titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+                    mainCell:".bd ul",
+                    effect:"left",
+                    autoPlay:true,//自动播放
+                    autoPage:true, //自动分页
+                    switchLoad:"_src" //切换加载，真实图片路径为"_src"
+                });
+            </script>
+
+            <div class="index-gg">
+                <div class="gg-img">
+                    <img src="themesmobile/68ecshopcom_mobile/images/lmgg.png">
+                </div>
+                <div class="gg-list">
+                    <ul class="gg-ul">
+                        {foreach from=$artciles_list item=article}
+                        <li>
+                            <a href="{$article.url}" target="_blank">
+                                <span class="title">{$article.title}</span>
+                            </a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    <ul class="swap"></ul>
+                </div>
+            </div>
+            <script>
+                var _timer = '';
+                function b(){
+                    t = parseInt(x.css('top'));
+                    y.css('top',li_h+'px');
+                    x.animate({top: t - li_h + 'px'},'slow');
+                    if(Math.abs(t) == h-li_h){
+                        y.animate({top:'0px'},'slow');
+                        z=x;
+                        x=y;
+                        y=z;
+                    }
+                    _timer = setTimeout(b,3000);
+                }
+                $(document).ready(function(){
+                    $('.swap').html($('.gg-ul').html());
+                    x = $('.gg-ul');
+                    y = $('.swap');
+                    li_h = $('.gg-ul li').height();
+                    h = $('.gg-ul li').length * li_h;
+                    ii = 0;
+                    x.animate({top: -(ii * li_h) + 'px'}, 0);
+                    _timer = setTimeout(b,3000);
+
+                    $('.gg-list').mouseover(function(){
+                        clearTimeout(_timer);
+                    }).mouseout(function(){
+                        _timer = setTimeout(b,3000);
+                    })
+
+                })
+                $(document).ready(function(){
+
+                });
+            </script>
+            <div class="floor_images no_mar">
+                <ul>
+                    <li class="brom">
+                        <a href="{$vip_ads.ad_link}" class="purchasers">
+                            <img src="{if strpos($vip_ads.ad_code,'www')}{$vip_ads.ad_code}{else}../data/afficheimg/{$vip_ads.ad_code}{/if}" width="1" height="1" border="0">
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="entry-list clearfix">
+                <nav>
+                    <ul>
+                    
+                        {foreach $index_category_ads as $ad}
+                        <li>
+                            <a href="{$ad.ad_link}" class="purchasers">
+                                <img alt="{$ad.b_title}" src="{if strpos($ad.ad_code,'www')}{$ad.ad_code}{else}../data/afficheimg/{$ad.ad_code}{/if}">
+                                <span>{$ad.b_title}</span>
+                            </a>
+                        </li>
+
+                        {/foreach}
+                    </ul>
+                </nav>
+            </div>
+            <div class="floor_images">
+                <dl>
+                    <dt>
+                        <a href="{$recommend_left_ads.ad_link}" target="_blank" class="purchasers">
+                            <img src="{if strpos($recommend_left_ads.ad_code,'www')}{$recommend_left_ads.ad_code}{else}../data/afficheimg/{$recommend_left_ads.ad_code}{/if}" width="1" height="1" border="0">
+                        </a>
+                    </dt>
+                    <dd>
+                        <!--{$i=0}-->
+                        <!--{foreach $recommend_right_ads as $list}-->
+                        <!--{if $i lt 2}-->
+                         <span class="Edge">
+                             <a href="{$list.ad_link}" target="_blank"  {if $i eq 0}class="purchasers" {else}class="suppliers_purchasers"{/if}>
+                                 <img src="{if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}" width="1" height="1" border="0">
+                             </a>
+                         </span>
+                        <!--{/if}-->
+                        <!--{$i++}-->
+                        <!--{/foreach}-->
+                    </dd>
+                </dl>
+            </div>
+            <div class="floor_images">
+                <strong>
+                    {foreach $floors as $floor}
+                    <p class="big">{$floor.name}</p>
+                        {foreach $floor.lists as $list}
+                        <a href="{$list.ad_link}" target="_blank"  class="purchasers adgo">
+                            <img src="{if strpos($list.ad_code,'www')}{$list.ad_code}{else}../data/afficheimg/{$list.ad_code}{/if}" width="1" height="1" border="0">
+                            <!-- <p class="smoll">$list.ad_name</p> -->
+                            <div class="miee"></div>
+                        </a>
+                        {/foreach}
+                    {/foreach}
+                </strong>
+            </div>
+        </div>
+        {include file="page_footer_nav"}
+        <script>
+            function goTop(){
+                $('html,body').animate({'scrollTop':0},600);
+            }
+        </script>
+        <a href="javascript:goTop();" class="gotop"><img src="themesmobile/68ecshopcom_mobile/images/topup.png"></a>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var is_purchasers = '';
+    var is_suppliers = '';
+
+    $(function(){
+        $.getJSON("{url('console/view/purchasers')}",function(result){
+            if (result.is_purchasers) {
+                is_purchasers = result.is_purchasers
+            } else {
+                is_purchasers = 0;
+            }
+        })
+
+        $.getJSON("{url('console/view/suppliers')}",function(result){
+            if (result.is_suppliers) {
+                is_suppliers = result.is_suppliers
+            } else {
+                is_suppliers = 0;
+            }
+        })
+    })
+
+    function c_purchasers(){
+        if (is_purchasers && is_purchasers != '' && is_purchasers != '0') {
+            return true;
+        }
+
+        window.location.href = "{url('index/index/tips')}";
+        return false;
+    }
+    function check_suppliers_purchasers(){
+        if ((is_purchasers && is_purchasers != '' && is_purchasers != '0') || (is_suppliers && is_suppliers != '' && is_suppliers !== '0')) {
+            return true;
+        }
+
+        window.location.href = "{url('index/index/tips')}";
+        return false;
+    }
+
+    $('.purchasers').bind('click', c_purchasers)
+    $('.suppliers_purchasers').bind('click', check_suppliers_purchasers)
+
+    $('.search-type li').click(function() {
+        $(this).addClass('cur').siblings().removeClass('cur');
+        $('#searchtype').val($(this).attr('num'));
+    });
+    $('#searchtype').val($(this).attr('0'));
+
+</script>
+<div>
+    <object id="ClCache" click="sendMsg" host="" width="0" height="0"></object>
+</div>
+</body>
+</html>

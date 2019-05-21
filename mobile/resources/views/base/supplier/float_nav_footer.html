@@ -1,0 +1,35 @@
+<footer>
+    <div class="global-nav global-nav-current">
+        <div class="global-nav__nav-wrap">
+            <div class="global-nav__nav-item">
+                <a href="{url('/')}" class="global-nav__nav-link">
+                    <i class="global-nav__iconfont global-nav__icon-index"><img src="__PUBLIC__/img/supplier/index.png"></i>
+                    <span class="global-nav__nav-tit">首页</span>
+                </a>
+            </div>
+            <div class="global-nav__nav-item">
+                <a href="{url('store/index/shop_info', ['id'=>$_SESSION['user_id']])}" class="global-nav__nav-link">
+                    <i class="global-nav__iconfont global-nav__icon-category"><img src="__PUBLIC__/img/supplier/fahuo.png"></i>
+                    <span class="global-nav__nav-tit">展厅</span>
+                </a>
+            </div>
+            <div class="global-nav__nav-item">
+                <a href="{url('supplier/index/index')}" class="global-nav__nav-link">
+                    <i class="global-nav__iconfont global-nav__icon-search"><img src="__PUBLIC__/img/supplier/tuikuan.png"></i>
+                    <span class="global-nav__nav-tit">信息台</span>
+                </a>
+            </div>
+            <div class="global-nav__nav-item">
+                <a href="{url('user/index/index')}" class="global-nav__nav-link">
+                    <i class="global-nav__iconfont global-nav__icon-shop-cart"><img src="__PUBLIC__/img/supplier/tuihuo.png"></i>
+                    <span class="global-nav__nav-tit">我的</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+    function refresh(){
+        window.location.reload();
+    }
+</script>

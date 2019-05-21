@@ -1,0 +1,109 @@
+{include file="page_header"}
+<link rel="stylesheet" type="text/css" href="public/css/nav.css">
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+            <div class="h-mid">{$page_title}</div>
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onclick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="rank_nav">
+    <div class="mode_nav">
+        <ul>
+            <li><a href="{url('rank/index/topsale', array('mode'=>'groupbuy'))}" class="mode-select {if $mode == 'groupbuy'}active{/if}" data-mode="groupbuy">拼单商品</a></li>
+            <li><a href="{url('rank/index/topsale', array('mode'=>'wholesale'))}" class="mode-select {if $mode == 'wholesale'}active{/if}" data-mode="wholesale">现货商品</a></li>
+        </ul>
+    </div>
+    <div class="swiper-container swiper-container-horizontal">
+        <div class="swiper-wrapper category-nav">
+            {foreach $category as $item}
+            <li class="swiper-li swiper-slide"><a href="javascript:void(0)" data-id="{$item.id}">{$item.name}</a></li>
+            {/if}
+        </div>
+    </div>
+    <ul class="lists ul-lists"></ul>
+    <script id="category" type="text/html">
+        <%each lists as value%>
+        <%if value.act_id%>
+            <li class="">
+                <a href="<%value.value%>">
+                <img src="<%value.thumb%>" alt="<%value.goods_name%>"/>
+                <span><%value.goods_name%></span>
+                </a>
+            </li>
+        <%/if%>
+        <%/each%>
+    </script>
+</div>
+<div class="mo"></div>
+<div></div>
+</body>
+<script>
+    var url = '{url("rank/index/ajaxsale")}';
+    $(function(){
+        var mode = '{$mode}';
+        var cat_id = 0;
+
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 4.5,
+            paginationClickable: true,
+            spaceBetween: 0
+        });
+
+        $('.swiper-li a').bind('click', function(){
+            $('.swiper-li a').removeClass('active')
+            $(this).addClass('active');
+            var id = $(this).attr("data-id");
+
+            ajaxAction(mode, id);
+        })
+
+        $('.swiper-li a').eq(0).trigger('click');
+        function ajaxAction(mode, id) {
+            var data = {mode:mode,id:id}
+            if (cat_id != id) {
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data:data,
+                    cache: true,
+                    async: false,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $(".loading").show();
+                    },
+                    success: function (result) {
+                        if (typeof(result.code) == 'undefined') {
+                            $(window).scrollTop(0);
+                            template.config('openTag', '<%');
+                            template.config('closeTag', '%>');
+                            if (result.lists.length) {
+                                var html = template('category', result);
+                            } else {
+                                var html = "<div class='no-div-message'> <i class='iconfont icon-biaoqingleiben'></i> <p>亲，此处没有内容～！</p> </div>";
+                            }
+                            $(".lists").html(html);
+//                            //$(".child_category ul").html(result);
+//                            obj.addClass("active").siblings("li").removeClass("active");
+                        }
+                        else {
+                            d_messages(result.message);
+                        }
+                    },
+                    complete: function () {
+                        $(".loading").hide();
+                        cat_id = id;
+                    }
+                });
+            }
+        }
+    })
+</script>
+</html>

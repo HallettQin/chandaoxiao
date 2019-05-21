@@ -1,0 +1,23 @@
+.all_cats_tcc li .s_b {
+    width: 160px;
+    height: auto;
+    background-color: white;
+    position: absolute;
+    left: 195px;
+    top: 0;
+    display: none;
+}
+.user_temp_one:hover .s_b{ display:block;}
+.all_cats_tcc li .s_b a{
+    height:32px;
+    line-height:32px;
+    display:block;
+    font-size:14px;
+    padding-left:40px;
+    border-bottom: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+    color:#000
+}
+.all_cats_tcc li .s_b a:hover{
+    text-decoration:none;
+}

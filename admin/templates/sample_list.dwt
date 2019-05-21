@@ -1,0 +1,156 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">模式 - {$ur_here}</div>
+        <div class="content">
+            <div class="tabs_info">
+                <ul>
+                    <li {if $menu_select.current eq '01_goods_list'}class="curr"{/if}>
+                    <a href="sample.php?act=list">普通商品 {if $menu_select.current neq '01_goods_list'}{if $goods_list_type}<em class="li_color">({$goods_list_type.ordinary|default:0})</em>{/if}{/if}</a>
+                    </li>
+                    <li {if $menu_select.current eq '01_review_status'}class="curr"{/if}>
+                    <a href="sample.php?act=review_status">商品审核 {if $menu_select.current neq '01_review_status'}{if $goods_list_type}<em class="li_color">({$goods_list_type.review_status|default:0})</em>{/if}{/if}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6554.html" target="_blank">第三方登录插件使用说明</a>
+                        </div>
+                    </div>
+                    {/if}
+				</div>
+                <ul>
+                	<li>展示了样品活动的相关信息列表。</li>
+                    <li>可通过搜索关键字商品名称，筛选店铺名称搜索出具体样品活动信息。</li>
+                    <li>可进行增加、编辑、修改、删除等操作，查看样品活动订单。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="sample.php?act=add"><div class="fbutton"><div class="add" title="添加样品"><span><i class="icon icon-plus"></i>添加样品</span></div></div></a>
+                    </div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+                    <div class="search">
+						{include file ='library/search_store.lbi'}
+                        <div class="select m0">
+                            <div class="imitate_select select_w170">
+                                <div class="cite">{$lang.adopt_status}</div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.adopt_status}</a></li>
+                                    <li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.not_audited}</a></li>
+                                    <li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.audited_not_adopt}</a></li>
+                                    <li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.audited_yes_adopt}</a></li>
+                                </ul>
+                                <input name="review_status" type="hidden" value="0" id="">
+                            </div>
+                        </div>
+                    	<div class="input">
+                        	<input type="text" name="keyword" class="text nofocus" placeholder="商品名称" autocomplete="off" /><button class="btn" name="secrch_btn"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="common-content">
+					<form method="post" action="sample.php?act=batch_drop" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+                	<div class="list-div" id="listDiv" >
+						{/if}
+                    	<table cellpadding="1" cellspacing="1" >
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="20%"><div class="tDiv">{$lang.goods_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                    <th width="15%" class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$list item=item}
+                            	<tr>
+                                	<td class="sign"><div class="tDiv">
+										<input type="checkbox" name="checkboxes[]" value="{$item.act_id}" class="checkbox" id="checkbox_{$item.act_id}" />
+										<label for="checkbox_{$item.act_id}" class="checkbox_stars"></label>
+									</div></td>
+                                    <td><div class="tDiv">{$item.act_id}</div></td>
+                                	<td><div class="tDiv"><a href="../sample.php?id={$item.act_id}&act=view" target="_blank">{$item.act_name|escape:html}</div></a></td>
+									{if $priv_ru eq 1}
+                                    <td><div class="tDiv red">{$item.shop_name}</div></td>
+                                    {/if}
+                                    <td>
+                                    	<div class="tDiv">
+                                            {if $item.review_status eq 1}
+                                            <font class="org2">{$lang.not_audited}</font>
+                                            {elseif $item.review_status eq 2}
+                                            <font class="red">{$lang.audited_not_adopt}</font><br/>
+                                            <i class="tip yellow" title="{$presale.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                            {elseif $item.review_status eq 3}
+                                            <font class="blue">{$lang.audited_yes_adopt}</font>
+                                            {/if}
+                                        </div>
+                                    </td>
+                                    <td class="handle">
+										<div class="tDiv a3">
+											<a href="order.php?act=list&amp;sample_id={$item.act_id}" title="{$lang.view_detail}" class="btn_see"><i class="sc_icon sc_icon_see"></i>{$lang.order}</a>
+											<a href="sample.php?act=edit&amp;id={$item.act_id}" title="{$lang.edit}" class="btn_edit"><i class="icon icon-edit"></i>{$lang.edit}</a>
+											<a href="javascript:;" onclick="listTable.remove({$item.act_id},'{$lang.drop_confirm}')" title="{$lang.remove}" class="btn_trash"><i class="icon icon-trash"></i>{$lang.remove}</a>
+										</div>
+									</td>
+                                </tr>
+							{foreachelse}
+							<tr><td class="no-records" align="center" colspan="20">{$lang.no_records}</td></tr>
+							{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+									<td colspan="14">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                              <div class="shenhe">
+                                                  <input type="submit" name="drop" id="btnSubmit" value="{$lang.drop}" class="btn btn_disabled" disabled="true" ectype="btnSubmit" />
+                                              </div>
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                    </div>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+<script type="text/javascript">
+	//列表导航栏设置下路选项
+	$(".ps-container").perfectScrollbar();
+
+	//分页传值
+	listTable.recordCount = {$record_count|default:0};
+	listTable.pageCount = {$page_count|default:1};
+
+	{foreach from=$filter item=item key=key}
+	listTable.filter.{$key} = '{$item}';
+	{/foreach}
+</script>
+</body>
+</html>
+{/if}

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>{include file ='library/seller_html_head.lbi'}</head>
+
+<body>
+{include file ='library/seller_header.lbi'}
+{insert_scripts files='./sms/sms.js'}
+<div class="ecsc-layout">
+    <div class="site wrapper">
+		{include file ='library/seller_menu_left.lbi'}
+		<div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+				{include file ='library/url_here.lbi'}
+				{include file ='library/seller_menu_tab.lbi'}
+                <div class="ecsc-form-goods">
+                    <form name="theForm" action="#" method="post" id="user_form">
+                    <div class="wrapper-list border1">
+                        <dl>
+                        	<dt>{$lang.require_field}&nbsp;口令：</dt>
+                            <dd>
+                                <input type="password"   style="display:none"/>
+							<input type="password" name="new_password" maxlength="32" size="34" class="text" id="new_password"/>
+							<div class="form_prompt"></div>
+							</dd>
+                        </dl>
+                        <dl>
+                        	<dt>{$lang.require_field}&nbsp;确认口令：</dt>
+                            <dd>
+                                <input type="password"   style="display:none"/>
+							<input type="password" name="pwd_confirm" value="" size="34" class="text"/>
+							<div class="form_prompt"></div>
+							</dd>
+                        </dl>
+                        <dl>
+                            <dt>{$lang.require_field}&nbsp;手机号码：</dt>
+                            <dd>
+                                <input type="text"  class="text" value="{$phone}" style="" readonly disabled="disabled"/>
+                                <input type="hidden" value="{$phone}" id="mobile_phone"/>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{$lang.require_field}&nbsp;短信验证码：</dt>
+                            <dd>
+                                <input name="sms_value" id="sms_value" type="hidden" value="sms_code">
+                                <input name="mobile_code" type="text" id="mobile_code" class="text text_4 mr10">
+                                <a href="javascript:;" id="zphone" class="yzm-btn lh" onclick="sendSms();">立即验证</a>
+                            </dd>
+                        </dl>
+                        <dl class="button_info">
+                        	<dt>&nbsp;</dt>
+                            <dd>
+                            	<input type="submit" value="{$lang.button_submit}" class="sc-btn sc-blueBg-btn btn35" id="submitBtn" />
+								<input type="reset" value="{$lang.button_reset}" class="sc-btn btn35 sc-blue-btn" />
+                                <input type="hidden" name="flag"  id="flag" value="change_kouling">
+                                <input type="hidden" name="seccode" id="seccode" value="{$sms_security_code}" />
+                                <input type="hidden" name="act" value="{$form_act}" />
+								<input type="hidden" name="token" value="{$token}" />
+								<input type="hidden" name="id" value="{$user.user_id}" />
+                            </dd>
+                        </dl>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file ='library/seller_footer.lbi'}
+<script type="text/javascript">
+var action = "{$action}";
+$(function(){
+	$("#submitBtn").click(function(){
+		if($("#user_form").valid()){
+			$("#user_form").submit();
+		}
+	});
+	
+	jQuery.validator.addMethod("pwd_confirm", function(value, element) {      
+		return this.optional(element) || /^[\u0391-\uFFE5\w]+$/.test(value);       
+	}, "只能包括中文字、英文字母、数字和下划线");  
+
+
+	//修改验证表单js
+
+    $('#user_form').validate({
+        errorPlacement:function(error, element){
+            var error_div = element.parents('dl').find('div.form_prompt');
+            //element.parents('dl').find(".notic").hide();
+            error_div.append(error);
+        },
+        rules : {
+            user_name : {
+                required : true
+            },
+            email : {
+                required : true,
+                email : true
+            },
+            old_password : {
+                required : true,
+                minlength:6
+            },
+            new_password : {
+                required : true,
+                minlength:6
+            },
+            pwd_confirm : {
+                required : true,
+                equalTo:"#new_password"
+            }
+
+        },
+        messages : {
+            user_name : {
+                required : '<i class="icon icon-exclamation-sign"></i>'+user_name_empty
+            },
+            email : {
+                required : '<i class="icon icon-exclamation-sign"></i>'+email_empty,
+                email : '<i class="icon icon-exclamation-sign"></i>'+email_error
+            },
+            old_password : {
+                required : '<i class="icon icon-exclamation-sign"></i>旧密码不能为空',
+                minlength : '<i class="icon icon-exclamation-sign"></i>旧密码不正确'
+            },
+            new_password : {
+                required : '<i class="icon icon-exclamation-sign"></i>新密码不能为空',
+                minlength : '<i class="icon icon-exclamation-sign"></i>密码长度不能小于六位'
+            },
+            pwd_confirm : {
+                required : '<i class="icon icon-exclamation-sign"></i>确认密码不能为空',
+                equalTo:'<i class="icon icon-exclamation-sign"></i>'+password_error
+            }
+
+        }
+    });
+});
+</script>
+</body>
+</html>

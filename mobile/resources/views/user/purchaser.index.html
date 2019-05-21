@@ -1,0 +1,502 @@
+{include file="page_header"}
+
+<div class="con b-color-f mb-7" >
+    <form action="{url('apply')}" method="post" class="form-horizontal validation" role="form" enctype="multipart/form-data"  onsubmit="return false">
+        <section class="j-f-tel margin-lr">
+            <div class="con b-color-f" id="checkPage">
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>店铺名<em class="color-red">*</em></label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text inputcard" type="text" name="data[store_name]" placeholder="店铺名" value="{$purchasers.store_name}"/>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>零售商姓名<em class="color-red">*</em></label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text inputcard" type="text" name="data[real_name]" placeholder="零售商姓名"  value="{$purchasers.real_name}"/>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all" id="editAddressForm">
+                    <div>
+                        <input type="hidden" id="province_id" name="data[province_region_id]" class="inputcard" value="{$purchasers.province}">
+                        <input type="hidden" id="city_id" name="data[city_region_id]" value="{$purchasers.city}">
+                        <input type="hidden" id="district_id" name="data[district_region_id]" value="{$purchasers.district}">
+                        <input type="hidden" id="town_id" name="data[town_region_id]" value="{$purchasers.street}">
+                        <input type="hidden" id="village_id" name="data[village_region_id]">
+                        <input type="hidden" id="region_id" name="data[region_id]">
+                        <input type="hidden" id="address_id" name="data[address_id]">
+                    </div>
+                    <div class="address-box" id="selectAddressBtn" region-data="">
+                        <label class="fl">所在地区<em class="color-red">*</em></label>
+                        <span class="fl text-all-span addressdetail" id="addressLabelId">{$purchasers.region}</span>
+                        <span class="t-jiantou fr"><i class="iconfont icon-jiantou"></i></span>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>详细地址<em class="color-red">*</em></label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text inputcard" type="text" name="data[address]" placeholder="详细地址" value="{$purchasers.address}"/>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>店铺类型<em class="color-red">*</em></label>
+                    <div class="box-flex select-text">
+                        <select name="data[store_type]" class="inputcard">
+                            <option value="0" {if $purchasers.store_type eq 0}selected{/if}>请选择</option>
+                            <option value="1" {if $purchasers.store_type eq 1}selected{/if}>专卖店</option>
+                            <option value="2" {if $purchasers.store_type eq 2}selected{/if}>复合店</option>
+                            <option value="3" {if $purchasers.store_type eq 3}selected{/if}>集合店</option>
+                        </select>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>店铺商圈<em class="color-red">*</em></label>
+                    <div class="box-flex select-text">
+                        <select name="data[store_trading]" class="inputcard">
+                            <option value="0" {if $purchasers.store_trading eq 0}selected{/if}>请选择</option>
+                            <option value="1" {if $purchasers.store_trading eq 1}selected{/if}>高档消费区</option>
+                            <option value="2" {if $purchasers.store_trading eq 2}selected{/if}>闹市区</option>
+                            <option value="3" {if $purchasers.store_trading eq 3}selected{/if}>步行街</option>
+                            <option value="4" {if $purchasers.store_trading eq 4}selected{/if}>一般商业区</option>
+                        </select>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>年营业额</label>
+                    <div class="box-flex select-text">
+                        <select name="data[store_turnover]">
+                            <option value="0" {if $purchasers.store_turnover eq 0}selected{/if}>请选择</option>
+                            <option value="1" {if $purchasers.store_turnover eq 1}selected{/if}>0-50W</option>
+                            <option value="2" {if $purchasers.store_turnover eq 2}selected{/if}>50W-100W</option>
+                            <option value="3" {if $purchasers.store_turnover eq 3}selected{/if}>100W-300W</option>
+                            <option value="4" {if $purchasers.store_turnover eq 4}selected{/if}>300W以上</option>
+                        </select>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>品牌</label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text" type="text" name="data[store_brand]" placeholder="品牌" value="{$purchasers.store_brand}"/>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>营业面积</label>
+                    <div class="box-flex select-text">
+                        <select name="data[store_area]">
+                            <option value="0" {if $purchasers.store_area eq 0}selected{/if}>请选择</option>
+                            <option value="1" {if $purchasers.store_area eq 1}selected{/if}>50平米以下</option>
+                            <option value="2" {if $purchasers.store_area eq 2}selected{/if}>50~100平米</option>
+                            <option value="3" {if $purchasers.store_area eq 3}selected{/if}>100~200平米</option>
+                            <option value="4" {if $purchasers.store_area eq 4}selected{/if}>200平米以上</option>
+                        </select>
+                        <!-- <input class="j-input-text" type="text" name="data[store_area]" placeholder="营业面积" value="{$purchasers.store_area}"/> -->
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_card">
+                    <label>行业<em class="color-red">*</em></label>
+                    <div class="box-flex select-text">
+                        <select name="data[store_category]" class="inputcard">
+                            <option value="0" selected="selected">请选择</option>
+                            {foreach $categorys as $category}
+                            <option value="{$category.cat_id}" {if $purchasers.store_category eq $category.cat_id}selected{/if}>{$category.cat_name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <style>
+                    .realnameok-img{
+                        border: 0;
+                    }
+                    .realnameok-img img{
+                        border: 1px solid #f6f6f9;
+                    }
+                </style>
+                <div class="text-all j-text-all bank_user_name p-r">
+                    <label>店面正门照<em class="color-red">*</em></label>
+                    <div class="realnameok-img-btn">上传图片</div>
+                    <div class="realnameok-input">
+                        <input type="hidden" name="data[gate_file]" class="inputcard"  id="doc1" value="{$purchasers.gate_file}">
+                        <input type="file" name="gate" onchange="javascript:setImagePreview('doc1','preview1');">
+                    </div>
+                    <div id="localImag">
+                        <div class="realnameok-img" id="preview1">
+                            {if $purchasers.gate_file}<img  src="../{$purchasers.gate_file}">{/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-all  j-text-all bank_user_name p-r">
+                    <label>店面内部照<em class="color-red">*</em></label>
+                    <div class="realnameok-img-btn">上传图片</div>
+                    <div class="realnameok-input">
+                       <input type="file" name="work" onchange="javascript:setImagePreview('doc2','preview2');">
+                    </div>
+                    <div id="localImag">
+                        <div class="realnameok-img realnameok-list" id="preview2">
+                            {if $purchasers.work_file}
+                            {foreach $purchasers.work_file as $img}
+                            <div class='preview-li'>
+                            <img src="../{$img}">
+                            <input type="hidden" name="data[work_file][]" class="inputcard"  value="{$img}">
+                            <div class='close'></div>
+                            </div>
+                            {/foreach}
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_user_name">
+                    <label>身份证号<em class="color-red">*</em></label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text inputcard" type="text"datatype="card" name="data[self_num]"  nullmsg="请输入您的身份证" errormsg="请输入正确的身份证号" placeholder="身份证号" value="{$purchasers.self_num}"/>
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all j-text-all bank_user_name p-r">
+                    <label>身份证正面<em class="color-red">*</em></label>
+                    <div class="realnameok-img-btn">上传图片</div>
+                    <div class="realnameok-input">
+                        <input type="hidden" name="data[front_of_id_card]" class="inputcard"  id="doc3" value="{$purchasers.front_of_id_card}">
+                        <input type="file" name="front" onchange="javascript:setImagePreview('doc3','preview3');">
+                    </div>
+                    <div id="localImag">
+                        <div class="realnameok-img" id="preview3">
+                            {if $purchasers.front_of_id_card}<img  src="../{$purchasers.front_of_id_card}">{/if}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-all  j-text-all bank_user_name p-r">
+                    <label>身份证反面<em class="color-red">*</em></label>
+                    <div class="realnameok-img-btn">上传图片</div>
+                    <div class="realnameok-input">
+                        <input type="hidden" name="data[reverse_of_id_card]" class="inputcard"  id="doc4" value="{$purchasers.reverse_of_id_card}">
+                        <input type="file" name="reverse" onchange="javascript:setImagePreview('doc4','preview4');">
+                    </div>
+                    <div id="localImag">
+                        <div class="realnameok-img" id="preview4">
+                            {if $purchasers.reverse_of_id_card}<img  src="../{$purchasers.reverse_of_id_card}">{/if}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-all  j-text-all bank_user_name p-r">
+                    <label>营业执照</label>
+                    <div class="realnameok-img-btn">上传图片</div>
+                    <div class="realnameok-input">
+                        <input type="hidden" name="data[license_file]" id="doc5" value="{$purchasers.license_file}">
+                        <input type="file" name="license" onchange="javascript:setImagePreview('doc5','preview5');">
+                    </div>
+                    <div id="localImag">
+                        <div class="realnameok-img" id="preview5">
+                            {if $purchasers.license_file}<img  src="../{$purchasers.license_file}">{/if}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-all dis-box j-text-all bank_name">
+                    <label>手机号码<em class="color-red">*</em></label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text inputcard" type="tel" name="data[mobile_phone]" placeholder="手机号码" value="{$purchasers.mobile_phone}" />
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                </div>
+                <div class="text-all dis-box j-text-all bank_name">
+                    <label>短信验证码<em class="color-red">*</em></label>
+                    <div class="box-flex input-text">
+                        <input class="j-input-text inputcard" type="number" name="data[mobile_code]" placeholder="短信验证码" />
+                        <i class="iconfont icon-shibai close-common j-is-null"></i>
+                    </div>
+                    <button type="button" id="sendsms" class="box-flex btn-submit ipt-check-btn min-btn j-submit-phone br-5 huoju" id="zphone">获取验证码</button>
+                </div>
+                <div class="drp-settled-guide f-03 col-7 dis-box m-top10">
+                    <label for="agree">
+                        <div class="box-flex input-text">
+                            <input type="checkbox" value="1" name="agree" id="agree"  >
+                        </div>
+                        <i></i>
+                    </label>
+                    <p class="box-flex">我已阅读《<a href="/mobile/index.php?m=merchants&amp;a=guide">用户协议</a>》同意签署在线协议！</p>
+                </div>
+                <div class="ect-button-more dis-box filter-btn">
+                    <input type="hidden" name="data[lat]" id="lat" />
+                    <input type="hidden" name="data[lng]" id="lng" />
+                    <input type="hidden" name="data[geolocation]" id="geolocation"/>
+                    <input type="submit" value="提交" class="btn-submit box-flex" />
+                </div>
+            </div>
+        </section>
+        <!--地区选择 s-->
+        {include file="address"}
+        <!--地区选择 e-->
+    </form>
+</div>
+<!--快捷导航-->
+{include file="no_search_nav"}
+<li>
+    <a href="{url('realnameok')}">
+        <i class="iconfont icon-qudiandianpumingpianicon"></i>
+        <p>认证详情</p>
+    </a>
+</li>
+{include file="float_nav_footer"}
+<iframe id="geoPage" width=0 height=0 frameborder=0  style="display:none;" scrolling="no" src="https://apis.map.qq.com/tools/geolocation?key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
+</iframe>
+<script type="text/javascript">
+    var mm = false;
+    window.addEventListener('message', function(event) {
+        if (mm) {
+            return;
+        }
+
+        mm = true;
+        // 接收位置信息
+        var loc = event.data;
+
+        if (loc) {
+            var address = loc.province ? loc.province : '';
+            address = loc.city ? (address + loc.city) : address;
+            address = loc.district ? (address + loc.district) : address;
+            address = loc.addr ? (address + loc.addr) : address;
+            $('#lat').val(loc.lat);
+            $('#lng').val(loc.lng);
+            $('#geolocation').val(address)
+        }
+    }, false);
+
+    $(function(){
+        if ($("#agree").is(":checked")) {
+            $(".drp-settled-guide label i").addClass("active");
+        } else {
+            $(".drp-settled-guide label i").removeClass("active");
+        }
+
+        /*同意协议*/
+        $(".drp-settled-guide input").click(function() {
+            if ($("#agree").is(":checked")) {
+                $(".drp-settled-guide label i").addClass("active");
+            } else {
+                $(".drp-settled-guide label i").removeClass("active");
+            }
+        });
+
+        function isPhone(val) {
+            var reg = /^1[3|4|5|7|8][0-9]{9}$/; //验证规则
+            return reg.test(val)
+        }
+
+        $("body").on("click", ".preview-li .close", function() {
+            $(this).parents('.preview-li').remove();
+        })
+
+        // 提交表单
+        $('input[type="submit"]').click(function(){
+            // 验证数据
+            var label_name = '';
+            var flag = false;
+            $(".inputcard").each(function(){
+                if ($(this)[0].tagName == 'INPUT' || $(this)[0].tagName == 'TEXTAREA') {
+                    if($(this).val() == ''){
+                        flag = true;
+                        label_name = $(this).parent().parent().find('label').html();
+                        d_messages('请输入完整的'+ label_name);
+                        return false;
+                    }
+                } else if ($(this)[0].tagName == 'SELECT'){
+                    if($(this).val() <= 0){
+                        flag = true;
+                        label_name = $(this).parent().parent().find('label').html();
+                        d_messages('请输入完整的'+ label_name);
+                        return false;
+                    }
+                }
+            });
+
+            if (flag) {
+                d_messages('请输入完整的'+ label_name);
+                return false;
+            }
+
+            if (!$("#agree").is(":checked")) {
+                d_messages('请阅读用户协议，并同意');
+                return false;
+            }
+        });
+
+        function isCardNo(card)
+        {
+            // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X
+            var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            if(reg.test(card) === false)
+            {
+                return  false;
+            }
+
+            return true;
+        }
+
+        $(".validation").Validform({
+            tiptype: function (msg) {
+                d_messages(msg);
+            },
+            // 自定义扩展datatype
+            datatype:{
+                "z" : function(gets,obj,curform,regxp){
+                    //参数gets是获取到的表单元素值
+                    var length = getStrLenght(gets);
+                    if (length < 4 || length > 15) {
+                        d_messages('请输入4-15位用户名');
+                        return false;
+                    }
+                    return true;
+                },
+                'card': function(gets,obj,curform,regxp) {
+                    if (!isCardNo(gets)) {
+                        d_messages('请输入正确的身份证号');
+                        return false
+                    }
+                    return true;
+                }
+            },
+            tipSweep: true,
+            ajaxPost: true,
+            callback: function (data) {
+                if (data.status == 1) {
+                    d_messages(data.msg);
+                } else {
+                    d_messages(data.msg);
+                    setTimeout(function(){
+                        window.location.href = "{url('applyok')}";
+                    }, 1500)
+                }
+                return false;
+            }
+        });
+
+        var time = 60;
+        var c = 1;
+
+        function remainTime() {
+            if (time == 0) {
+                c = 1;
+                $("#sendsms").html("获取验证吗");
+                time = 60;
+                $("#sendsms").bind('click', send_sms)
+                return;
+            }
+
+            if (time != 0) {
+                if ($(".ipt-check-btn").attr("class").indexOf("disabled") < 0) {
+                    $(".ipt-check-btn").addClass('disabled');
+                }
+                c = 0;
+                $("#sendsms").html(time + "s");
+                time--;
+            }
+            setTimeout(remainTime, 1000);
+        }
+        var send_sms = function () {
+            var myreg = /^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/;
+            var mobile = $('input[name="data[mobile_phone]"]').val();
+
+            if (mobile == '') {
+                d_messages('请输入手机号');
+                return false;
+            }
+            if (!myreg.test(mobile)) {
+                d_messages('请输入有效的手机号');
+                return false;
+            }
+
+            if (c == 0) {
+                d_messages('发送频繁');
+                return;
+            }
+
+            $.post("{url('send')}", {
+                mobile: mobile
+            }, function (res) {
+                if(res.error==0){
+                    remainTime();
+                    $("#sendsms").unbind('click')
+                } else {
+                    d_messages(res.msg);
+                }
+            }, 'json');
+        }
+        $("#sendsms").bind('click', send_sms)
+
+    });
+
+    var iTime = 59;
+    var Account;
+
+    //下面用于图片上传预览功能
+    function setImagePreview(doc,preview) {
+        var docObj1 = document.getElementById(doc);
+
+        var file = event.target.files[0];
+        var imgObjPreview1 = document.getElementById(preview);
+
+        var form = new FormData();
+        var max_size = 1024000 * 2;
+        if(file.size > max_size) {
+            layer.open({
+                content: "上传的图片不能超过2MB!",
+                time: 2,
+                end: function (){
+                    return false;
+                }
+            });
+            return false;
+        }
+
+        form.append('img', file);
+
+        var xhr;
+        if(window.ActiveXObject)
+        {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        else if(window.XMLHttpRequest)
+        {
+            xhr = new XMLHttpRequest();
+        }
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4){
+                if(xhr.status == 200 || xhr.status == 0){
+                    var res = xhr.responseText;
+                    res = JSON.parse(res);
+                    if(res.error == 0){
+                        if ('preview2' == preview) {
+                            if ($('.preview-li').length >= 3) {
+                                d_messages('内部照最多上传3张');
+                                return;
+                            }
+                            var d = "<div class='preview-li'>";
+                            d += '<img src="../'+res.path+'">';
+                            d += '<input type="hidden" name="data[work_file][]" class="inputcard"  value="'+res.path+'">'
+                            d += "<div class='close'></div></div>"
+                            $(imgObjPreview1).append(d)
+                        } else {
+                            $(imgObjPreview1).html('<img src="../'+res.path+'">')
+                            $(docObj1).val(res.path);
+                        }
+
+                    }
+                }
+            }
+        };
+        xhr.open("post", "{url('upload')}", true);
+        xhr.send(form);
+    }
+
+</script>
+</body>
+</html>

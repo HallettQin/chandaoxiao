@@ -1,0 +1,141 @@
+{include file="supplier/header"}
+<div class="con order-manage">
+      <div class="order-step-info">
+          <div class="order_fee">
+              <p class="edit" id="order_fee" onclick="$(&quot;.fee_info&quot;).slideToggle()"><span>费用信息<a href="order.php?act=edit&amp;order_id=36&amp;step=money" class="special">编辑</a></span> <i></i></p>
+              <div class="fee_info">
+                  <p>商品总金额：150.00 - 折扣：0.00 + 发票税额：0.00 + 配送费用：0.00 + 保价费用：0.00 + 支付费用：0.00 + 包装费用：0.00 + 贺卡费用：0.00</p>
+                  <p>= 订单总金额：150.00</p>
+                  <p>- 已付款金额：0.00 - 使用余额： 0.00 - 使用积分： 0.00 - 使用红包： 0.00</p>
+              </div>
+              <p class="order_amount">= 应付款金额：150.00</p>
+          </div>
+      </div>
+    <div class="order-step-info">
+        <div class="consignee_info">
+            <p class="edit"><span>收货人信息<a href="order.php?act=edit&amp;order_id=36&amp;step=consignee" class="special">编辑</a></span></p>
+            <div class="order_consign">
+                <table width="100%">
+                    <tbody><tr>
+                        <td>收货人：李盛维</td>
+                        <td><a href="tel:15676568275" class="phone">15676568275</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">地址：&nbsp;&nbsp;&nbsp;珠江新城珠江大厦5栋1801<a href="navigate.php?act=navigate&amp;order_id=36" target="_blank"></a>&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">最佳送货时间：送货时间不限</td>
+                    </tr>
+                    </tbody></table>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="goods_info">
+            <p class="edit"><span>商品信息</span></p>
+            <div class="order_goods">
+                <table width="100%">
+                    <tbody><tr>
+                        <td colspan="3">[臻妍]荷叶边欧根纱刺绣短袖镂空蕾丝连衣裙 夏韩系小香风短裙A字连衣裙<span class="attr">颜色:粉色
+尺码:XL
+</span></td>
+                    </tr>
+                    <tr>
+                        <td>50.00 X <span>1（数量）</span></td>
+                        <td>库存：9</td>
+                        <td>小计：50.00</td>
+                    </tr>
+                    </tbody></table>
+                <table width="100%">
+                    <tbody><tr>
+                        <td colspan="3">[臻妍]荷叶边欧根纱刺绣短袖镂空蕾丝连衣裙 夏韩系小香风短裙A字连衣裙<span class="attr">颜色:白色
+尺码:S
+</span></td>
+                    </tr>
+                    <tr>
+                        <td>50.00 X <span>1（数量）</span></td>
+                        <td>库存：9</td>
+                        <td>小计：50.00</td>
+                    </tr>
+                    </tbody></table>
+                <table width="100%">
+                    <tbody><tr>
+                        <td colspan="3">[臻妍]荷叶边欧根纱刺绣短袖镂空蕾丝连衣裙 夏韩系小香风短裙A字连衣裙<span class="attr">颜色:粉色
+尺码:M
+</span></td>
+                    </tr>
+                    <tr>
+                        <td>50.00 X <span>1（数量）</span></td>
+                        <td>库存：9</td>
+                        <td>小计：50.00</td>
+                    </tr>
+                    </tbody></table>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="order_base">
+            <p class="edit" id="order_base" onclick="$(&quot;.base_info_one&quot;).slideToggle()"><span>基本信息</span> <i></i></p>
+            <div class="base_info_one" style="">
+                <p>订单号：2018042710953</p>
+                <p>购货人：653689@qq.com <a href="javascript:open_surplus();" class="">购货人信息</a><a href="user_msg.php?act=add&amp;order_id=36&amp;user_id=23">发送/查看留言</a></p>
+                <p>下单时间：2018-04-27 10:29:44</p>
+                <p>付款时间：未支付</p>
+                <p>发货时间：未收货</p>
+            </div>
+            <div class="base_info">
+                <p>订单状态：<font color="red"> 取消</font>,未付款,未发货</p>
+                <p>支付方式：余额支付<a href="order.php?act=edit&amp;order_id=36&amp;step=payment" class="special">编辑</a></p>
+                <p>配送方式：圆通速递<a href="order.php?act=edit&amp;order_id=36&amp;step=shipping" class="special">编辑</a></p>
+                <!--如果配送方式是“门店自提”，则显示以下自提点 star-->
+                <!--如果配送方式是“门店自提”，则显示以下自提点 end-->
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="order_qita">
+            <p class="edit" id="order_qita" onclick="$(&quot;.qita_info&quot;).slideToggle()">
+              <span>其他信息
+                            </span>
+                <i></i>
+            </p>
+            <div class="qita_info">
+                <!--{如果有普通发票 start*}-->
+                <!--{如果有发票 end}-->
+                <p>缺货处理：等待商家备齐后再发</p>
+                <p>商家给客户的留言：预售失败</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="order_history">
+            <p class="edit" id="order_history" onclick="$(&quot;.history_info&quot;).slideToggle()">
+                <span>操作 </span>
+                <i></i>
+            </p>
+            <div class="history_info">
+                <table width="100%">
+                    <tbody><tr>
+                        <th>操作者</th>
+                        <!-- <th>操作时间</th>-->
+                        <th>订单状态</th>
+                        <th>付款状态</th>
+                        <th>发货状态</th>
+                    </tr>
+                    </tbody></table>
+            </div>
+        </div>
+    </div>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav"}
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    //订单列表
+    $(function(){
+        var infinite = $('.store_info').infinite({url: "{url('supplier/order/index')}", template: 'j-product', params: 'composite_status={$composite_status}'});
+    })
+</script>
+</body>
+</html>

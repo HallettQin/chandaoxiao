@@ -1,0 +1,320 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">模式 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6553.html" target="_blank">商城优惠活动说明</a>
+                        </div>
+                    </div>			
+                    {/if}				
+				</div>
+                <ul>
+                	<li>展示了所有优惠活动相关信息列表。</li>
+                    <li>可根据商品名称关键字进行搜索，侧边栏高级搜索使用类型、店铺名称搜索具体活动信息。</li>
+                    <li>展示信息有：商家名称、优惠活动名称、起始时间等，可进行添加、编辑、删除或批量删除等操作。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="favourable.php?act=add"><div class="fbutton"><div class="add" title="添加优惠活动"><span><i class="icon icon-plus"></i>添加优惠活动</span></div></div></a>
+                    </div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>					
+                    <div class="search">
+                        <div class="select m0">
+                            <div class="imitate_select select_w170">
+                                <div class="cite">{$lang.adopt_status}</div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.adopt_status}</a></li>
+                                    <li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.not_audited}</a></li>
+                                    <li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.audited_not_adopt}</a></li>
+                                    <li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.audited_yes_adopt}</a></li>
+                                </ul>
+                                <input name="review_status" type="hidden" value="0" id="">
+                            </div>
+                        </div>
+                    	<div class="input">
+                        	<input type="text" name="keyword" class="text nofocus" placeholder="{$lang.act_name}" autocomplete="off" /><button class="btn" name="secrch_btn"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="common-content">
+					<form method="post" action="favourable.php" name="listForm" onsubmit="return confirm(batch_drop_confirm);">
+                	<div class="list-div" id="listDiv" >
+					{/if}
+                    	<table cellpadding="1" cellspacing="1" >
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="20%"><div class="tDiv">{$lang.act_name}</div></th>
+                                    <th width="10%"><div class="tDiv">商家名称</div></th>
+                                    <th width="12%"><div class="tDiv">{$lang.start_time}</div></th>
+                                    <th width="12%"><div class="tDiv">{$lang.end_time}</div></th>
+                                    <th width="9%"><div class="tDiv">{$lang.min_amount}</div></th>
+                                    <th width="9%"><div class="tDiv">{$lang.max_amount}</div></th>
+                                    <th width="9%"><div class="tDiv">{$lang.sort_order}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                    <th width="11%" class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$favourable_list item=favourable}
+                            	<tr>
+                                	<td class="sign">
+                                        <div class="tDiv">
+                                            <input type="checkbox" name="checkboxes[]" value="{$favourable.act_id}" class="checkbox" id="checkbox_{$favourable.act_id}" />
+                                            <label for="checkbox_{$favourable.act_id}" class="checkbox_stars"></label>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{$favourable.act_id}</div></td>
+								    <td><div class="tDiv overflow_view"><span title="{$favourable.act_name|escape:html}{if $favourable.userFav_type && $priv_ru eq 0}({$lang.general_audience}){/if}" data-toggle="tooltip">{$favourable.act_name|escape:html}{if $favourable.userFav_type && $priv_ru eq 0}({$lang.general_audience}){/if}</span></div></td>
+                                    {if $priv_ru eq 1}
+									{if $favourable.userFav_type}
+										<td><div class="tDiv"><font class="red">{$lang.general_audience}</font></div></td>  
+									{else}
+										<td><div class="tDiv">{if $favourable.user_name}<font class="red">{$favourable.user_name}</font>{else}<font class="blue">{$lang.self}</font>{/if}</div></td>   
+									{/if}
+								    {/if}
+                                    <td><div class="tDiv">{$favourable.start_time}</div></td>
+                                    <td><div class="tDiv">{$favourable.end_time}</div></td>
+                                    <td><div class="tDiv">{$favourable.min_amount}</div></td>
+                                    <td><div class="tDiv">{$favourable.max_amount}</div></td>
+                                    <td><div class="tDiv"><input name="sort_order" class="text w40" value="{$favourable.sort_order}" onkeyup="listTable.editInput(this, 'edit_sort_order',{$favourable.act_id} )" type="text"></div></td> 
+                                    <td>
+                                    	<div class="tDiv">
+                                            {if $favourable.review_status eq 1}
+                                            <font class="org2">{$lang.not_audited}</font>
+                                            {elseif $favourable.review_status eq 2}
+                                            <font class="red">{$lang.audited_not_adopt}</font><br/>
+                                            <i class="tip yellow" title="{$favourable.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                            {elseif $favourable.review_status eq 3}
+                                            <font class="blue">{$lang.audited_yes_adopt}</font>
+                                            {/if}									
+                                        </div>
+                                    </td> 
+                                    <td class="handle">
+										<div class="tDiv a2">
+											<a href="favourable.php?act=edit&amp;id={$favourable.act_id}&ru_id={$favourable.user_id}" title="{$lang.edit}" class="btn_edit"><i class="icon icon-edit"></i>{$lang.edit}</a>
+											{if $favourable.userFav_type eq 0 || $priv_ru}
+											<a href="javascript:;" onclick="listTable.remove({$favourable.act_id},'{$lang.drop_confirm}')" title="{$lang.remove}" class="btn_trash"><i class="icon icon-trash"></i>{$lang.remove}</a>	
+											{/if} 											
+										</div>
+									</td>
+                                </tr>
+							{foreachelse}
+								<tr><td class="no-records" align="center" colspan="10">{$lang.no_records}</td></tr>
+							{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+									<td colspan="12">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                                <div class="shenhe">
+                                                    <input type="submit" name="drop" id="btnSubmit" value="{$lang.drop}" class="btn btn_disabled" disabled="true" ectype="btnSubmit" />
+                                                    <input type="hidden" name="act" value="batch" />
+                                                </div>										
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                    </div>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!--高级搜索 start-->
+	<div class="gj_search">
+		<div class="search-gao-list" id="searchBarOpen">
+			<i class="icon icon-zoom-in"></i>高级搜索
+		</div>
+		<div class="search-gao-bar">
+			<div class="handle-btn" id="searchBarClose"><i class="icon icon-zoom-out"></i>收起边栏</div>
+			<div class="title"><h3>高级搜索</h3></div>
+			<form action="javascript:searchActivity()" name="searchForm">
+				<div class="searchContent">
+					<div class="layout-box">
+						<dl>
+							<dd>
+								<div class="checkbox_items">
+									<div class="checkbox_item">
+										<input type="checkbox" class="ui-checkbox" name="is_going" id="is_going_1" value="1" />
+										<label for="is_going_1" class="ui-label">{$lang.act_is_going}</label>
+									</div>
+								</div>							
+							</dd>
+						</dl>
+						<dl>
+							<dt>{$lang.use_type}：</dt>
+							<dd>
+								<div id="" class="imitate_select select_w145">
+									<div class="cite">请选择</div>
+									<ul>
+										<li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.please_select}</a></li>
+										{if $priv_ru}
+										<li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.self}</a></li>
+										<li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.seller}</a></li>
+										{else}
+										<li><a href="javascript:;" data-value="4" class="ftx-01">{$lang.self}</a></li>
+										{/if}
+										<li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.full_court}</a></li>
+									</ul>
+									<input name="use_type" type="hidden" value="0" id="">
+								</div>
+							</dd>
+						</dl>
+						<dl>
+
+                                    <dl>
+                                            <dt>{$lang.steps_shop_name}</dt>
+                                            <dd>
+                                                <div id="shop_name_select" class="select_w145 imitate_select">
+                                                    <div class="cite">请选择</div>
+                                                    <ul>
+                                                       <li><a href="javascript:;" data-value="0">{$lang.select_please}</a></li>
+                                                       <li><a href="javascript:;" data-value="1">{$lang.s_shop_name}</a></li>
+                                                       <li><a href="javascript:;" data-value="2">{$lang.s_qw_shop_name}</a></li>
+                                                       <li><a href="javascript:;" data-value="3">{$lang.s_brand_type}</a></li>
+                                                    </ul>
+                                                    <input name="store_search" type="hidden" value="0" id="shop_name_val">
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                        <dl style="display:none" id="merchant_box">
+                                            <dd>
+                                                <div class="select_w145 imitate_select">
+                                                    <div class="cite">请选择</div>
+                                                    <ul>
+                                                       <li><a href="javascript:;" data-value="0">请选择</a></li>
+                                                       {foreach from=$store_list item=store}
+                                                       <li><a href="javascript:;" data-value="{$store.ru_id}">{$store.store_name}</a></li>
+                                                       {/foreach}
+                                                    </ul>
+                                                    <input name="merchant_id" type="hidden" value="0" >
+                                                </div>
+                                            </dd>
+                                        </dl>
+                                        <dl id="store_keyword" style="display:none" >
+                                            <dd><input type="text" value="" name="store_keyword" class="s-input-txt" autocomplete="off" /></dd>
+                                        </dl>
+                                        <dl style="display:none" id="store_type">
+                                            <dd>
+                                                <div class="select_w145 imitate_select">
+                                                    <div class="cite">请选择</div>
+                                                    <ul>
+                                                       <li><a href="javascript:;" data-value="0">{$lang.steps_shop_type}</a></li>
+                                                       <li><a href="javascript:;" data-value="{$lang.flagship_store}">{$lang.flagship_store}</a></li>
+                                                       <li><a href="javascript:;" data-value="{$lang.exclusive_shop}">{$lang.exclusive_shop}</a></li>
+                                                       <li><a href="javascript:;" data-value="{$lang.franchised_store}">{$lang.franchised_store}</a></li>
+                                                       <li><a href="javascript:;" data-value="{$lang.shop_store}">{$lang.shop_store}</a></li>
+                                                    </ul>
+                                                    <input name="store_type" type="hidden" value="0" >
+                                                </div>
+                                            </dd>
+                                        </dl>
+						</dl>
+						<dl>
+							<dd>
+								<input type="text" name="keyword" class="text nofocus" placeholder="{$lang.act_name}" autocomplete="off" />
+							</dd>
+						</dl>						
+						<dl class="bot_btn">
+                            <dd>
+							   <input type="submit" class="btn red_btn" name="tj_search" value="提交查询" /><input type="reset" class="btn btn_reset" name="reset" value="重置" />
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>	
+ {include file ='library/pagefooter.lbi'}
+	<!--高级搜索 end-->
+	<script type="text/javascript">
+		//分页传值
+		listTable.recordCount = {$record_count|default:0};
+		listTable.pageCount = {$page_count|default:1};
+
+		{foreach from=$filter item=item key=key}
+		listTable.filter.{$key} = '{$item}';
+		{/foreach}
+		
+		$.gjSearch("-240px");  //高级搜索
+		$.divselect("#shop_name_select","#shop_name_val",function(obj){
+    var val = obj.attr("data-value");
+    get_store_search(val);
+});
+function get_store_search(val){
+        if(val == 1){
+                $("#merchant_box").css("display",'');
+                $("#store_keyword").css("display",'none');
+                $("#store_type").css("display",'none')
+        }else if(val == 2){
+                $("#merchant_box").css("display",'none');
+                $("#store_keyword").css("display",'');
+                $("#store_type").css("display",'none')
+        }else if(val == 3){
+                $("#merchant_box").css("display",'none');
+                $("#store_keyword").css("display",'');
+                $("#store_type").css("display",'')
+        }else{
+                 $("#merchant_box").css("display",'none');
+                $("#store_keyword").css("display",'none');
+                $("#store_type").css("display",'none')
+        }
+}
+	  /**
+	   * 搜索团购活动
+	   */
+	  function searchActivity()
+	  {
+		  
+		  {if $priv_ru eq 1}
+			listTable.filter['store_search'] = Utils.trim(document.forms['searchForm'].elements['store_search'].value);
+			listTable.filter['merchant_id'] = Utils.trim(document.forms['searchForm'].elements['merchant_id'].value);
+			listTable.filter['store_keyword'] = Utils.trim(document.forms['searchForm'].elements['store_keyword'].value);
+			listTable.filter['store_type'] = Utils.trim(document.forms['searchForm'].elements['store_type'].value);
+			{/if}
+
+		var use_type = Utils.trim(document.forms['searchForm'].elements['use_type'].value);
+		var keyword = Utils.trim(document.forms['searchForm'].elements['keyword'].value);
+		listTable.filter['use_type'] = use_type;
+		listTable.filter['keyword'] = keyword;
+		if (document.forms['searchForm'].elements['is_going'].checked)
+		{
+		  listTable.filter['is_going'] = 1;
+		}
+		else
+		{
+		  listTable.filter['is_going'] = 0;
+		}
+		listTable.filter['page'] = 1;
+		listTable.loadList("favourable_list");
+	  }
+	</script>
+</body>
+</html>
+{/if}

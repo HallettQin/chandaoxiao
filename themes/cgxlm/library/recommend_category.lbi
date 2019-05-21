@@ -1,0 +1,8 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<ul id="specialId" class="bf-ul-content clearfix">
+    {foreach from=$ad_child item=ad name=noad key=key}
+    <li class="b"> <table cellpadding="0" cellspacing="0">
+        <tbody><tr><td><a href="{$ad.ad_link}" target="_blank" {if $key neq 3}class="purchasers"{else}class="suppliers_purchasers"{/if}><img src="{$ad.ad_code}" width="390" height="230" border="0"></a></td></tr>
+        </tbody></table> </li>
+    {/foreach}
+</ul>

@@ -1,0 +1,80 @@
+{include file="supplier/header"}
+<div class="con">
+    <section class="login-info">
+        <h4>欢迎您，<span>{$shop_info.hopeloginname}</span>来到制造商手机版后台</h4>
+    </section>
+    <section class="index-box">
+        <ul class="index-menu">
+            <li>
+                <a href="{url('supplier/order/index', array('composite_status'=>101))}">
+                    <i class="iconfont icon-daifahuo4"></i>
+                    待发货（{$wait_send_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('composite_status'=>6))}">
+                    <i class="iconfont icon-bufen"></i>
+                    部分发货（{$shipped_part_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('composite_status'=>102))}" >
+                 <i class="iconfont icon-yiwancheng1"></i>
+                    已完成（{$completed_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('composite_status'=>4))}" >
+                <i class="iconfont icon-tuihuo"></i>
+                    新退货（{$return_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/delivery_list')}" >
+                <i class="iconfont icon-fahuodan"></i>
+                    发货单 （{$delivery_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('code'=>'group_buy'))}" >
+                <i class="iconfont icon-pintuan-"></i>
+                    拼单 （{$group_buy_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('code'=>'presale'))}" >
+                <i class="iconfont icon-yushou1"></i>
+                    预定 （{$presale_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('code'=>'sample'))}" >
+                <i class="iconfont icon-yangpinche1"></i>
+                    样品 （{$sample_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/order/index', array('code'=>'wholesale'))}" >
+                <i class="iconfont icon-xianhuoche1"></i>
+                    现货（{$wholesale_count}）
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/account/index')}" >
+                    <i class="iconfont icon-xianhuoche1"></i>
+                    资金管理
+                </a>
+            </li>
+        </ul>
+    </section>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    //订单列表
+   $(function(){
+
+   })
+</script>
+</body>
+</html>

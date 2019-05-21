@@ -1,0 +1,30 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $goods_list} -->
+	<ul class="list-ul">
+	<!--{foreach from=$goods_list item=goods name=goods_list}-->
+		<li{if $smarty.foreach.goods_list.iteration % 4 == 0} class="last"{/if}>
+			<div class="coll-goods">
+				<div class="p-img"><a href="{$goods.url}" target="_blank"><img src="{$goods.goods_thumb}"></a></div>
+				<div class="p-name"><a href="{$goods.url}" target="_blank">{$goods.goods_name|escape:html}</a></div>
+				<div class="p-price">
+					{$goods.volume_price}
+				</div>
+				<div class="p-btn"><a href="{$goods.url}" class="sc-btn">查看详情</a></div>
+				<div class="p-oper">
+					<!-- {if $goods.user_id} -->
+					<a href="merchants_store.php?merchant_id={$goods.user_id}" target="_blank">进入店铺</a>
+					<!-- {else} -->
+					<a href="index.php" target="_blank">进入首页</a>
+					<!-- {/if} -->
+					<a href="javascript:void(0);" id="delete_goods_collect"  data-dialog="goods_collect_dialog" data-divid="delete_goods_collect" data-url="user.php?act=delete_collection&collection_id={$goods.rec_id}&type=1" data-goodsid="0">取消关注</a>
+				</div>
+			</div>
+		</li>
+	<!-- {/foreach} -->
+	</ul>
+<!--{else} -->
+<div class="no_records">
+	<i class="no_icon"></i>
+    <div class="no_info"><h3>{insert name='get_page_no_records' filename=$filename act=$action}</h3></div>
+</div>
+<!-- {/if} -->

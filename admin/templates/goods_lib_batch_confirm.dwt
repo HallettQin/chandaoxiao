@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">商品 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>首先下载csv文件，打开excel表格添加多个商品信息字段。</li>
+                    <li>上传编辑好的csv文件，选择数据格式、分类、编码进行上传文件。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info" id="listDiv">
+					  <form action="goods_lib_batch.php?act=insert" method="post">
+						<table cellspacing="0" cellpadding="0" width="100%" id="listTable">
+						  <tr>
+							<th><input type="checkbox" checked onclick="listTable.selectAll(this, 'checked')" />{$lang.record_id}</th>
+							{foreach from=$title_list key=field item=title}
+							{if $field_show.$field}<th>{$title}</th>{/if}
+							{/foreach}
+							<th>{$lang.goods_class}</th>
+						  </tr>
+						  <tr align="center">
+							<td colspan="7">
+							  <input type="hidden" name="cat" value="{$smarty.request.cat}" />
+							  <input type="submit" name="submit" value="{$lang.button_submit}" class="button" />
+							</td>
+						  </tr>
+						</table>
+					  </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+ 	{include file ='library/pagefooter.lbi'}
+    {insert_scripts files="jquery.purebox.js"}
+	<script type="text/javascript">
+    
+    $(function(){
+        start({$page});
+		ajax_title();
+    });
+    function start(page)
+    {
+		var file = 
+        Ajax.call('goods_lib_batch.php?act=creat', 'page=' + page, start_response, 'POST', 'JSON');
+    }
+    
+    /**
+     * 处理反馈信息
+     * @param: result
+     * @return
+     */
+    function start_response(result)
+    {
+		
+        if(result.list){
+            var tbl = document.getElementById("listTable"); //获取表格对象
+            var row = tbl.insertRow(1);
+			
+			cell = row.insertCell(0);
+
+			cell.innerHTML = "<div class='tDiv'>"+"<input type='checkbox' name='checked[]' value='"+(result.index)+"' checked /> "+(result.page-result.page_size)+"</div>";
+			cell = row.insertCell(1);
+
+			cell.innerHTML = "<div class='tDiv'>"+"<input type='text' name='goods_name[]' value='"+result.list.goods_name+"' class='text w140'  size='15' /></div>";
+			cell = row.insertCell(2);
+
+			cell.innerHTML = "<div class='tDiv'>"+"<input type='text' name='goods_sn[]' value='"+result.list.goods_sn+"' class='text w140'  size='15' /></div>";
+			cell = row.insertCell(3);
+
+			cell.innerHTML = "<div class='tDiv'>"+"<input type='text' name='brand_name[]' value='"+result.list.brand_name+"' class='text w140'  size='15' /></div>";
+			cell = row.insertCell(4);
+
+			cell.innerHTML = "<div class='tDiv'>"+"<input type='text' name='market_price[]' value='"+result.list.market_price+"' class='text w140'  size='15' /></div>";
+			cell = row.insertCell(5);
+
+			cell.innerHTML = "<div class='tDiv'>"+"<input type='text' name='shop_price[]' value='"+result.list.shop_price+"' class='text w140'  size='15' /></div>";
+			cell = row.insertCell(6);
+
+			cell.innerHTML = "<div class='tDiv'><div class='imitate_select select_w320'><div class='cite'>实体商品</div><ul><li><a href='javascript:;' data-value='1' class='ftx-01'>实体商品</a></li><li><a href='javascript:;' data-value='0' class='ftx-01'>虚拟商品</a></li></ul><input name='goods_class[]' type='hidden' value='"+result.list.is_real+"'/></div></div>";
+            
+            if(result.is_stop == 1){
+                start(result.page);
+            }	
+        }
+        
+        if(result.is_stop == 0){
+            $("#title_name").addClass("red");
+            $("#title_name").html("已完成更新，请关闭该窗口！");
+        }else{
+            $("#title_name").html("正在更新数据中，请勿关闭该窗口！");
+        }
+    }
+</script>
+</body>
+</html>

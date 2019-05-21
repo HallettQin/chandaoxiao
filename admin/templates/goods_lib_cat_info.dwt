@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+<head>
+{include file ='library/admin_html_head.lbi'}
+</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="{$action_link.href}" class="s-back">{$lang.back}</a>商品 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>请按提示信息填写每一个字段。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info">
+                        <form action="goods_lib_cat.php" method="post" name="theForm" enctype="multipart/form-data" id="category_info_form">
+                            <div class="switch_info">
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;{$lang.cat_name}：</div>
+                                    <div class="label_value">
+									  <input type='text' class="text" name='cat_name' maxlength="20" value='{$cat_info.cat_name|escape:html}' size='27' />
+                                      <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.parent_id}：</div>
+                                    <div class="label_value">
+										<div class="search_select">
+											<div class="categorySelect">
+												<div class="selection">
+													<input type="text" name="category_name" id="category_name" class="text w290 valid" value="{if $parent_category}{$parent_category}{else}顶级分类{/if}" autocomplete="off" readonly data-filter="cat_name" />
+													<input type="hidden" name="parent_id" id="category_id" value="{$parent_id|default:0}" data-filter="cat_id" />
+												</div>
+												<div class="select-container w319" style="display:none;">
+													{include file="library/filter_category.lbi"}
+												</div>
+											</div>
+										</div>
+                                        <div class="notic">不选择分类默认为顶级分类</div>
+                                    </div>
+                                </div>	
+                                <div class="item">
+                                    <div class="label">{$lang.is_show}：</div>
+                                    <div class="label_value">
+                                        <div class="checkbox_items">
+                                            <div class="checkbox_item">
+                                                <input type="radio" class="ui-radio" name="is_show" id="is_show_1" value="1" {if $cat_info.is_show neq 0} checked="true" {/if}  />
+                                                <label for="is_show_1" class="ui-radio-label">{$lang.yes}</label>
+                                            </div>
+                                            <div class="checkbox_item">
+                                                <input type="radio" class="ui-radio" name="is_show" id="is_show_0" value="0" {if $cat_info.is_show eq 0} checked="true" {/if}  />
+                                                <label for="is_show_0" class="ui-radio-label">{$lang.no}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>									
+                                <div class="item">
+                                    <div class="label">{$lang.sort_order}：</div>
+                                    <div class="label_value">
+										<input type="text" class="text text_4 w50" name='sort_order' {if $cat_info.sort_order}value='{$cat_info.sort_order}'{else} value="50"{/if} size="15" autocomplete="off" />
+                                    </div>
+                                </div>								
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value info_btn">
+										<input type="submit" value="{$lang.button_submit}" class="button" id="submitBtn" />
+										<input type="reset" value="{$lang.button_reset}" class="button button_reset" />
+										<input type="hidden" name="act" value="{$form_act}" />
+										<input type="hidden" name="old_cat_name" value="{$cat_info.cat_name}" />
+										<input type="hidden" name="cat_id" value="{$cat_info.cat_id}" />
+                                    </div>
+                                </div>								
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </div>
+	{include file ='library/pagefooter.lbi'}	
+    {literal}
+    <script type="text/javascript" src="js/jquery.picTip.js"></script>
+    <script type="text/javascript">
+	$(function(){
+		//自定义图标
+		$("*[ectype=style_icon] input:radio").click(function(){
+			if($(this).val() == 'other'){
+				$("*[ectype=cat_icon]").removeClass('hide');
+			}else{
+				$("*[ectype=cat_icon]").addClass('hide');
+			}
+		})
+	
+		//表单验证
+		$("#submitBtn").click(function(){
+			if($("#category_info_form").valid()){
+				$("#category_info_form").submit();
+			}
+		});
+		
+		jQuery.validator.addMethod("specialchar", function(value, element) {
+
+		  return this.optional(element) || !/[@'\\"#$%&\^*]/.test(value);   
+		},("不能包含特殊字符"));
+		
+		$('#category_info_form').validate({
+			errorPlacement:function(error, element){
+				var error_div = element.parents('div.label_value').find('div.form_prompt');
+				element.parents('div.label_value').find(".notic").hide();
+				error_div.append(error);
+			},
+			rules:{
+				cat_name :{
+					required : true,
+					specialchar:""
+				}
+			},
+			messages:{
+				cat_name:{
+					 required : '<i class="icon icon-exclamation-sign"></i>分类名称不能为空'
+				}
+			}			
+		});
+	});
+    
+    /**
+     * 新增一个筛选属性
+     */
+    function addFilterAttr(obj)
+    {
+      var src = obj.parentNode.parentNode;
+      var tbl = document.getElementById('tbody-attr');
+      var filterAttr = document.getElementsByName("filter_attr[]");
+      var row  = tbl.insertRow(tbl.rows.length);
+      var cell = row.insertCell(-1);
+      cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(addFilterAttr)(.*)(\[)(\+)/i, "$1removeFilterAttr$3$4-");
+      filterAttr[filterAttr.length-1].value = 0;
+      
+    }
+    
+    /**
+     * 删除一个筛选属性
+     */
+    function removeFilterAttr(obj)
+    {
+      var row = rowindex(obj.parentNode.parentNode);
+      var tbl = document.getElementById('tbody-attr');
+    
+      tbl.deleteRow(row);
+    }
+    
+    //ecmoban模板堂 --zhuo start
+    
+    //判断选择的分类是否是顶级分类，如果是则可用 类目证件
+    function get_cat_parent_val(f,lev){
+        var cat_alias_name = document.getElementById("cat_alias_name");
+        var title_list = document.getElementsByName("document_title[]");
+        var cat_parent_id = f + "_" + Number(lev - 1);
+        
+        var arr = new Array();
+        var str = new String(cat_parent_id);
+        var arr = str.split("_");
+        var sf = Number(arr[0]);
+        var slevel = Number(arr[1]);
+    
+        catList(sf, lev);
+    
+        for(i=0; i<title_list.length; i++){
+            if(sf != 0){
+                title_list[i].disabled = true;
+                title_list[i].value = '';
+                cat_alias_name.disabled = true;
+                cat_alias_name.value = '';
+                
+            }else{
+				//顶级分类为0
+                title_list[i].disabled = false;
+                cat_alias_name.disabled = false;
+            }	
+        }
+    }
+    /**
+       * 添加类目证件
+       */
+      function addCategoryFile(obj)
+      {  
+         var title_list = document.getElementsByName("document_title[]");
+         var catParent = document.getElementById('category_id').value; 
+    
+         if(catParent != 0){
+             alert('该分类必须是顶级分类才能使用!');
+    
+             for(i=0; i<title_list.length; i++){
+                 title_list[i].value = '';
+             }
+             
+             return false;
+        }
+          
+        var src      = obj.parentNode.parentNode;
+        var tbl      = document.getElementById('documentTitle_table');
+    
+        var row  = tbl.insertRow(tbl.rows.length);
+        var cell = row.insertCell(-1);
+        cell.innerHTML = src.cells[0].innerHTML.replace(/(.*)(addCategoryFile)(.*)(\[)(\+)/i, "$1removeCategoryFile$3$4-");
+    
+        title_list[title_list.length-1].value = "";
+      }
+    
+      /**
+       * 删除类目证件
+       */
+      function removeCategoryFile(obj,dt_id)
+      {
+          if(dt_id > 0){
+           if (confirm('确实要删除该信息吗')){
+               {if $cat_id > 0}
+               location.href = 'category.php?act=title_remove&dt_id=' + dt_id + '&cat_id=' + {$cat_id};  
+               {/if}
+           }
+          }else{
+              var row = rowindex(obj.parentNode.parentNode);
+              var tbl = document.getElementById('documentTitle_table');
+        
+              tbl.deleteRow(row);
+          }
+      }
+    //ecmoban模板堂 --zhuo end
+    
+    //-->
+    
+    //顶级分类页模板 by wu
+    $(document).ready(function(){
+        $("[name='is_top_style']").click(function(){
+            if($(this).attr('value')==1)
+            {
+                $("[name='top_style_tpl']").parents('.item').show();
+                $("[name='cat_icon']").parents('.item').show();
+            }
+            else
+            {
+                $("[name='top_style_tpl']").parents('.item').hide();
+                $("[name='cat_icon']").parents('.item').hide();
+            }
+        })
+    })
+    
+    function delete_icon(cat_id)
+    {
+        $.ajax({
+            type:'get',
+            url:'category.php',
+            data:'act=delete_icon&cat_id='+cat_id,
+            dataType:'json',
+            success:function(data){
+                if(data.error==1)
+                {	
+                    location.reload();
+                }
+                if(data.error==0)
+                {	
+                    alert('删除失败');
+                }			
+            }
+        })
+    }
+    
+    // 分类分级 by qin
+    function catList(val, level)
+    {
+        var cat_parent_id = val;
+        Ajax.call('goods.php?is_ajax=1&act=sel_cat', 'cat_id='+cat_parent_id+'&cat_level='+level, catListResponse, 'GET', 'JSON');
+    }
+    
+    function catListResponse(result)
+    {
+        document.getElementById('cat_parent_id').value = result.parent_id + "_" + Number(result.cat_level - 1);  
+        if (result.error == '1' && result.message != '')
+        {
+            alert(result.message);
+            return;
+        }
+        var response = result.content;
+        var cat_level = result.cat_level; // 分类级别， 1为顶级分类
+        for(var i=cat_level;i<10;i++)
+        {
+            $("#cat_list"+Number(i+1)).remove();
+        }
+        if(response)
+        {
+            $("#cat_list"+cat_level).after(response);
+        }
+        return;
+    }
+	
+	
+	var arr = new Array();
+	var sel_filter_attr = "{$lang.sel_filter_attr}";
+	{foreach from=$attr_list item=val key=att_cat_id}
+		arr[{$att_cat_id}] = new Array();
+		{foreach from=$val item=item key=i}
+		  {foreach from=$item item=attr_val key=attr_id}
+			arr[{$att_cat_id}][{$i}] = ["{$attr_val}", {$attr_id}];
+		  {/foreach}
+		{/foreach}
+	{/foreach}
+	
+	//修改 by wu
+	function changeCat(obj)
+	{
+		var obj = $(obj);
+		var key = obj.data('value');
+		
+		if(arr[key]){
+			var tArr = arr[key];
+			var target = obj.parents(".imitate_select").next().find("ul");
+			target.find("li:gt(0)").remove();
+			for(var i=0; i<tArr.length; i++){
+				var line = "<li><a href='javascript:;' data-value='"+tArr[i][1]+"' class='ftx-01'>"+tArr[i][0]+"</a></li>";
+				target.append(line);
+			}
+		}
+	}
+    </script>
+	{/literal}
+</body>
+</html>

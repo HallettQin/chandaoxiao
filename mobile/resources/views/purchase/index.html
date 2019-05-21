@@ -1,0 +1,104 @@
+{include file="page_header"}
+<link rel="stylesheet" type="text/css" href="public/css/nav.css">
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+            <div class="h-mid">{$page_title}</div>
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onclick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="rank_nav con">
+    <div class="mode_nav">
+        <ul>
+            <li><a href="{url('purchase/index/index', array('mode'=>'groupbuy'))}" class="mode-select {if $mode == 'groupbuy'}active{/if}" data-mode="groupbuy">拼单专区</a></li>
+            <li><a href="{url('purchase/index/index', array('mode'=>'presale'))}" class="mode-select {if $mode == 'presale'}active{/if}" data-mode="presale" >预定专区</a></li>
+            <li><a href="{url('purchase/index/index', array('mode'=>'sample'))}" class="mode-select {if $mode == 'sample'}active{/if}" data-mode="sample" >样品专区</a></li>
+            <li><a href="{url('purchase/index/index', array('mode'=>'wholesale'))}" class="mode-select {if $mode == 'wholesale'}active{/if}" data-mode="wholesale">现货专区</a></li>
+        </ul>
+    </div>
+    <div class="swiper-container swiper-container-horizontal">
+        <div class="swiper-wrapper category-nav">
+            {foreach $category as $item}
+            <li class="swiper-li swiper-slide"><a {if $id eq $item.id}class="active"{/if}href="{url('purchase/index/index', array('mode'=>$mode, 'id'=>$item.id))}">{$item.name}</a></li>
+            {/if}
+        </div>
+    </div>
+    <div class="product-list-medium">
+        <ul class="lists ul-lists"></ul>
+    </div>
+    <script id="category" type="text/html">
+        <%if totalPage > 0%>
+        <%each lists as list%>
+        <%if list.act_id%>
+        <li>
+            <div class="product-div">
+                <a class="product-div-link" href="<%list.url%>"></a>
+                <div class="group-img-box">
+                    <div class="group-over-box"
+                    <%if list.is_end == 1%> style="display:block" <%else%>
+                    style="display:none" <%/if%> >
+                    <div><p class="group-cont-box">已结束</p></div>
+                </div>
+                <a href="<%list.url%>">  <img class="product-list-img" src="<%list.goods_thumb%>"></a>
+            </div>
+            <div class="product-text-group">
+                <h4><%if list.act_name%> <%list.act_name%><%else%><%list.goods_name%><%/if%></h4>
+                <!-- <p style="color:#999;font-size:1rem;"><em> %list.cur_amount% </em>人已参加</p> -->
+                <p><span class="p-price t-first "><%#list.price%><small>
+                    <del><%#list.market_price%></del>
+                </small></span></p>
+                <%if list.formated_end_date%>
+                <div class="group-right-box" style="display:block"><span
+                        class="group-cont"><%if list.formated_end_date == 1%><%else%>剩余<%/if%></span>
+                    <span class="group-num-box" onload=""><%if list.formated_end_date == 1%><%else%><%list.formated_end_date%><%/if%></span>
+                </div>
+                <%/if%>
+                <a href="javascript:void(0)" class="icon-flow-cart fr j-goods-attr"><i
+                        class="iconfont icon-gouwuche"></i></a>
+            </div>
+        </li>
+        <%/if%>
+        <%/each%>
+        <%else%>
+        <div class="no-div-message">
+            <i class="iconfont icon-biaoqingleiben"></i>
+            <p>亲，此处没有内容～！</p>
+        </div>
+        <%/if%>
+    </script>
+</div>
+<div class="mo"></div>
+<div></div>
+ <!--快捷导航-->
+{include file="float_nav"} 
+<script>
+    var _url = '{url("purchase/index/products")}';
+    var infinite = '';
+    $(function(){
+        var mode = '{$mode}';
+        var id = '{$id}';
+
+        var index = $('.swiper-li .active').parents('.swiper-li').index();
+        index = index < 4 ? index = 0 : index - 2;
+
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 4.5,
+            paginationClickable: true,
+            spaceBetween: 0,
+            initialSlide: index
+        });
+
+        var url = _url + '&mode='+mode;
+        infinite = $('.ul-lists').infinite({url: url, 'params':'id='+id,template: 'category'});
+
+
+    })
+</script>
+</html>

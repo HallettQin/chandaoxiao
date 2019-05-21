@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="description" content="{$description}"/>
+    <meta name="keywords" content="{$keywords}"/>
+    <title>{$page_title}</title>
+    {global_assets('css')}
+    <link href="__ROOT__/public/css/supplier.css?v=<?=time()?>" rel="stylesheet">
+     <link href="__ROOT__/public/css/iconfontd.css?v=<?=time()?>" rel="stylesheet">
+    <script type="text/javascript">var ROOT_URL = '__ROOT__/';</script>
+    {global_assets('js')}
+</head>
+<body>
+    <header class="supplier_header">
+        <h1>{$page_title}</h1>
+        <!--{if $index}-->
+        <a href="{url('index/index/index')}" class="logout">退出</a>
+        <!--{else}-->
+        <a href="javascript:history.back(-1)" class="back">返回</a>
+        <!--{/if}-->
+        <a onclick="refresh();" class="clear">刷新</a>
+    </header>

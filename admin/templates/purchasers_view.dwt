@@ -1,0 +1,522 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+<div class="warpper">
+    <div class="title"><a href="{$action_link.href}" class="s-back">{$lang.back}</a> {$lang.01_purchasers__audit_list}</div>
+    <div class="content">
+        <div class="explanation" id="explanation">
+            <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+            <ul>
+                <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+            </ul>
+        </div>
+        <div class="flexilist">
+            <div class="common-content">
+                <form method="post" enctype="multipart/form-data" action="purchasers.php?act=save_audit" name="theForm" id="merchants_users_list_form">
+                    <div class="mian-info">
+                        <div class="switch_info business_info">
+                            <div class="step">
+                                <div class="tit"><h4>采购商信息</h4></div>
+                                <div class="items">
+                                    <div class="item">
+                                        <div class="label">展厅名：</div>
+                                        <div class="value">
+                                            <input class="text valid" type="text" value="{$purchasers.store_name}" size="8" aria-invalid="false" disabled>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">采购商姓名：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.real_name}" size="11" disabled>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">所在地区：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.region}" size="20" disabled>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">详细地址：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.address}" size="20" disabled>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">GPS定位：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.geolocation}" size="20" disabled>
+                                            <div class="fl org">为空未定位</div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">地图：</div>
+                                        <div class="value">
+                                            <script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=ZIUBZ-OX2WJ-EJKFI-KKFHT-MWRV6-BXFLB"></script>
+                                            <div id="map" style="width: 500px;height: 300px">
+                                            </div>
+                                            <div id="juli">
+                                                {if !$purchasers.lat || !$purchasers.lng}
+                                                <span style="color: red">未授权定位</span>
+                                                {/if}
+                                            </div>
+                                            <script>
+                                                var address = "{$purchasers.region}"+"{$purchasers.address}";
+
+                                                var gps = ''
+                                                {if $purchasers.lat && $purchasers.lng}
+                                                var geolocation = '{$purchasers.geolocation}';
+                                                gps = new qq.maps.LatLng('{$purchasers.lat}', '{$purchasers.lng}');
+                                                {/if}
+                                                $(function(){
+                                                    var map = new qq.maps.Map(document.getElementById('map'),  {zoom: 13});
+
+                                                    if (gps) {
+                                                        var marker = new qq.maps.Marker({
+                                                            position: gps,
+                                                            map: map
+                                                        });
+
+                                                        new qq.maps.Label({
+                                                            position: gps,
+                                                            map: map,
+                                                            content: 'GPS定位'
+                                                        });
+                                                    }
+
+                                                    var callbacks={
+                                                        complete:function(result){
+                                                            map.setCenter(result.detail.location);
+                                                            var marker = new qq.maps.Marker({
+                                                                map:map,
+                                                                position: result.detail.location
+                                                            });
+
+                                                            new qq.maps.Label({
+                                                                position: result.detail.location,
+                                                                map: map,
+                                                                content: '详细地址'
+                                                            });
+
+                                                            if (gps) {
+                                                                var end = result.detail.location;
+                                                                var path = [
+                                                                    gps,
+                                                                    end
+                                                                ];
+
+                                                                var polyline = new qq.maps.Polyline({
+                                                                    path: path,
+                                                                    strokeColor: '#ff0000',
+                                                                    strokeWeight: 1,
+                                                                    editable:false,
+                                                                    map: map
+                                                                });
+
+                                                                var _juli = parseInt(qq.maps.geometry.spherical.computeDistanceBetween(gps, end)) / 1000;
+                                                                $('#juli').html('两点间距离是: <span style="color: red">'+ _juli + "</span>公里")
+                                                            }
+                                                        }
+                                                    }
+
+                                                    geocoder = new qq.maps.Geocoder(callbacks);
+                                                    geocoder.getLocation(address);
+                                                })
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">展厅类型：</div>
+                                        <div class="value">
+                                            <select class="text" disabled>
+                                                <option value="0" {if $purchasers.store_type eq 0}selected{/if}>请选择</option>
+                                                <option value="1" {if $purchasers.store_type eq 1}selected{/if}>生产制造商</option>
+                                                <option value="2" {if $purchasers.store_type eq 2}selected{/if}>品牌供应商</option>
+                                                <option value="3" {if $purchasers.store_type eq 3}selected{/if}>开发设计公司</option>
+                                            </select>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">展厅商圈：</div>
+                                        <div class="value">
+                                            <select class="text" disabled>
+                                                <option value="0" selected="selected">请选择</option>
+                                                <option value="1" {if $purchasers.store_trading eq 0}selected{/if}>高档消费区</option>
+                                                <option value="2" {if $purchasers.store_trading eq 1}selected{/if}>闹市区</option>
+                                                <option value="3" {if $purchasers.store_trading eq 2}selected{/if}>步行街</option>
+                                                <option value="4" {if $purchasers.store_trading eq 3}selected{/if}>一般商业区</option>
+                                            </select>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">年营业额：</div>
+                                        <div class="value">
+                                            <select class="text" disabled>
+                                                <option value="0" {if $purchasers.store_turnover eq 0}selected{/if}>请选择</option>
+                                                <option value="1" {if $purchasers.store_turnover eq 1}selected{/if}>0-50W</option>
+                                                <option value="2" {if $purchasers.store_turnover eq 2}selected{/if}>50W-100W</option>
+                                                <option value="3" {if $purchasers.store_turnover eq 3}selected{/if}>100W-300W</option>
+                                                <option value="4" {if $purchasers.store_turnover eq 4}selected{/if}>300W以上</option>
+                                            </select>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">品牌：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.store_brand}" size="20" disabled>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">营业面积：</div>
+                                        <div class="value">
+                                            <select class="text" disabled>
+                                                <option value="0" {if $purchasers.store_area eq 0}selected{/if}>请选择</option>
+                                                <option value="1" {if $purchasers.store_area eq 1}selected{/if}>50平米以下</option>
+                                                <option value="2" {if $purchasers.store_area eq 2}selected{/if}>50~100平米</option>
+                                                <option value="3" {if $purchasers.store_area eq 3}selected{/if}>100~200平米</option>
+                                                <option value="4" {if $purchasers.store_area eq 4}selected{/if}>200平米以上</option>
+                                            </select>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">行业：</div>
+                                        <div class="value">
+                                            <select class="text" disabled>
+                                                <option value="0" selected="selected" {if $purchasers.store_category eq 0}selected{/if}>请选择</option>
+                                                {foreach from=$categorys item=list}
+                                                <option {if $purchasers.store_category eq $list.cat_id}selected{/if}>{$list.cat_name}</option>
+                                                {/foreach}
+                                            </select>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">店面正门照：</div>
+                                        <div class="value">
+                                            <img style="max-width: 400px;" src="{if $purchasers.gate_file}../{$purchasers.gate_file}{/if}">
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">店面内部照：</div>
+                                        <div class="value">
+                                            {foreach from=$purchasers.work_file item=img}
+                                            <img style="max-width: 400px;" src="{if $img}../{$img}{/if}">
+                                            {/foreach}
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">身份证号：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.self_num}" size="20" disabled>
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">身份证正面：</div>
+                                        <div class="value">
+                                            <img style="max-width: 400px;" src="{if $purchasers.front_of_id_card}../{$purchasers.front_of_id_card}{/if}">
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">身份证反面：</div>
+                                        <div class="value">
+                                            <img style="max-width: 400px;" src="{if $purchasers.reverse_of_id_card}../{$purchasers.reverse_of_id_card}{/if}">
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">营业执照：</div>
+                                        <div class="value">
+                                            <img style="max-width: 400px;" src="{if $purchasers.license_file}../{$purchasers.license_file}{/if}">
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">手机号码：</div>
+                                        <div class="value">
+                                            <input class="text" type="text" value="{$purchasers.mobile_phone}" size="20">
+                                            <div class="fl org"> </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">{$lang.adopt_status}：</div>
+                                        <div class="label_value">
+                                            <div class="checkbox_items">
+                                                <div class="checkbox_item">
+                                                    <input name="audit_status" type="radio" class="ui-radio" value="0" id="review_status_1" {if $purchasers.audit_status eq 0}checked="checked"{/if} onclick="get_review_status(this.value)" />
+                                                    <label for="review_status_1" class="ui-radio-label">{$lang.not_audited}</label>
+                                                </div>
+                                                <div class="checkbox_item">
+                                                    <input name="audit_status" type="radio" class="ui-radio" value="1" id="review_status_2" {if $purchasers.audit_status eq 1}checked="checked"{/if} onclick="get_review_status(this.value)" />
+                                                    <label for="review_status_2" class="ui-radio-label">{$lang.audited_not_adopt}</label>
+                                                </div>
+                                                <div class="checkbox_item">
+                                                    <input name="audit_status" type="radio" class="ui-radio" value="2" id="review_status_3" {if $purchasers.audit_status eq 2}checked="checked"{/if} onclick="get_review_status(this.value)" />
+                                                    <label for="review_status_3" class="ui-radio-label">{$lang.audited_yes_adopt}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">不通过原因：</div>
+                                        <div class="value">
+                                            <textarea name="notice" class="textarea">{$purchasers.notice}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="label">&nbsp;</div>
+                                        <div class="value">
+                                            <input type="hidden" name="id" value="{$purchasers.purchasers_id}">
+                                            <input type="submit" value="审核" class="button" id="submitBtn" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{include file ='library/pagefooter.lbi'}
+<script type="text/javascript" src="js/region.js"></script>
+
+<script type="text/javascript" src="js/jquery.purebox.js"></script>
+<script type="text/javascript">
+    if($('.ui-dropdown input').val() == $('ul[ectype=region] li').data('index')){
+
+    }
+
+    $(function(){
+        //点击查看图片
+        $('.nyroModal').nyroModal();
+
+        //表单验证
+        $("#submitBtn").click(function(){
+            if($("#merchants_users_list_form").valid()){
+                $("#merchants_users_list_form").submit();
+            }
+        });
+
+
+    });
+
+    //地区三级联动
+    $.levelLink();
+
+    //添加品牌
+    function saveBrandQualificationBtn(bid){
+        var title = $(bid).attr('data-title');
+        var user_id = '{$user_id}';
+        if(bid){
+            Ajax.call('merchants_users_list.php?is_ajax=1&act=addBrand&brandView=brandView','user_id='+user_id+'&ec_shop_bid='+bid+'#brandId_edit',addBrandResponse, "GET", "JSON")
+        }else{
+            Ajax.call('merchants_users_list.php?is_ajax=1&act=addBrand&brandView=brandView#brandId_edit','user_id='+user_id,addBrandResponse, "GET", "JSON")
+        }
+
+        function addBrandResponse(result){
+            pb({
+                id:"addBrand_dialog",
+                title:title,
+                content:result.content,
+                ok_title:"确定",
+                cl_title:"取消",
+                width:1200,
+                drag:false,
+                onOk:function(){
+                    addBrand();
+                }
+            });
+        }
+    }
+
+    //删除二级类目
+    function get_deleteBrand(ct_id){
+        var filter = new Object;
+        filter.ct_id  = ct_id;
+        filter.user_id  = '{$user_id}';
+
+        if (confirm('确实删除这条品牌资质信息吗')){
+            Ajax.call('merchants_users_list.php?is_ajax=1&act=deleteBrand', filter, responseDeleteBrand, 'GET', 'JSON');
+        }
+    }
+    function responseDeleteBrand(result){
+        if(result.error == 0){
+            document.getElementById('brandList').innerHTML = result.content;
+        }
+    }
+
+    function addBrand(){
+        var ec_bank_name_letter = $("#ec_bank_name_letter").val();
+        var ec_brandName=$("#ec_brandName").val();
+        var ec_brandFirstChar=$("#ec_brandFirstChar").val();
+        var ec_brandLogo =$("#ec_brandLogo").val();
+        if(ec_brandLogo.length >0){
+            type=ec_brandLogo.match(/^(.*)(\.)(.{1,8})$/)[3];
+            type=type.toUpperCase();
+            if(type!="JPEG"   &&   type!="PNG"   &&   type!="JPG"   &&   type!="GIF"){
+                alert("上传图片类型错误");
+                return false;
+            }
+        }
+        if(ec_brandName.length == 0){
+            alert("品牌中文名称不能为空");
+        }else if(ec_bank_name_letter.length == 0){
+            alert("品牌英文名称不能为空");
+        }else if(ec_brandFirstChar.length == 0){
+            alert("品牌首字母不能为空");
+        }else{
+            var actionUrl = "merchants_users_list.php?is_ajax=1&act=addImg&user_id={$user_id}";
+            $("#addBatchImg_from").ajaxSubmit({
+                type: "POST",
+                dataType: "json",
+                url: actionUrl,
+                data: { "action": "TemporaryImage" },
+                success: function (data) {
+                    if (data.error == "1") {
+                        alert(data.massege);
+                    } else if (data.error == "2") {
+                        $("*[ectype='barend_content']").html(data.content);
+                    }
+                },
+                async: true
+            });
+        }
+    }
+
+    function addBrandTable(obj)
+    {
+        var add_num = 3;
+        var num = $('#numAdd').val();
+        var obj = $(obj);
+        var tbl = obj.parents('.zizhi_item');
+        if(num < add_num){
+            var input = tbl.clone();
+            input.find('.up').attr('onclick','removeBrandTable(this)');
+            input.find('.up').removeClass().addClass('down');
+            tbl.parents('#parentNode_dateTimeDiv').append(input);
+            num++;
+            $('#numAdd').val(num);
+        }else{
+            alert('批量添加' + add_num +'次');
+        }
+
+        for(i=0;i<num;i++){
+            var expiredDate = document.getElementsByName("ec_expiredDateInput[]");
+            expiredDate[i].id = 'expiredDateInput_' + i;
+        }
+    }
+    function removeBrandTable(obj,b_fid)
+    {
+        var num = $('#numAdd').val();
+        if(b_fid > 0){
+            if (confirm('确定删除这条品牌资质信息吗')){
+                location.href = 'merchants_users_list.php?is_ajax=1&act=brand_edit&ec_shop_bid={$ec_shop_bid}&del_bFid=' + b_fid + '&user_id={$user_id}&brandView=brandView#brandId_edit';
+            }
+        }else{
+            var obj = $(obj);
+            var tbl = obj.parents('.zizhi_item');
+            tbl.remove();
+            num--;
+            $('#numAdd').val(num);
+            for(i=0;i<num;i++){
+                var radioCheckbox_val = document.getElementsByName("radioCheckbox_val[]");
+                radioCheckbox_val[i].value = i;
+            }
+        }
+    }
+
+    function get_merchants_audit(val){
+        var audit = $('#tr_merchantsAudit');
+        var grade_id = $('#grade_id');
+        if(val == 2){
+            audit.show();
+        }else{
+            audit.hide();
+        }
+        if(val == 1){
+            grade_id.show();
+        }else{
+            grade_id.hide();
+        }
+    }
+
+    function get_categoryId_permanent(f, permanent_date, dt_id){
+        var categoryId = document.getElementById('categoryId_date_' + dt_id);
+        if(f.checked){
+            categoryId.value = '';
+        }else{
+            if(permanent_date != ''){
+                categoryId.value = permanent_date;
+            }
+        }
+    }
+
+    function get_expiredDate_permanent(f, expiredDateInput, b_fid){
+        if(b_fid > 0){
+            var expiredDate = document.getElementById('expiredDateInput_' + b_fid);
+            if(f.checked){
+                expiredDate.value = '';
+            }else{
+                if(expiredDateInput != ''){
+                    expiredDate.value = expiredDateInput;
+                }
+            }
+        }else{
+
+            var DateInput = document.getElementsByName("ec_expiredDateInput[]");
+            var permanent = document.getElementsByName("ec_expiredDate_permanent[]");
+            for(i=0; i<permanent.length; i++){
+                if(permanent[i].checked){
+                    if(DateInput[i].value != ''){
+                        DateInput[i].value = '';
+                    }
+                }
+            }
+        }
+    }
+
+    function get_brandEndTime_permanent(f, brandEndTime){
+        var ec_brandEndTime = document.getElementById('ec_brandEndTime');
+        if(f.checked){
+            ec_brandEndTime.value = '';
+        }else{
+            if(brandEndTime != ''){
+                ec_brandEndTime.value = brandEndTime;
+            }
+        }
+    }
+
+    //查询会员
+    function get_search_user(){
+        var user_name = $("#userName").val();
+        Ajax.call('merchants_users_list.php?is_ajax=1&act=get_user_name', "user_name="+user_name, user_nameResponse, "GET", "JSON");
+    }
+
+    function user_nameResponse(result)
+    {
+        if (result.error == 0)
+        {
+            document.getElementById('user_list').innerHTML = result.content;
+            $(".select-list2").perfectScrollbar("destroy");
+            $(".select-list2").perfectScrollbar();
+        }
+    }
+</script>
+</body>
+</html>

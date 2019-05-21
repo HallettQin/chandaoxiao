@@ -1,0 +1,222 @@
+{include file="page_header"}
+		<div class="con cont-pb">
+			<!--下单提示轮播-->
+			{if $is_open == 1}
+			<header class="dis-box index-fixed-box js-item-hidden">
+				<div class="index-fixed-imgbox">
+					<div class="index-header-img item01"><img src="{elixir('img/no_image.jpg')}" class="img"></div>
+				</div>
+				<div class="box-flex onelist-hidden"><label><em class="item02">风**时</em>下单喽 <em class="col-9 item03">1秒前</em></label></div>
+			</header>
+			{/if}
+				<div class="shopping-menu shopping-menu-team j-shopping-menu maxbox">
+					<div class="dis-box b-color-f">
+						<nav class="shopping-list-nav team-shopping-list-nav box-flex swiper-container-horizontal">
+							<ul class="swiper-wrapper">
+								<!--拼团频道-->
+								{foreach $team_categories as $key=>$val}
+								<li class="div{$val.id} swiper-slide {if $tc_id == $val.id}active{/if}" status="{$val.id}" category="{$val.id}">
+								<a href="{url('team/index/index',array('tc_id'=> $val.id))}">
+								{$val.name}
+								</a>
+								</li>
+								{/foreach}
+
+							</ul>
+						</nav>
+					</div>
+				</div>
+			<div class="swiper-wrapper">
+				<section class="swiper-slide">
+					<div class="index-box">
+
+						<div class="index-banner swiper-container box position-rel banner-first">
+							<div class="swiper-wrapper m-45">
+								<!--广告位banner-->
+								{insert_team(array('num'=>5, 'tc_id'=>$tc_id, 'type'=>'banner'))}
+							</div>
+							<!-- 分页器 -->
+							<div class="swiper-pagination banner-first-pagination"></div>
+						</div>
+
+						<!--nav-->
+						<nav class="b-color-f index-nav-box">
+							<ul class="ul-4 of-hidden">
+								{foreach $team_child as $key=>$val}
+								<li>
+									<a class="box-flex wallet-bt" href="{$val.url}">
+									<div class="cate-img">
+										<img src="{$val.tc_img}" class="img">
+										<p>{$val.name}</p>
+									</div>
+									</a>
+								</li>
+								{/foreach}
+							</ul>
+						</nav>
+						<!--nav-end--->
+
+						<!--index-活动-list-->
+						<section class="index-activity m-top10">
+							<div class="dis-box m-top1px">
+								<div class="box-flex activity-list">
+									<!--广告位left-->
+									{insert_team(array('num'=>1, 'tc_id'=>$tc_id, 'type'=>'left'))}
+								</div>
+								<div class="box-flex activity-list">
+									<!--广告位right-->
+									{insert_team(array('num'=>2, 'tc_id'=>$tc_id, 'type'=>'right'))}
+								</div>
+							</div>
+						</section>
+
+						 <section class="index-group position-rel m-top10">
+							<div class="position-rel">
+								<!--广告位bottom-->
+								{insert_team(array('num'=>1, 'tc_id'=>$tc_id, 'type'=>'bottom'))}
+							</div>
+						</section>
+						<!--拼团列表-list-->
+						<section class="team-goods">
+							<script id="j-product" type="text/html">
+								<%if totalPage > 0 %>
+		                        <%each list as goods%>
+								<div class="b-color-f m-top10 position-rel wind" style="width:49%; float:left;margin-left:3px">
+									<a class="product-div-link" href="<%goods.url%>"></a>
+									<div class="group-list-img"><img src="<%goods.goods_img%>" class="img"></div>
+									<div class="group-list-cont padding-all">
+										<h4 class="col-3 twolist-hidden" style=" font-size:1.5rem"><%goods.goods_name%></h4>
+										<div class="dis-box ">
+											<div class="box-flex f-05 col-7">
+												<i class="iconfont icon-wodetuandui"></i><%goods.team_num%>人团<br>
+												 单买<br> <%goods.shop_price%>
+											</div>
+											<div class="group-list-cont-cont">
+												 <em class="color-red f-08"><%goods.team_price%></em>
+												<label class="b-color" style="font-size:1.3rem">去开团<i class="iconfont icon-more"></i></label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<%/each%>
+								<% else %>
+			                    <div class="no-div-message">
+			                        <i class="iconfont icon-biaoqingleiben"></i>
+			                        <p>亲，此处没有内容～！</p>
+			                    </div>
+			                    <% /if %>
+                        	</script>
+						</section>
+
+					</div>
+				</section>
+			</div>
+
+			<!--footer-nav-->
+			<footer class="footer-nav dis-box">
+				<a href="{url('/')}" class="box-flex nav-list">
+					<i class="nav-box i-home"></i><span>首页</span>
+				</a>
+				<a href="{url('category/index/index')}" class="box-flex nav-list">
+					<i class="nav-box i-cate"></i><span>分类</span>
+				</a>
+				<a href="{url('team/index/index')}" class="box-flex nav-list active">
+					<i class="nav-box i-pintuan"></i><span>拼团频道</span>
+				</a>
+				<a href="{url('team/index/userranking')}" class="box-flex nav-list">
+					<i class="nav-box i-ranking"></i><span>排行</span>
+				</a>
+				<!--<a href="{url('cart/index/index')}" class="box-flex position-rel nav-list">
+					<i class="nav-box i-flow"></i><span>进货单</span>
+					<!-- <em class="position-abo ect-num-tag">10</em>
+				</a>-->
+				<a href="{url('user/index/index')}" class="box-flex nav-list">
+					<i class="nav-box i-user"></i><span>用户中心</span>
+				</a>
+			</footer>
+		    <!--回到顶部-->
+		    <nav class="commom-nav dis-box ts-5">
+		        <div class="left-icon">
+		            <div class="filter-top filter-top-index" id="scrollUp">
+		                <i class="iconfont icon-jiantou2"></i>
+		                <span>顶部</span>
+		            </div>
+		        </div>
+		    </nav>
+		</div>
+		<script type="text/javascript ">
+			//首页下单提示轮播
+			{if $is_open == 1}
+			setInterval("virtual_order()",5000);
+			virtual_order();
+			function virtual_order(){
+				$.post("{url('team/index/virtual_order')}", '', function(data){
+				if(data){
+					if(data.err_no > 0){
+						$(".js-item-hidden").hide();;
+					}else{
+						$('.item01 img').attr('src',data.avatar);//把src属性更改为'6.jpg';
+						$('.item02').text(data.name);
+						$('.item03').text(data.seconds);
+					}
+
+					}
+				}, 'json');
+			}
+			{/if}
+			$(function($) {
+				var swiper = new Swiper('.index-new-list', {
+					pagination: '.swiper-pagination',
+					paginationClickable: true,
+					direction: 'vertical',
+					loop: true,
+					grabCursor: true,
+					autoplayDisableOnInteraction: false,
+					autoplay: 4000,
+					speed: 400,
+					freeMode: true,
+				});
+
+				var mySwiper = new Swiper('.banner-first', {
+					pagination: '.banner-first-pagination',
+					loop: false,
+					grabCursor: true,
+					paginationClickable: true,
+					autoplayDisableOnInteraction: false,
+					loop: true,
+					autoplay: 3000
+				});
+			});
+			//滚动-nav
+			var swiper_nav = new Swiper('.shopping-list-nav', {
+				scrollbarHide: true,
+				slidesPerView: 'auto',
+				centeredSlides: false,
+				grabCursor: true
+			});
+			$('.shopping-list-nav li').on('click', function(e) {
+				var category = $(this).attr('category');
+				var index = $(".shopping-list-nav li").index(this);
+				$(this).siblings().removeClass("active");
+				$('.shopping-abs .swiper-slide a').removeClass("active");
+
+				$(".div" + category).addClass("active");
+
+				swiper_nav.slideTo(index, 1000, false); //切换到第一个slide，速度为1秒
+
+				//infinite.onload('where=' + category + '&type=1');
+				var swiper = new Swiper('.j-g-s-p-con', {
+					scrollbarHide: true,
+					slidesPerView: 'auto',
+					centeredSlides: false,
+					grabCursor: true
+
+				});
+			})
+			/*拼团频道商品获取*/
+			var url = "{url('team/index/teamlist', array('tc_id'=>$tc_id, 'page'=>$page,))}";
+			$('.team-goods').infinite({url: url, template:'j-product', params: 'tc_id={$tc_id}'});
+		</script>
+	</body>
+
+</html>

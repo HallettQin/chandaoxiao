@@ -1,0 +1,14 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+</style>
+<!--{if $ad_child}-->
+<div class="">
+    <div class="bd">
+        <ul class="recommed-ul">
+            <!--{foreach from=$ad_child item=ad name=noad}-->
+            <li><a href="{$ad.ad_link}" target="_blank" class="purchasers"><img src="{$ad.ad_code}" width="{$ad.ad_width}" height="{$ad.ad_height}" /></a></li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+</div>
+<!--{/if}-->

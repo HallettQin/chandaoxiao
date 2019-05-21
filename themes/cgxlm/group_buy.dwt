@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+</head>
+
+<body>
+    <!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+    <!-- #BeginLibraryItem "/library/page_category.lbi" --><!-- #EndLibraryItem -->
+    <div class="content">
+        <div class="banner b2b-home-banner pre-banner">{* DSC 提醒您：动态载入activity_top_ad.lbi，显示首页分类小广告 *}{insert name='get_adv_child' ad_arr=$activity_top_banner}</div>
+        <div class="wdiv">
+            <div class="w">
+                <div class="l">
+                    <div class="pro">
+                        <div class="ca_title">
+                            <p>—&nbsp;拼单分类&nbsp;—</p>
+                        </div>
+                        <!-- #BeginLibraryItem "/library/page_header_category_new.lbi" --><!-- #EndLibraryItem -->
+                        <div class="floor">
+                            {* DSC 提醒您：动态载入wholesale_ad.lbi，推荐 *}{insert name='get_adv_child' ad_arr=$recommend_floor}
+                            {* DSC 提醒您：动态载入wholesale_ad.lbi，品牌 *}{insert name='get_adv_child' ad_arr=$brand_floor}
+                            <!--{foreach from=$categorys item=cat}-->
+                            {insert name='get_adv_child' ad_arr=$cat_ads id=$cat.cat_id}
+                            <!-- {/foreach} -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+{insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js'}
+<script type="text/javascript" src="../js/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+
+<script type="text/javascript">
+    $(".pre-banner").slide({titCell:".hd ul",mainCell:".bd ul",effect:"left",interTime:3500,delayTime:500,autoPlay:true,autoPage:true});
+    $(".sign-content").slide({titCell:".hd ul",mainCell:".bd ul",effect:"leftLoop",interTime:3500,delayTime:500,autoPlay:true,pnLoop:true,autoPage:true});
+
+    //倒计时JS
+    $(".time").each(function(){
+        $(this).yomi();
+    });
+</script>
+</html>

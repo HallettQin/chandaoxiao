@@ -1,0 +1,39 @@
+<footer>
+    <!-- <div class="footer">
+        <div class="links" id="ECS_MEMBERZONE"> <script type="text/javascript" src="themesmobile/68ecshopcom_mobile/js/utils.js"></script>          	<a href="user.php"><span>登录</span></a><a href="register.php"><span>注册</span></a><a href="#"><span>反馈</span></a><a href="javascript:window.scrollTo(0,0);"><span>回顶部</span></a>
+        </div>
+        <p class="mf_o4">© 2015-2018 产供销网络科技 版权所有，并保留所有权利。</p>
+        
+    </div> -->
+
+    <div style="height:50px; line-height:50px; clear:both;"></div>
+    <div class="v_nav">
+        <div class="vf_nav">
+            <ul class="dis-box">
+                <li class="box-flex  {if $nav eq 'index'}active{/if}"><a href="./">
+                    <i class="vf_1"></i>
+                    <span>首页</span></a></li>
+                {if $_SESSION['seller_id']}
+                <li class="box-flex  {if $nav eq 'store'}active{/if}"><a href="{url('store/index/shop_info', ['id'=>$_SESSION['user_id']])}">
+                    <i class="vf_2"></i>
+                    <span>展厅</span></a></li>
+                {else}
+                <li class="box-flex  {if $nav eq 'category'}active{/if}"><a href="{url('category/index/index')}">
+                    <i class="vf_3"></i>
+                    <span>分类</span></a></li>
+                <li class="box-flex  {if $nav eq 'cart'}active{/if}"><a href="{url('cart/index/index')}">
+                    <i class="vf_4"></i>
+                    <span>进货单</span></a></li>
+                {/if}
+                {if $_SESSION['seller_id']}
+                <li class="box-flex  {if $nav eq 'supplier'}active{/if}"><a href="{url('supplier/index/index')}">
+                    <i class="goldm"></i>
+                    <span>信息台</span></a></li>
+                {/if}
+                <li class="box-flex  {if $nav eq 'user'}active{/if}"><a href="{url('user/index/index')}">
+                    <i class="vf_5"></i>
+                    <span>我的</span></a></li>
+            </ul>
+        </div>
+    </div>
+</footer>

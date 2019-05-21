@@ -1,0 +1,126 @@
+{include file="page_header"}
+<link rel="stylesheet" type="text/css" href="public/css/nav.css">
+<header>
+    <div class="tab_nav">
+        <div class="header">
+            <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+            <div class="h-mid">{$page_title}</div>
+            <div class="h-right">
+                <aside class="top_bar">
+                    <div onclick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="rank_nav">
+    <div class="swiper-container swiper-container-horizontal">
+        <div class="swiper-wrapper category-nav">
+            {foreach $category as $item}
+            <li class="swiper-li swiper-slide"><a href="javascript:void(0)" data-id="{$item.id}">{$item.name}</a></li>
+            {/if}
+        </div>
+    </div>
+    <ul class="lists ul-store-lists"></ul>
+    <script id="category" type="text/html">
+        <%each shop_list as value%>
+        <%if value.shop_id%>
+        <li class="">
+            <a href="<%value.shop_url%>" class="purchasers">
+                <img src="<%value.street_thumb%>" alt="<%value.shopName%>"/>
+                <span><%value.shopName%></span>
+            </a>
+        </li>
+        <%/if%>
+        <%/each%>
+    </script>
+</div>
+<div class="mo"></div>
+<div></div>
+</body>
+<script type="text/javascript">
+
+    var is_purchasers = '';
+
+    $(function(){
+        $.getJSON("{url('console/view/purchasers')}",function(result){
+            if (result.is_purchasers) {
+                is_purchasers = result.is_purchasers
+            } else {
+                is_purchasers = 0;
+            }
+        })
+    })
+
+    function c_purchasers(){
+        if (is_purchasers && is_purchasers != '' && is_purchasers != '0') {
+            return true;
+        }
+
+        window.location.href = "{url('index/index/tips')}";
+        return false;
+    }
+
+    $('.purchasers').bind('click', c_purchasers)
+
+</script>
+<script>
+    var url = '{url("rank/index/ajaxstore")}';
+    $(function(){
+        var cat_id = 0;
+
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            slidesPerView: 4.5,
+            paginationClickable: true,
+            spaceBetween: 0
+        });
+
+        $('.swiper-li a').bind('click', function(){
+            $('.swiper-li a').removeClass('active')
+            $(this).addClass('active');
+            var id = $(this).attr("data-id");
+
+            ajaxAction( id);
+        })
+
+        $('.swiper-li a').eq(0).trigger('click');
+        function ajaxAction(id) {
+            var data = {id:id}
+            if (cat_id != id) {
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data:data,
+                    cache: true,
+                    async: false,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $(".loading").show();
+                    },
+                    success: function (result) {
+                        if (typeof(result.code) == 'undefined') {
+                            $(window).scrollTop(0);
+                            template.config('openTag', '<%');
+                            template.config('closeTag', '%>');
+                            console.log(result.shop_list)
+                            if (result.shop_list && result.shop_list.length) {
+                                var html = template('category', result);
+                            } else {
+                                var html = "<div class='no-div-message'> <i class='iconfont icon-biaoqingleiben'></i> <p>亲，此处没有内容～！</p> </div>";
+                            }
+                            $(".lists").html(html);
+
+                            $('.purchasers').bind('click', c_purchasers)
+                        }
+                    },
+                    complete: function () {
+                        $(".loading").hide();
+                        cat_id = id;
+                    }
+                });
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,6 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+$(function(){
+	goods_collect_store({$goods.user_id|default:0});
+});
+</script>

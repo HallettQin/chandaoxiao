@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable -->
+    <!-- TemplateBeginEditable name="head" -->
+    <!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+</head>
+
+<body>
+<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+<div class="shop-header">
+    <div class="shop-header">
+        <!-- #BeginLibraryItem "/library/merchants_store_top.lbi" --><!-- #EndLibraryItem -->
+    </div>
+    <div class="bottom">
+        <div class="w w1200">
+            <div class="shop-head-category">
+                <div class="all-cate"><a href="javascript:;">{$lang.all_seller_cat}<i class="iconfont icon-liebiao"></i></a></div>
+                {if $all_cat_list}
+                <div class="cate-tab-content">
+                    {foreach from=$all_cat_list item=cat}
+                    <dl>
+                        <dt><a href="{$cat.url}">{$cat.cat_name}</a></dt>
+                        {foreach from=$cat.child_tree item=tree}
+                        <dd><a href="{$tree.url}">{$tree.name}</a></dd>
+                        {/foreach}
+                    </dl>
+                    {/foreach}
+                </div>
+                {/if}
+            </div>
+            <div class="shop-nav">
+                <ul>
+                    {foreach from=$store_category item=category key=key name=no}
+                    <!-- {if $smarty.foreach.no.iteration<6}-->
+                    <li class="s_box_id">
+                        <a href="{$category.url}&mode={$mode}" {if $category.opennew eq 1} target="_blank"{/if}>{$category.cat_name}</a>
+                    </li>
+                    <!-- {/if} -->
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="seller-list-main">
+    <div class="w w1200">
+        <!--{if $cat_id > 0}-->
+        <!--{if $brands.1 || $price_grade.1 || $filter_attr_list} 组合搜索 开始-->
+        <div class="selector">
+            <!--{if $brands.1}-->
+            <div class="s-line">
+                <div class="s-l-wrap">
+                    <div class="s-l-tit"><span>{$lang.brand}：</span></div>
+                    <div class="s-l-value">
+                        <div class="s-l-v-list">
+                            <ul>
+                                <!--{foreach from=$brands item=brand}-->
+                                <!-- {if $brand.selected} -->
+                                <li><a href="javascript:;" class="shaixuan">{$brand.brand_name}</a></li>
+                                <!-- {else} -->
+                                <li><a href="{$brand.url}">{$brand.brand_name}</a></li>
+                                <!-- {/if} -->
+                                <!-- {/foreach} -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="s-l-opt"></div>
+                </div>
+            </div>
+            <!--{/if}-->
+            <!--{if $price_grade.1}-->
+            <div class="s-line">
+                <div class="s-l-wrap">
+                    <div class="s-l-tit"><span>{$lang.price}：</span></div>
+                    <div class="s-l-value">
+                        <div class="s-l-v-list">
+                            <ul>
+                                <!--{foreach from=$price_grade item=grade}-->
+                                <!-- {if $grade.selected} -->
+                                <li><a href="javascript:;" class="shaixuan">{$grade.price_range}</a></li>
+                                <!-- {else} -->
+                                <li><a href="{$grade.url}">{$grade.price_range}</a></li>
+                                <!-- {/if} -->
+                                <!--{/foreach}-->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="s-l-opt"></div>
+                </div>
+            </div>
+            <!--{/if}-->
+            <!--{foreach from=$filter_attr_list item=filter_attr key=key}-->
+            <div class="s-line">
+                <div class="s-l-wrap">
+                    <div class="s-l-tit"><span>{$filter_attr.filter_attr_name|escape:html}：</span></div>
+                    <div class="s-l-value">
+                        <div class="s-l-v-list">
+                            <ul>
+                                <!--{foreach from=$filter_attr.attr_list item=attr}-->
+                                <!-- {if $attr.selected} -->
+                                <li><a  href="javascript:;" class="shaixuan">{$attr.attr_value}</a></li>
+                                <!-- {else} -->
+                                <li><a href="{$attr.url}">{$attr.attr_value}</a></li>
+                                <a href="{$attr.url}">{$attr.attr_value}</a>
+                                <!-- {/if} -->
+                                <!--{/foreach}-->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="s-l-opt"></div>
+                </div>
+            </div>
+            <!--{/foreach}-->
+        </div>
+        <!--{/if}-->
+        <!--{/if}-->
+        <div class="clearfix">
+            <!--{if $cat_store_list || $goods_hot || $basic_info.notice}-->
+            <div class="shop-list-side">
+                <!--{if $cat_store_list}-->
+                <div class="side-box">
+                    <h2>{$lang.seller_cat}</h2>
+                    <div class="side-menu">
+                        <!--{foreach from=$cat_store_list item=cat name=nocat}-->
+                        <dl class="j-slideToggle-wp{if $smarty.foreach.nocat.iteration eq 1} active{/if}">
+                            <dt class="menu-level-1"><a href="{$cat.url}&mode={$mode}">{$cat.cat_name}</a>{if $cat.child_tree}<i class="iconfont icon-xia j-slideToggle-handle"></i>{/if}</dt>
+                            {if $cat.child_tree}
+                            <dd class="j-slideToggle-con" {if $smarty.foreach.nocat.iteration eq 1}style="display: block;"{/if}>
+                            <!--{foreach from=$cat.child_tree item=catchild name=nochildcat}-->
+                            <p><a href="{$catchild.url}&mode={$mode}">{$catchild.name}</a></p>
+                            <!--{/foreach}-->
+                            </dd>
+                            {/if}
+                        </dl>
+                        <!--{/foreach}-->
+                    </div>
+                </div>
+                <!--{/if}-->
+                <!--{if $basic_info.notice}-->
+                <div class="side-news">
+                    <h2>{$lang.seller_notice}</h2>
+                    <ul>
+                        <li><a href="javascript:;" style="cursor:default;">{$basic_info.notice}</a></li>
+                    </ul>
+                </div>
+                <!--{/if}-->
+            </div>
+            <!--{/if}-->
+            <div class="shop-list-view" {if !$cat_store_list && !$goods_hot && !$basic_info.notice}style="width:1200px"{/if}>
+            <div class="filter">
+                <div class="filter-wrap">
+                    <div class="filter-sort">
+                        <a href="{$script_name}.php?id={$category}&keyword={$keyword|default:}&merchant_id={$merchant_id}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=goods_id&order=<!-- {if $pager.sort == 'goods_id' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" class="<!-- {if $pager.sort == 'goods_id'}-->curr<!-- {/if} -->">{$lang.default}<i class="iconfont <!-- {if $pager.sort == 'goods_id' && $pager.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+                        <a href="{$script_name}.php?id={$category}&keyword={$keyword|default:}&merchant_id={$merchant_id}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=sales_volume&order=<!-- {if $pager.sort == 'sales_volume' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" class="<!-- {if $pager.sort == 'sales_volume'}-->curr<!-- {/if} -->">{$lang.sales_volume}<i class="iconfont <!-- {if $pager.sort == 'sales_volume' && $pager.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+                        <!--<a href="{$script_name}.php?id={$category}&keyword={$keyword|default:}&merchant_id={$merchant_id}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=shop_price&order=&lt;!&ndash; {if $pager.sort == 'shop_price' && $pager.order == 'ASC'} &ndash;&gt;DESC&lt;!&ndash; {else} &ndash;&gt;ASC&lt;!&ndash; {/if} &ndash;&gt;#goods_list" class="&lt;!&ndash; {if $pager.sort == 'shop_price'}&ndash;&gt;curr&lt;!&ndash; {/if} &ndash;&gt;">{$lang.price}<i class="iconfont &lt;!&ndash; {if $pager.sort == 'shop_price' && $pager.order == 'DESC'} &ndash;&gt;icon-arrow-down&lt;!&ndash; {else} &ndash;&gt;icon-arrow-up&lt;!&ndash; {/if} &ndash;&gt;"></i></i></a>-->
+                        <a href="{$script_name}.php?id={$category}&keyword={$keyword|default:}&merchant_id={$merchant_id}&display={$pager.display}&brand={$brand_id}&price_min={$price_min}&price_max={$price_max}&filter_attr={$filter_attr}&page={$pager.page}&sort=last_update&order=<!-- {if $pager.sort == 'last_update' && $pager.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->#goods_list" class="<!-- {if $pager.sort == 'last_update'}-->curr<!-- {/if} -->">{$lang.New}<i class="iconfont <!-- {if $pager.sort == 'last_update' && $pager.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="g-view w">
+                <div class="goods-list" ectype="gMain" {if !$cat_store_list && !$goods_hot && !$basic_info.notice} style="width:1230px; margin-left:-10px;"{/if}>
+                <ul class="gl-warp gl-warp-large">
+                    <!--{foreach from=$goods_list item=goods key=key name=goods}-->
+                    <li class="gl-item" style="height: 353px">
+                        <div class="gl-i-wrap">
+                            <div class="goods_type goods_type_{$goods.mode}">
+                                {if $goods.mode eq 'group_buy'}
+                                拼单
+                                {elseif $goods.mode eq 'presale'}
+                                预定
+                                {elseif $goods.mode eq 'sample'}
+                                样品
+                                {elseif $goods.mode eq 'wholesale'}
+                                现货
+                                {/if}
+                            </div>
+                            <div class="p-img">
+                                <a target="_blank" href="{$goods.url}">
+                                    <img class="item_hd_{$goods.goods_id}" alt="{$goods.goods_name}" src="{$goods.goods_thumb}"/></a>
+                            </div>
+                            <div class="p-lie">
+                                <div class="p-price">
+                                    {if $goods.volume_price neq ''}
+                                    {$goods.volume_price}
+                                    {else}
+                                    {$goods.shop_price}
+                                    {/if}
+                                </div>
+                                <!-- <div class="p-num">已售<em>$goods.cur_amount</em>$lang.jian</div> -->
+                            </div>
+                            <div class="p-name"><a target="_blank" href="{$goods.url}">{$goods.goods_name}</a></div>
+                        </div>
+                    </li>
+                <!--{foreachelse}-->
+                <div class="no_records">
+                    <i class="no_icon_two"></i>
+                    <div class="no_info">
+                        <h3>{$lang.information_null}</h3>
+                    </div>
+                </div>
+                <!--{/foreach}-->
+            </ul>
+    </div>
+    <div class="clear"></div>
+    <div class="pages">
+        <!-- #BeginLibraryItem "/library/pages.lbi" --> <!-- #EndLibraryItem -->
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+<!-- {if $site_domain} -->
+<script type="text/javascript" src="{$site_domain}js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="{$site_domain}js/jquery.yomi.js"></script>
+<script type="text/javascript" src="{$site_domain}js/common.js"></script>
+<script type="text/javascript" src="{$site_domain}js/utils.js"></script>
+<script type="text/javascript" src="{$site_domain}js/compare.js"></script>
+<script type="text/javascript" src="{$site_domain}js/cart_common.js"></script>
+<script type="text/javascript" src="{$site_domain}js/parabola.js"></script>
+<script type="text/javascript" src="{$site_domain}js/shopping_flow.js"></script>
+<!-- {else} -->
+{insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js,common.js,compare.js,parabola.js,shopping_flow.js'}
+<!-- {/if} -->
+<script type="text/javascript" src="{$site_domain}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+<script type="text/javascript" src="{$site_domain}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //点击切换下拉模块
+        function slideToggle(){
+            var wp = $(".j-slideToggle-wp");
+            wp.each(function(i,el){
+                var $this = $(el);
+                var handle = $this.find(".j-slideToggle-handle");
+                var con = $this.find(".j-slideToggle-con");
+                handle.click(function(){
+                    con.slideToggle();
+                    $this.toggleClass("active");
+                })
+            })
+        }
+        slideToggle();
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,840 @@
+{include file="page_header"}
+<style>
+    .unit-goods img{
+        width: 5rem;
+        height: 5rem;
+        margin-left: 1rem;
+    }
+    .attr{
+        margin-bottom: 10px;
+    }
+    .j-item-7-price{
+        font-size: 16px;
+        line-height: 16px;
+    }
+</style>
+<div class="con">
+    <div class="flow-cart blur-div">
+        <!-- {if !$goods_list} -->
+        <section class="flow-no-cart mb-7">
+			<span class="gwc-bg">
+                <i class="iconfont icon-gouwuche"></i>
+            </span>
+            <p class="t-remark text-center">进货单什么也没有</p>
+            <a href="{url('/')}" type="button" class="btn-default-new min-btn br-5">去逛逛</a>
+            <div class="f-n-c-prolist product-one-list j-f-n-c-prolist b-color-f">
+                <h3 class="padding-all" style="font-size:1.6rem; padding-bottom:.4rem;">你可能想要</h3>
+                <div class="swiper-wrapper">
+                    <!-- {foreach $relation as $key} -->
+                    <li class="swiper-slide">
+                        <div class="product-div" >
+                            <a class="product-div-link" href="{$key.goods_url}"></a>
+                            <div class="shop-list-width"><img class="product-list-img" src="{$key.goods_thumb}"/></div>
+                            <div class="product-text m-top06 index-product-text">
+                                <h4 style="line-height:1.6rem; height:3rem">{$key.goods_name}</h4>
+                                <p><span class="p-price t-first ">
+                                        {if $key.is_promote && $key.gmt_end_time}
+                                             {$key.promote_price}
+                                             {else}
+                                             {$key.shop_price_formated}
+                                             {/if}
+                                        </span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- {/foreach} -->
+                </div>
+            </div>
+        </section>
+        <!-- {else} -->
+        <!-- 按店铺显示商品  start-->
+        <section class="flow-have-cart select-three j-select-all">
+            <!-- {foreach $goods_list as $key} -->
+            <section class="j-cart-get-i-more shop0">
+                <header class="flow-shop-header padding-all of-hidden dis-box">
+                    <div class="ect-select box-flex is-shop">
+                        <label class="dis-box label-this-all">
+                            <i class="j-select-btn active-i" data-type="2"></i>
+                            <a class="box-flex f-06" href="{if $key.ru_id>0}{url('store/index/shop_info',array('id'=>$key.ru_id))}{else}javascript:;{/if}">
+                                <i class="iconfont icon-dianpu2 flow-shop-icon {if  $key.ru_id == 0}{/if}"></i>
+                                {$key.shop_name}{$key.user_id}
+                                {if  $key.ru_id == 1}<i class="iconfont icon-more f-08 col-7"></i>{/if}
+                            </a>
+                        </label>
+                    </div>
+                </header>
+                <section class="b-color-f">
+                    <div class="product-list-small who-product-list marb">
+                        <!-- {foreach $key.goods_list as $list} -->
+                        <div class="dis-box b-color-f padding-all">
+                            <div class="ect-select who-ect-select">
+                                <label class="rec-active  j-goods-attr-list">
+                                    <i class="j-select-btn active-i " data-type="1"></i>
+                                </label>
+                            </div>
+                            <div class="">
+                                <a class="unit-goods"><img src="../{$list.goods_thumb}"></a>
+                            </div>
+                            <div class="box-flex f-06 who-title">{if $list.act_name}{$list.act_name}{else}{$list.goods_name}{/if}</div>
+                        </div>
+
+                        <ul style="padding:0 1.1rem" data-min-num="1">
+                            <!-- {foreach $list.list as $cart} -->
+                            <li data-goods-id="1" rec-id="{$cart.rec_id}" enabled="1" style="padding-left: 2rem">
+                                <div class="dis-box drop7 com-post-adr" style="padding:0">
+                                    <div class="ect-select ">
+                                        <label class=" rec-active" goods-id="1" rec-id="{$cart.rec_id}">
+                                            <i class="j-select-btn active-i " data-type="0"></i>
+                                        </label>
+                                    </div>
+                                    <div class="box-flex">
+                                        <div class="product-div" style="background:none">
+                                            <div class="fl">
+                                                <div class="attr">
+                                                    <!--{foreach $cart.goods_attr as $attr}-->
+                                                    {$attr.attr_name}:{$attr.attr_value}　
+                                                    <!--{/foreach}-->
+                                                </div>
+                                                <div class="total_price">
+                                                    <span class="t-first j-item-7-price" data-total-price="{$cart.total_price}">{$cart.total_price_formatted}</span>
+                                                </div>
+                                            </div>
+                                            <div class="product-text index-product-text who-product-text fr">
+                                                <div class="flow-new-cont m-top02">
+                                                    <span class="t-first unit-price" >￥{$cart.goods_price}</span>
+                                                    <div class="div-num dis-box">
+                                                        <a class="num-up"></a>
+                                                        <input class="box-flex cart-number active" type="number" name="cart_number" value="{$cart.goods_number}" cart-id="{$cart.rec_id}" style="padding:0">
+                                                        <a class="num-next" data-max-num="0"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- {/foreach} -->
+                        </ul>
+                        <!-- {/foreach} -->
+                    </div>
+                </section>
+            </section>
+            <!-- {/foreach} -->
+
+            <!-- 按店铺显示商品  end-->
+        </section>
+    </div>
+</div>
+<div class="mask-filter-div"></div>
+<!--领取优惠券end-->
+<input type="hidden" name="warehouse_id" value="{$warehouse_id}" id="region_id">
+<input type="hidden" name="area_id" value="{$area_id}" id="area_id">
+<!--悬浮btn star-->
+<footer class="flow-cart-btn">
+    <section class="filter-btn f-cart-filter-btn dis-box n-flow-btn">
+        <div class="box-flex select-three j-cart-get-more j-get-more-all pl">
+            <div class="ect-select">
+                <label class="dis-box label-all active">
+                    <i class="select-btn active-i"></i>
+                    <span class="box-flex">全选</span></span>
+                </label>
+            </div>
+            <div class="g-cart-filter-price of-hidden">
+                <p class="dis-box"><em class="dis-block">合计：</em>
+                    <span class="t-first box-flex onelist-hidden cart-price-show">￥0.00</span>
+                    <span class="t-first box-flex onelist-hidden cart-price-hidden" style="display:none"></span>
+                </p>
+                <p class="t-remark">不含运费</p>
+            </div>
+        </div>
+        <div class="g-cart-filter-sb">
+            <span class="span-bianji fl"><i class="iconfont icon-bianji"></i><em>编辑</em></span>
+            <form id="formid" action="{url('flow/index/index')}" class="fl" method="post">
+                <input type="hidden" name="cart_value" value="{$cart_value}">
+                <input type="hidden" name="store_id"/>
+                <a type="button" class="btn-submit fl" onclick="c_value()">结算 <span class='cart-number-show f-05'>(0)</span></a>
+            </form>
+        </div>
+        <div class="g-cart-filter-bj">
+            <a type="button" class="btn-default j-btn-default fl">返回</a>
+            <a type="button" class="btn-submit fl delete">删除</a>
+        </div>
+    </section>
+</footer>
+<!-- {/if} -->
+
+<!--悬浮btn star-->
+
+<footer class="footer-nav dis-box">
+    <a href="{url('/')}" class="box-flex nav-list">
+        <i class="nav-box i-home"></i><span>首页</span>
+    </a>
+    <a href="{url('category/index/index')}" class="box-flex nav-list">
+        <i class="nav-box i-cate"></i><span>分类</span>
+    </a>
+    <a href="{url('search/index/index')}" class="box-flex nav-list">
+        <i class="nav-box i-shop"></i><span>搜索</span>
+    </a>
+    <a href="{url('cart/index/index')}" class="box-flex position-rel nav-list  active">
+        <i class="nav-box i-flow"></i><span>进货单</span>
+    </a>
+    {if $filter}
+    <a href="{url('drp/user/index')}" class="box-flex nav-list">
+        <i class="nav-box i-user"></i><span>{$custom}中心</span>
+    </a>
+    {elseif $community}
+    <a href="{url('community/index/index')}" class="box-flex nav-list">
+        <i class="nav-box i-user"></i><span>社区</span>
+    </a>
+    {else}
+    <a href="{url('user/index/index')}" class="box-flex nav-list">
+        <i class="nav-box i-user"></i><span>我</span>
+    </a>
+    {/if}
+</footer>
+
+<script>
+    //发票信息
+    $(function() {
+        /** 提交订单 */
+        var cart_data = {
+            rec_ids : [],
+            goods_number : [],
+            consignee : 0,
+            mobile : 0,
+            address : '',
+            inv_type : 0,
+            inv_payee : '',
+            tax_id : 0,
+            pay_id : 0,
+            postscript : ''
+        };
+        // 提交订单
+        $('.j-submit-cart').click(function () {
+            /**
+             *  点击提交按钮
+             *  获取进货单信息
+             *  获取 联系人信息
+             */
+            let form = $('form[name=consignee_info]').serializeArray();
+            let arr = new Array();
+            arr['consignee'] = '联系人';
+            arr['mobile'] = '手机号';
+            arr['address'] = '收货地址';
+
+            for(let i in form){
+                if ( arr[form[i].name] != undefined && form[i].value == '' ) {
+                    d_messages(arr[form[i].name] + '不能为空');
+                    return false;
+                }
+                cart_data[form[i].name] = form[i].value;
+            }
+            // 获取商品信息
+            cart_data.rec_ids.splice(0, cart_data.rec_ids.length);
+            $('section.j-select-all').find('li').each(function (){
+                if ($(this).find('label.rec-active').hasClass('active')) {
+                    let rec_id = $(this).attr('rec-id');
+                    let num = $(this).find('div.div-num input[type=number]').val();
+                    cart_data.rec_ids.push(rec_id);
+                    cart_data.goods_number[rec_id] = num;
+                }
+            });
+            if (cart_data.rec_ids.length <= 0) {
+                d_messages('请选择商品');
+            }
+
+            $.post("/mobile/index.php?m=demand&a=down", cart_data, function (data) {
+                if (data.code == 0) {
+                    d_messages(data.message);
+                    window.location.href = "/mobile/index.php?m=purchase&c=order";
+                }
+            }, 'json');
+
+        });
+
+        // end
+        $(".j-get-invoice-1 li").click(function() {
+            $(this).find("label").addClass("active").parent(".ect-select").siblings().find("label").removeClass("active");
+        });
+        $(".j-get-invoice-1 li").click(function() {
+            if($(this).find("label").attr("data-type") == 0) {
+                $(".invoice-cont-1").removeClass("cur");
+            }
+            if($(this).find("label").attr("data-type") == 1) {
+                $(".invoice-cont-1").addClass("cur");
+            }
+            if($(this).find("label").attr("data-type") == 2) {
+                $(".invoice-cont-1").addClass("cur");
+            }
+            $('input[name=inv_type]').val($(this).find("label").attr("data-type"));
+        });
+    });
+    var currency_format = '¥';
+
+    // 进货单计算
+    var count_cart = {
+        init : function (){
+
+            // 选择所有列表
+//            this.select_all();
+            // 更新进货单数据
+//            this.update_cart_data();
+        },
+        select_all : function (){
+            // 检查列表是否需要全选
+            // 商品属性 全选
+            $('section.j-cart-get-i-more').each(function () {
+                $('.j-select-all ul').each(function (){
+                    if ( $(this).find('li label.active').length == $(this).find('li').length ) {
+                        $(this).prev('div').find('label').addClass('active');
+                    } else {
+                        $(this).prev('div').find('label').removeClass('active');
+                    }
+                });
+
+                if ( $(this).find('label.j-goods-attr-list').length == $(this).find('label.j-goods-attr-list.active').length ) {
+                    $(this).find(".label-this-all").addClass("active");
+                    $(".label-all").addClass("active");
+                }else {
+                    $(this).find(".label-this-all").removeClass("active");
+                    $(".label-all").removeClass("active");
+                }
+
+            });
+        },
+        update_cart_data : function () {
+            if ($('.f-cart-filter-btn').hasClass('active')) {
+                return;
+            }
+            // 更新页面进货单数据
+            var rec_ids  = getRecIds();
+
+            $.ajax({
+                type: "get",
+                url: ROOT_URL + "index.php?m=cart&a=cart_label_count",
+                data: {
+                    rec_ids:rec_ids
+                },
+                dataType: "json",
+                success: function (data) {
+                    if ( data.error == 0 ) {
+                        var goodsList = data.err;
+                        $('.flow-have-cart .j-cart-get-i-more').find("ul li").map(function(){
+                            for(var err in goodsList) {
+                                if($(this).attr("rec-id") == err){
+                                    var product_div = $(this).find('.flow-new-cont');
+                                    if (product_div.find('.warning').length) {
+                                        product_div.find('.warning').text(goodsList[err])
+                                    } else {
+                                        $(this).find('.flow-new-cont').append('<div class="warning" style="color:red;font-size: 10px;width: 10rem">'+goodsList[err]+'</div>')
+
+                                    }
+
+                                    //清除选中
+                                    $(this).find('.rec-active').removeClass('active')
+                                    $(this).parents('ul').prev().find('.rec-active').removeClass('active')
+                                    $(this).parents('.j-cart-get-i-more').find('.label-this-all').removeClass('active')
+                                    $('.label-all').removeClass('active')
+
+                                }
+                            }
+                        })
+
+                        if (data.list != undefined && data.list) {
+                            var list = data.list;
+                            var listLen = list.length;
+                            $('.flow-have-cart .j-cart-get-i-more').find("ul li").map(function(){
+                                for(var i=0; i<listLen; i++){
+                                    if($(this).attr("rec-id") == list[i].rec_id){
+                                        $(this).find('span.j-item-7-price')[0].innerHTML = list[i].total_price_formatted;
+                                        $(this).find('span.unit-price')[0].innerHTML = list[i].unit_price_formatted;
+                                        $(this).find("input").val(list[i].goods_number);
+                                        break
+                                    }
+                                }
+                            })
+                        }
+
+                        if (window.interval) {
+                            clearInterval(window.interval);
+                        }
+
+                        window.interval = setInterval(function () {
+                            $('.flow-have-cart .j-cart-get-i-more').find('.warning').remove();
+                        }, 2000)
+                        $('.cart-price-show').html(data.cart_info.total_price_formatted);
+                        $(".cart-number-show").html('(' + data.cart_info.total_number+ ')');
+
+                    }
+                }
+            });
+        }
+    };
+    count_cart.init();
+
+    //end
+    function attrprice(id) {
+        var attr = '';
+        $("label.ts-1" + id).each(function() {
+            if($(this).hasClass("active")) {
+                attr += $(this).attr("attr-id") + ',';
+            }
+        });
+        attr = attr.substr(0, attr.length - 1);
+        var number = $("input[name=number" + id + "]").val();
+        var warehouse_id = $("input[name=warehouse_id]").val();
+        var area_id = $("input[name=area_id]").val();
+        $.get(ROOT_URL + 'index.php?m=goods&a=price', {
+            id: id,
+            warehouse_id: warehouse_id,
+            area_id: area_id,
+            number: number,
+            attr: attr
+        }, function(data) {
+            $(".goods_attr_num" + id).text(data.attr_number);
+            $("#ECS_GOODS_AMOUNT" + id).text(data.result);
+            if(data.attr_number < 1) {
+                $(".add-to-cart" + id).hide();
+                $(".quehuo" + id).show();
+            } else {
+                $(".add-to-cart" + id).show();
+                $(".quehuo" + id).hide();
+            }
+        }, 'json')
+
+    }
+
+    function show(html) {
+        $(".mask-filter-div").addClass("show");
+        $(".j-show-goods-attr" + html).addClass("show");
+    }
+
+    function c_value() {
+        var rec_ids =getRecIds();
+        if(rec_ids == ''){
+            d_messages('请选择未下架的商品');
+            return false;
+        }
+        $("input[name=rec_ids]").val(rec_ids);
+        var id = '';
+        var store_id = new Array();
+        $("input[name=store_id]").val('');
+        $("input[name=cart_value]").val('');
+        $("label").each(function() {
+            if($(this).hasClass("rec-active")) {
+                if($(this).hasClass("active")) {
+                    id += $(this).attr("rec-id") + ',';
+                    //门店ID
+                    if($(this).attr('store_id') != undefined) {
+                        store_id.push($(this).attr('store_id'));
+                    }
+                }
+            }
+        });
+        if(id == '') {
+            d_messages('至少选中一个商品', 2);
+            return false;
+        }
+        id = id.substr(0, id.length - 1);
+        $("input[name=cart_value]").val(id);
+        //门店ID
+        if(store_id.length == 1 == $('.rec-active.active').length && $('.rec-active.active').attr('store_id') == store_id[0]) {
+            $("input[name=store_id]").val(store_id[0]);
+        }
+        //门店ID   END
+        document.getElementById("formid").submit();
+    }
+
+    function getRecIds(){
+        var sId = ''
+        $(".flow-have-cart .j-cart-get-i-more").map(function(){
+            $(this).find("ul li").map(function(){
+                if($(this).attr("enabled") != "0" && $(this).find(".rec-active").hasClass("active")){
+                    sId += $(this).attr("rec-id") + ','
+                }
+            })
+        })
+        return sId.substr(0, sId.length - 1)
+    }
+    //加载
+    var price = 0, k = 0;
+
+    //删除进货单商品
+    function DropCart(extension_code, extension_id) {
+        $.ajax({
+            type: "post",
+            url: ROOT_URL + "index.php?m=cart&a=remove",
+            data: {
+                extension_code: extension_code,
+                extension_id: extension_id
+            },
+            dataType: "json",
+            success: function(data) {
+                if(data.error == 0) {
+                    d_messages('已删除');
+                    window.location.reload(true);
+                }
+            }
+        });
+    }
+
+    $(".delete").click(function () {
+        d_messages_btn2("删除所选货物吗？", '', function () {
+            var id = '';
+            $("label").each(function () {
+                if ($(this).hasClass("rec-active")) {
+                    if ($(this).hasClass("active")) {
+                        id += $(this).attr("rec-id") + ',';
+                    }
+                }
+            })
+            if (id == '') {
+                d_messages('至少选中一个商品', 2);
+                return false;
+            }
+            $.get(ROOT_URL + 'index.php?m=cart&a=drop_goods', {
+                id: id
+            }, function (data) {
+
+            }, 'json')
+            window.location.href = ROOT_URL + "index.php?m=cart";
+        });
+
+    })
+
+    var heartstatus = 1;
+    /*进货单商品数量加减*/
+    $(".div-num a").click(function() {
+        if(!$(this).parent(".div-num").hasClass("div-num-disabled")) {
+            var t = $(this);
+            var is_gift = parseInt($(this).siblings("input").attr("is_gift"));
+
+            if($(this).hasClass("num-up")) {
+                num = parseInt($(this).siblings("input").val());
+                rec = parseInt($(this).siblings("input").attr("cart-id"));
+
+                // 起批量 小于 本商品所有属性数量
+                let total_num = 0;
+                $(this).parents('ul').find('input').each(function () {
+                    total_num += parseInt($(this).val());
+                });
+
+
+                if(num > 1 ) {
+                    num -= 1;
+                    if($(this).siblings("input").hasClass("active")) {
+                        none = 0;
+                    } else {
+                        none = 1;
+                    }
+                    var arr = '';
+                    $(".rec-active").each(function() {
+                        if($(this).hasClass("active")  && $(this).attr("rec-id")) {
+                            arr += $(this).attr("rec-id") + ',';
+                        }
+                    });
+                    var pElement = $(this).parents('ul')
+                    var cartId = getCartId();
+                    $.ajax({
+                        type: "get",
+                        url: ROOT_URL + "index.php?m=cart&a=cart_goods_number",
+                        dataType: "json",
+                        async:false,
+                        data: {
+                            id: rec,
+                            number: num,
+                            arr: arr
+                        },
+                        success: function(data) {
+                            // 更新进货单数量
+                            if ( data.error == 0 ) {
+                                var goodsList = data.list;
+                                var listLen = goodsList.length
+                                pElement.find('li').map(function(){
+                                    for(var i=0; i<listLen; i++){
+                                        if($(this).attr("rec-id") == goodsList[i].rec_id){
+                                            $(this).find('span.j-item-7-price')[0].innerHTML = goodsList[i].total_price_formatted;
+                                            $(this).find('span.unit-price')[0].innerHTML = goodsList[i].unit_price_formatted;
+                                            $(this).find("input").val(goodsList[i].goods_number);
+                                            break
+                                        }
+                                    }
+                                })
+                                $('.cart-price-show').html(data.cart_info.total_price_formatted);
+                                $(".cart-number-show").html('(' + data.cart_info.total_number+ ')');
+
+                            } else {
+                                d_messages(data.message);
+                            }
+                        }
+                    });
+
+                } else {
+                    d_messages("不能小于最小数量");
+                }
+                return false;
+            }
+
+            if($(this).hasClass("num-next")) {
+                num = parseInt($(this).siblings("input").val());
+                rec = parseInt($(this).siblings("input").attr("cart-id"));
+                max_num = parseInt($(this).attr("data-max-num"));
+
+                var pElement = $(this).parents('ul')
+                var arr = '';
+                $(".rec-active").each(function () {
+
+                    if ($(this).hasClass("active") && $(this).attr("rec-id")) {
+                        arr += $(this).attr("rec-id") + ',';
+                    }
+                })
+
+                //限购
+                if (max_num && num >= max_num) {
+                    d_messages("不能超过最大数量");
+                } else {
+                    num += 1;
+                }
+
+                $.ajax({
+                    type: "get",
+                    url: ROOT_URL + "index.php?m=cart&a=cart_goods_number",
+                    dataType: "json",
+                    async: false,
+                    data: {
+                        id: rec,
+                        number: num,
+                        arr: arr
+                    },
+                    success: function(data) {
+                        // 更新进货单数量
+                        if ( data.error == 0 ) {
+                            var goodsList = data.list;
+                            var listLen = goodsList.length
+                            pElement.find('li').map(function(){
+                                for(var i=0; i<listLen; i++){
+                                    if($(this).attr("rec-id") == goodsList[i].rec_id){
+                                        $(this).find('span.j-item-7-price')[0].innerHTML = goodsList[i].total_price_formatted;
+                                        $(this).find('span.unit-price')[0].innerHTML = goodsList[i].unit_price_formatted;
+                                        $(this).find("input").val(goodsList[i].goods_number);
+                                        break
+                                    }
+                                }
+                            })
+                            $('.cart-price-show').html(data.cart_info.total_price_formatted);
+                            $(".cart-number-show").html('(' + data.cart_info.total_number+ ')');
+
+                        } else {
+                            d_messages(data.message);
+                        }
+
+                    }
+                });
+                return false;
+            }
+        } else {
+            d_messages("该商品不能增减");
+        }
+    });
+
+    // 直接修改进货单数量
+    $(".div-num input").bind("change", function() {
+        var num = parseInt($(this).val());
+        if (isNaN(num)) {
+            num = 1
+        }
+
+        var max_num = parseInt($(this).siblings(".num-next").attr("data-max-num"));
+
+
+        // 起批量 小于 本商品所有属性数量
+        let total_num = 0;
+        $(this).parents('ul').find('input').each(function () {
+            total_num += parseInt($(this).val());
+        });
+
+        var rec = parseInt($(this).attr("cart-id"));
+        if(max_num && num > max_num) {
+            $(this).val(max_num);
+            d_messages("不能超过最大数量" + max_num);
+            return false;
+        }
+
+        if(num > 0) {
+            $(this).val(num);
+            if($(this).hasClass("active")) {
+                none = 0;
+            } else {
+                none = 1;
+            }
+            var arr = '';
+            $(".rec-active").each(function() {
+                if($(this).hasClass("active")) {
+                    arr += $(this).attr("rec-id") + ',';
+                }
+            });
+            var t = $(this);
+            var pElement = $(this).parents('ul');
+            var cartId = getCartId();
+            $.ajax({
+                type: "POST",
+                url:  ROOT_URL + "index.php?m=cart&a=cart_goods_number",
+                dataType: "json",
+                data: {
+                    id: rec,
+                    number: num,
+                    arr: arr
+                },
+                success: function(data) {
+                    // 更新进货单数量
+                    if ( data.error == 0 ) {
+                        var goodsList = data.list;
+                        var listLen = goodsList.length
+                        pElement.find('li').map(function(){
+                            for(var i=0; i<listLen; i++){
+                                if($(this).attr("rec-id") == goodsList[i].rec_id){
+                                    $(this).find('span.j-item-7-price')[0].innerHTML = goodsList[i].total_price_formatted;
+                                    $(this).find('span.unit-price')[0].innerHTML = goodsList[i].unit_price_formatted;
+                                    $(this).find("input").val(goodsList[i].goods_number);
+                                    break
+                                }
+                            }
+                        })
+                        $('.cart-price-show').html(data.cart_info.total_price_formatted);
+                        $(".cart-number-show").html('(' + data.cart_info.total_number+ ')');
+
+                    } else {
+                        d_messages(data.message);
+                    }
+                }
+            });
+
+        }
+        return false;
+    });
+
+    /*多选*/
+    $(".j-cart-get-more .ect-select").click(function() {
+        if(!$(this).find("label").hasClass("active")) {
+            $(this).find("label").addClass("active");
+            $("input[name=cart_number]").addClass("active");
+            if($(this).find("label").hasClass("label-all")) {
+                $(".j-select-all").find(".ect-select label").addClass("active");
+                /*hu*/
+                var rec_id = '';
+                $(".rec-active").each(function() {
+                    var goods_id = $(this).attr("goods-id");
+                    if($(this).hasClass("active")) {
+                        if($(this).attr("rec-id") != undefined && $(this).attr("rec-id") > 0) {
+                            rec_id += $(this).attr("rec-id") + ',';
+                            $("#" + goods_id + "").addClass("active");
+                        }
+                    }
+                });
+                /*hu*/
+
+            }
+        } else {
+            $(this).find("label").removeClass("active");
+            $("input[name=cart_number]").removeClass("active");
+            $(".rec-active").each(function() {
+                if($(this).attr("rec-id") != undefined && $(this).attr("rec-id") > 0) {
+                    rec_id += $(this).attr("rec-id") + ',';
+                }
+            });
+            if($(this).find("label").hasClass("label-all")) {
+                /*hu*/
+                $(".cart-price-show").html("￥0.00");
+                $(".cart-number-show").text(0);
+                /*hu*/
+                $(".j-select-all").find(".ect-select label").removeClass("active");
+            }
+        }
+        count_cart.update_cart_data();
+
+    });
+
+    /*多选只点击单选按钮 - 全选，全不选*/
+    $(".j-cart-get-i-more .j-select-btn").click(function() {
+
+        is_select_all = true;
+        if($(this).parent("label").hasClass("label-this-all")) {
+            if(!$(this).parent("label").hasClass("active")) {
+                $(this).parents(".j-cart-get-i-more").find(".ect-select label").addClass("active");
+            } else {
+                $(this).parents(".j-cart-get-i-more").find(".ect-select label").removeClass("active");
+            }
+        }
+
+        if(!$(this).parent("label").hasClass("label-this-all") && !$(this).parent("label").hasClass("label-all")) {
+            $(this).parent("label").toggleClass("active");
+
+            // 选择所有属性、选择
+            if ($(this).parent('label').hasClass('j-goods-attr-list')) {
+                if ($(this).parent('label').hasClass('active')) {
+                    $(this).parent('label').parent().parent().next('ul').find('li label').addClass('active');
+                }else{
+                    $(this).parent('label').parent().parent().next('ul').find('li label').removeClass('active');
+                }
+            }
+
+            //
+        }
+
+        if ( $(".j-select-all").find(".ect-select label").length == $(".j-select-all").find(".ect-select label.active").length ) {
+            $(".label-all").addClass("active");
+        }else {
+            $(".label-all").removeClass("active");
+        }
+
+        /*hu*/
+        //
+
+        count_cart.select_all();
+        count_cart.update_cart_data();
+    });
+
+    $(function($) {
+        commonShopList();
+
+        //判断选中状态
+        $(".flow-have-cart .j-cart-get-i-more").each(function(index, element) {
+            var arr = []
+            $(this).find(".rec-active").each(function() {
+                $(this).each(function() {
+                    arr.push($(this).hasClass("active"))
+                })
+            })
+            if(arr.indexOf(false) != -1) {
+                $(this).find(".label-this-all").removeClass("active")
+            } else {
+                $(this).find(".label-this-all").addClass("active")
+            }
+        })
+        var labelAll = []
+        $(".flow-have-cart .rec-active").each(function() {
+            labelAll.push($(this).hasClass("active"))
+        })
+        if(labelAll.indexOf(false) != -1) {
+            $(".f-cart-filter-btn .label-all").removeClass("active")
+        } else {
+            $(".f-cart-filter-btn .label-all").addClass("active")
+        }
+    })
+
+    function getCartId(){
+        var cartId = []
+        var pWElement = $('.flow-have-cart')
+        pWElement.find('li').map(function(){
+            if($(this).find('.ect-select .rec-active').hasClass('active')){
+                cartId.push($(this).attr('rec-id'))
+            }
+        })
+        return cartId
+    }
+</script>
+</body>
+
+</html>

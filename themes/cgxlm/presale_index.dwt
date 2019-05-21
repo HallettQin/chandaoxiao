@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+<link rel="stylesheet" type="text/css" href="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/css/other/presale.css" />
+</head>
+
+<body class="show">
+<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_category.lbi" --><!-- #EndLibraryItem -->
+{* ECSHOP 提醒您：动态载入presale_banner.lbi，显示首页分类小广告 *}{insert name='get_adv_child' ad_arr=$presale_banner}
+<div id="content" class="b2b-content">
+    <div class="ecsc-sign w1200 w">
+        <div class="sign-warpper">
+        {* ECSHOP 提醒您：动态载入presale_banner_small.lbi，显示首页分类小广告 *}{insert name='get_adv_child' ad_arr=$presale_banner_small}
+        </div>
+    </div>
+    <div class="ecsc-sign w1200 w">
+        <h1 class="preSale_title">— 预定分类 —</h1>
+        {* ECSHOP 提醒您：动态载入热门分类 *}{insert name='get_adv_child' ad_arr=$top act_type=$act_type}
+    </div>
+
+    <div class="ecsc-sign w1200 w">
+        <h1 class="preSale_title"><strong>新特卖</strong>每日早10晚8上新</h1>
+        {* ECSHOP 提醒您：动态载入新特卖 *}{insert name='get_adv_child' ad_arr=$new act_type=$act_type}
+    </div>
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+{insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js'}
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+<script type="text/javascript">
+	$(".pre-banner").slide({titCell:".hd ul",mainCell:".bd ul",effect:"left",interTime:3500,delayTime:500,autoPlay:true,autoPage:true});
+//	$(".sign-content").slide({titCell:".hd ul",mainCell:".bd ul",effect:"leftLoop",interTime:3500,delayTime:500,autoPlay:true,pnLoop:true,autoPage:true});
+
+	//倒计时JS
+	$(".time").each(function(){
+		$(this).yomi();
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+    .top_cat{
+        /*border-top: 1px solid #E5E5E5;*/
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+    .top_cat li{
+        display: inline-block;
+        width: 20%;
+        float: left;
+        border: 1px solid #E5E5E5;
+        border-top: 0px;
+        border-left: 0px;
+        height: 240px;
+        padding-top: 15px;
+        box-sizing: border-box;
+    }
+    .top_cat li a{
+        text-decoration: none;
+    }
+    .top_cat li:nth-of-type(1),.top_cat li:nth-of-type(2), .top_cat li:nth-of-type(3),.top_cat li:nth-of-type(4),.top_cat li:nth-of-type(4),.top_cat li:nth-of-type(5) {
+        border-top: 1px solid #E5E5E5;
+    }
+    .top_cat li:nth-of-type(5n+1) {
+        border-left: 1px solid #E5E5E5;
+    }
+    .top_cat li .b_title{
+        text-align: center;
+        color: #3e3e3e;
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .top_cat li .s_title{
+        text-align: center;
+        color: #d6d6d6;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .top_cat li img{
+        padding: 0 25%;
+        width: 50%;
+        text-align: center;
+    }
+    .top_cat li .more{
+        text-align: center;
+        line-height: 200px;
+    }
+</style>
+<ul class="top_cat">
+    {foreach from=$ad_child item=child}
+    <li><a href="{$child.ad_link}" class="purchasers" target="_blank"><p class="b_title">{$child.b_title}</p><p class="s_title">{$child.s_title}</p><img src="{$child.ad_code}"></a></li>
+    {/foreach}
+    <li><a href="categoryall.php?mode={$act_type}" class="purchasers" target="_blank"><div class="more">更多分类>></div></a></li>
+</ul>

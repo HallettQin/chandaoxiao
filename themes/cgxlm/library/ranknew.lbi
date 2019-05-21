@@ -1,0 +1,55 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+    .rank li{
+        width: 220px;
+        float: left;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        margin-right: 25px;
+        margin-bottom: 25px;
+    }
+    .rank li:nth-of-type(5n) {
+        margin-right: 0;
+    }
+    .rank li img{
+        width: 100%;
+    }
+
+    .rank li .title{
+        display: block;
+        text-align: center;
+        line-height: 3em;
+        background: #ffffff;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        padding: 0 10px;
+    }
+
+</style>
+<div class="goods-list goods-list-w1390">
+    <ul class="rank w1200">
+        {if $lists}
+        {foreach from=$lists item=item }
+        <li>
+            <a href="{$item.url}">
+                <img src="{$item.goods_thumb}">
+                <div class="title">{$item.goods_name}</div>
+            </a>
+        </li>
+        {/foreach}
+        {else}
+        <div class="no_records">
+            <i class="no_icon_two"></i>
+            <div class="no_info no_info_line">
+                <h3>抱歉，没有找到符合条件的数据</h3>
+                <div class="no_btn">
+                    <a href="index.php" class="btn sc-redBg-btn">返回首页</a>
+                </div>
+            </div>
+        </div>
+        {/if}
+    </ul>
+</div>

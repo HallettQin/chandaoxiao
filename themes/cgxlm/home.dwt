@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable -->
+    <!-- TemplateBeginEditable name="head" -->
+    <!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+    <!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+</head>
+
+<body class="home_visual_body ">
+<header class="home-header w w1200" style="margin: 10px auto;">
+    <div class="home-logo">
+        <a href="/home.php" title="logo"><img src="themes/68ecshopcom_360buy/images/header/logo.jpg"></a>
+    </div>
+    <div class="home-menu nav">
+        <div class="nav-main">
+            <ul class="navitems">
+                <li><a href="index.php" title="首页">首页</a></li>
+                <li><a href="http://www.chandaoxiao.net/" class="nav" title="走进产到销" target="_blank">走进产到销</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="w w1200" style="position: relative">
+    <div class="home-lg">
+        <div class="home-welcome">欢迎来到产到销直供平台</div>
+        <div class="home-btns">
+            <a class="home-btn" href="user.php?act=register" target="_blank">注册成为初始会员</a>
+            <a class="home-btn home-btn1" href="user.php?act=login" target="_blank">登陆初始会员账号</a>
+        </div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+</div>
+{* ECSHOP 提醒您：动态载入home_banner.lbi，显示首页分类小广告 *}{insert name='get_adv_child' ad_arr=$home_banner}
+
+<div class="goway">
+    <div class="leftb">
+        <div class="topb">
+            <h1>诚招制造商</h1>
+            <h2>如果您能满足以下条件，请联系我们合作！</h2>
+            <p>1、有合作过或正在与国内国际一线品牌合作的生产制造商；</p>
+            <p>2、有独立产品设计开发能力和自主原创水平；</p>
+            <p>3、有强烈意识实现自主品牌发展的愿望；</p>
+            <p>4、有以工厂低供货价格占领终端市场份额思维；</p>
+        </div>
+        <div class="bottomb">
+            <div class="cellp">
+                <span>400-060-7168</span>
+                <p>全国合作专线：周一至周五9:00-18:00</p>
+            </div>
+            <a href="http://www.chandaoxiao.com/user.php?act=register" target="_blank">立即加入</a>
+        </div>
+    </div>
+    <div class="rightb">
+        <img src="themes/cgxlm/images/win.jpg">
+    </div>
+</div>
+
+
+<div class="goway gowayo">
+    <div class="leftb">
+       <div class="topb">
+            <h1>诚邀零售商</h1>
+            <h2>如果您符合以下要求，请咨询我们合作！</h2>
+            <p>1、正在经营国内一线品牌非专卖的终端零售商；</p>
+            <p>2、寻找品牌专卖合作的优质终端零售商；</p>
+            <p>3、愿专属经营平台上各品牌产品并开立集合、复合新店的准零售商；</p>
+            <p>4、有诚意愿与平台进行营销、信息等互动并接受指导；</p>
+            <p>5、愿配合平台按亲民生、接地气的价格(建议零售价)进行销售；</p>
+        </div>
+        <div class="bottomb">
+            <div class="cellp">
+                <span>400-060-7168</span>
+                <p>全国合作专线：周一至周五9:00-18:00</p>
+            </div>
+            <a href="http://chandaoxiao.net/index.php?m=Index&a=purchasers"  target="_blank">了解详情</a>
+        </div>
+    </div>
+    <div class="rightb">
+        <img src="themes/cgxlm/images/indrouc.jpg">
+    </div>
+</div>
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+</body>
+</html>

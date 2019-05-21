@@ -1,0 +1,6 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<ul class="shop_list gu_id_{$category_id}">
+    {foreach from=$ad_child item=child}
+    <li><a href="{$child.ad_link}" class="purchasers"><img src="{$child.ad_code}"><p>{$child.b_title}</p></a></li>
+    {/foreach}
+</ul>

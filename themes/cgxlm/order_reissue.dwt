@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable -->
+    <!-- TemplateBeginEditable name="head" -->
+    <!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+    <link rel="stylesheet" type="text/css" href="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/css/user.css">
+    <link rel="stylesheet" type="text/css" href="../js/perfect-scrollbar/perfect-scrollbar.min.css" />
+    <link rel="stylesheet" type="text/css" href="../js/calendar/calendar.min.css" />
+    <!-- {if $action eq 'profile'} -->
+    <link rel="stylesheet" type="text/css" href="../js/amazeui/amazeui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../js/cropper/cropper.css" />
+    <!--{/if}-->
+</head>
+
+<body>
+<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+<div class="user-content clearfix">
+    <div class="user-side" ectype="userSide">
+        <div class="user-perinfo-ny">
+            <div class="profile clearfix">
+                <div class="avatar">
+                    <a href="user.php" class="u-pic">
+                        <img src="{if $user_default_info.user_picture}{$user_default_info.user_picture}{else}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/images/touxiang.jpg{/if}" alt="">
+                    </a>
+                </div>
+                <div class="name">
+                    <h2>{$user_default_info.nick_name}</h2>
+                    {if $user_default_info.special_rank}
+                    <div class="">{$user_default_info.rank_name}</div>
+                    {else}
+                    <div class="user-rank user-rank-{$user_default_info.rank_sort|default:1}">{$user_default_info.rank_name}</div>
+                    {/if}
+                </div>
+            </div>
+        </div>
+        <div class="user-mod">
+            <!-- #BeginLibraryItem "/library/user_menu.lbi" --><!-- #EndLibraryItem -->
+        </div>
+    </div>
+    <div class="user-main" ectype="userMain" data-action="noDefault">
+        <div class="user-crumbs hide">
+            <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+        </div>
+        <div class="user-mod user_apply_return">
+            <div class="user-title">
+                <h2>补发订单</h2>
+                <a href="user.php?act=service_detail" class="more">服务说明</a>
+            </div>
+            <div class="applyReturnForm">
+                <form id="formReturn" name="formReturn" method="post" action="user.php" onsubmit="return check_sub()">
+                    <div class="return_ts">
+                        <em class="fl">* {$lang.reminder}：</em>
+                        <div class="fl">{$lang.reminder_one}&nbsp;<em>{$goods_return.user_name}</em>&nbsp;{$lang.reminder_two}</div>
+                    </div>
+                    <div class="form">
+                        <div class="item">
+                            <div class="label"><em>*</em>问题描述：</div>
+                            <div class="value"><textarea cols="40" class="text_desc" rows="4" name="reissue_brief"></textarea></div>
+                        </div>
+                        <div class="item">
+                            <div class="label">&nbsp;</div>
+                            <div class="value">
+                                <input type="submit" value="提交" class="sc-btn btn30 sc-redBg-btn">
+                                <input type="hidden" name="act" value="submit_reissue" />
+                                <input type="hidden" name="order_id" value="{$order_id}" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

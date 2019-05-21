@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable -->
+    <!-- TemplateBeginEditable name="head" -->
+    <!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/rank.css" />
+</head>
+
+<body>
+<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_category.lbi" --><!-- #EndLibraryItem -->
+<div class="content">
+    <div class="w w1200">
+        <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+        <div class="gu_title_up">
+            <div class="gu_sey">
+                <b>优质产商前十排行榜</b>
+            </div>
+            <ul>
+                {foreach from=$categorys item=category }
+                <li><a class="cat-select" href="javascript:void(0)" data-id="{$category.cat_id}">{$category.cat_name}</a></li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="ajax-list">
+
+        </div>
+    </div>
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+{insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js'}
+<script type="text/javascript" src="../js/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+
+<script type="text/javascript">
+    var url = 'rank.php?act=ajaxstore';
+    $(function(){
+        var cat_id = 0;
+
+        $('a.cat-select').bind('click', function(){
+            $('a.cat-select').removeClass('xuan');
+            $(this).addClass('xuan');
+
+            var id = $(this).attr("data-id");
+            ajaxAction(id);
+        })
+
+        $('a.cat-select').eq(0).trigger('click');
+        function ajaxAction(id) {
+            var data = {id:id}
+            if (cat_id != id) {
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data:data,
+                    cache: true,
+                    async: false,
+                    beforeSend: function () {
+                    },
+                    success: function (result) {
+                        if (typeof(result.code) == 'undefined') {
+                            cat_id = id;
+                            $('.ajax-list').html(result)
+                            $('.purchasers').bind('click', check_purchasers)
+                        }
+                        else {
+                            pbDialog('获取失败，请重新获取!');
+                        }
+                    },
+                    complete: function () {
+                        cat_id = id;
+                    }
+                });
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,79 @@
+{include file="supplier/header"}
+<div class="con order-manage">
+    <div class="list-div mt10" id="listDiv">
+        <section class="log_info">
+            <script id="j-product" type="text/html">
+                <% if log_list!=""%>
+                <%each log_list as item%>
+                <section class="flow-checkout-pro  m-top08 list-item">
+                    <div class="list-item">
+                        <header class="padding-all">
+                            <span class="change_desc"><%item.change_desc%></span>
+                            <span class="change_type">
+                                <%if item.change_type eq 0%>
+                                提现
+                                <%else if item.change_type eq 1%>
+                                充值
+                                <%else if item.change_type eq 2%>
+                                结算
+                                <%else if item.change_type eq 3%>
+                                管理员调节
+                                <%else if item.change_type eq 4%>
+                                解冻
+                                <%else%>
+                                其他
+                                <%/if%>
+                            </span>
+                        </header>
+                        <div class="account f-c-p-orderid padding-all m-top1px b-color-f">
+                            <span class="user_money">
+                                 可用余额:
+                                <%if item.user_money > 0%>
+                                <span style="color:#0000FF">+<%item.user_money%></span>
+                                <%else if item.user_money < 0%>
+                                <span style="color:#FF0000"><%item.user_money%></span>
+                                <%else%>
+                                <%item.user_money%>
+                                <%/if%>
+                            </span>
+                            <span class="frozen_money">
+                                冻结资金帐户:
+                                <%if item.frozen_money > 0%>
+                                <span style="color:#0000FF">+<%item.frozen_money%></span>
+                                <%else if item.user_money < 0%>
+                                <span style="color:#FF0000"><%item.frozen_money%></span>
+                                <%else%>
+                                <%item.frozen_money%>
+                                <%/if%>
+                            </span>
+                        </div>
+                        <div class="footer padding-all">
+                            <div class="change_time">
+                                <%item.change_time%>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+                <%/each%>
+                <%else%>
+                <div class="no-div-message">
+                    <i class="iconfont icon-biaoqingleiben"></i>
+                    <p>没有找到任何记录</p>
+                </div>
+                <%/if%>
+            </script>
+        </section>
+    </div>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav"}
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    //订单列表
+    $(function(){
+        var infinite = $('.log_info').infinite({url: "{url('supplier/account/log')}", template: 'j-product'});
+    })
+</script>
+</body>
+</html>

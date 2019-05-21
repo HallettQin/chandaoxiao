@@ -1,0 +1,10 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<!--{if $ad_child}-->
+<!--{foreach from=$ad_child item=ad name=noad}-->
+<a href="{$ad.ad_link}" target="_blank" class="banner purchasers">
+    <img data-original="data/afficheimg/1520447593096058699.jpg" src="{$ad.ad_code}" height="300" width="1200">
+    <p style="text-align:center;font-size:16px;padding:20px 0;">{$ad.b_title}</p>
+</a>
+<!--{/foreach}-->
+<!--{/if}-->

@@ -1,0 +1,154 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="merchants_commission.php?act=list" class="s-back"></a>商家 - {$ur_here}</div>
+        <div class="content">
+        	{include file="library/commission_tab.lbi"}
+            <div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>佣金账单明细。</li>
+                    <li class="red">当前页面仅显示未确认收货订单。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            
+            	<div class="common-head">
+                	{if $bill}
+                	<div class="fl ml0" style="color:#31b4e1;">
+                    	账单编号：{$bill.bill_sn} &nbsp;&nbsp;&nbsp;&nbsp; 账单时间：{$bill.format_start_time} ～ {$bill.format_end_time}
+                    </div>
+                    {/if}
+                	<div class="search mr0">
+                        <input type="text" name="keywords" value="{$filter.keywords}" class="text nofocus w180" placeholder="订单编号" autocomplete="off">
+                        <input type="submit" value="搜索" class="btn btn30 blue_btn_2" />
+                    </div>
+                </div>
+                
+                <div class="common-content">
+                	<div class="list-div"  id="listDiv" >
+						{/if}
+						<form method="post" action="" name="listForm" onsubmit="return confirm('确定批量结算？');">
+                    	<table cellpadding="1" cellspacing="1">
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign">
+                                        <div class="tDiv">
+                                        	<input type="checkbox" name="all_list" class="checkbox" id="all_list" />
+                                        	<label for="all_list" class="checkbox_stars"></label>
+                                        </div>
+                                    </th>
+                                    <th><div class="tDiv">订单编号</div></th>
+                                    <th><div class="tDiv">订单总金额</div></th>
+                                    <th><div class="tDiv">运费金额</div></th>
+                                    <th><div class="tDiv">退单金额</div></th>
+                                    {if $is_dir}
+                                    <th><div class="tDiv">分销金额</div></th>
+                                    {/if}
+                                    {if $filter.commission_model neq 1}
+                                    <th><div class="tDiv">收取比例</div></th>
+                                    {/if}
+                                    <th><div class="tDiv">收取佣金</div></th>
+                                    {if $filter.commission_model neq 1}
+                                    <th><div class="tDiv">应结比例</div></th>
+                                    {/if}
+                                    <th><div class="tDiv">本期应结</div></th>
+                                    <th><div class="tDiv tc">订单状态</div></th>
+                                    <th width="12%" class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+								{foreach from=$order_list item=order name=noorder}
+								<tr>
+                                    <td class="sign">
+                                        <div class="tDiv">
+                                            <input type="checkbox" name="checkboxes[]" value="{$order.order_id}" class="checkbox" id="checkbox_{$order.order_id}" />
+                                            <label for="checkbox_{$order.order_id}" class="checkbox_stars"></label>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{$order.order_sn}</div></td>
+                                    <td><div class="tDiv">{$order.format_total_fee}<br/><em class="org2">(含运费)</em></div></td>
+                                    <td><div class="tDiv">{$order.format_shipping_fee}</div></td>
+                                    <td><div class="tDiv">{$order.format_return_amount}</div></td>
+                                    {if $is_dir}
+                                    <td><div class="tDiv">{$order.format_drp_money}</div></td>
+                                    {/if}
+                                    {if $filter.commission_model neq 1}
+                                    <td><div class="tDiv">{$order.gain_proportion}%</div></td>
+                                    {/if}
+                                    <td>
+                                    	<div class="tDiv">
+                                        	{if $order.chargeoff_status neq 0 && $order.model eq 0}
+                                                <em class="red">佣金比例：{$order.gain_proportion}%</em>
+                                                <br/>
+                                            {/if}
+                                        	{$order.format_gain_commission}<br/><em class="org2">(不含运费)</em>
+                                        </div>
+                                    </td>
+                                    {if $filter.commission_model neq 1}
+                                    <td><div class="tDiv">{$order.should_proportion}%</div></td>
+                                    {/if}
+                                    <td>
+                                        <div class="tDiv">
+                                        	{if $order.chargeoff_status neq 0 && $order.model eq 0}
+                                                <em class="red">佣金比例：{$bill.should_proportion}%</em>
+                                                <br/>
+                                            {/if}
+                                        	{$order.format_should_amount}<br/><em class="org2">(含运费)</em>
+                                        </div>
+                                    </td>
+                                    <td>
+                                    	<div class="tDiv tc">
+                                        	{$lang.os[$order.order_status]}<br />{$lang.ps[$order.pay_status]}<br />{$lang.ss[$order.shipping_status]}
+                                        </div>
+                                    </td>
+                                    <td class="handle">
+                                        <div class="tDiv a2">
+                                            <a href="merchants_commission.php?act=bill_goods&order_id={$order.order_id}&type=1&seller_id={$filter.seller_id}&commission_model={$filter.commission_model}" class="btn_see"><i class="sc_icon sc_icon_see"></i>订单明细</a>	
+                                        </div>
+                                    </td>
+								</tr>
+								{foreachelse}
+								<tr><td class="no-records" colspan="16">{$lang.no_records}</td></tr>
+								{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+                                    <td colspan="16">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                                &nbsp;
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						</form>
+						{if $full_page}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+	<script type="text/javascript">
+        //分页传值
+        listTable.recordCount = {$record_count|default:0};
+        listTable.pageCount = {$page_count|default:1};
+        listTable.query = "bill_notake_order_query";
+    
+        {foreach from=$filter item=item key=key}
+        listTable.filter.{$key} = '{$item}';
+        {/foreach}
+    </script>
+</body>
+</html>
+{/if}

@@ -1,0 +1,237 @@
+{if $full_page}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>{include file ='library/seller_html_head.lbi'}</head>
+
+<body>
+{include file ='library/seller_header.lbi'}
+<div class="ecsc-layout">
+    <div class="site wrapper">
+        {include file ='library/seller_menu_left.lbi'}
+        <div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+                {include file ='library/url_here.lbi'}
+                {include file ='library/seller_menu_tab.lbi'}
+                
+                <div class="explanation clear mb20" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4></div>
+                    <ul>
+                    	<li>佣金百分比数值越大，商家获取的分佣金额就越大。</li>
+                    	<li>总金额 - 运费 = 有效佣金</li>
+                    	<li>有效佣金 * 佣金百分比 + 运费 = 分佣金额</li>
+                    	<li>从2017年5月17日起，有效佣金不包含运费金额。</li>
+                    </ul>
+                </div>
+                
+                <div class="search-info">
+                    <div class="search-form">
+                        <form action="javascript:merchants_searchOrder()" name="searchForm">
+                            <div class="text_time mr10" id="text_time1">
+                                <input type="text" readonly="readonly" value="" size="22" id="start_time" name="start_time" class="text" placeholder="{$lang.order_start_time}">
+                            </div>
+                            <div class="text_time mr10" id="text_time2">
+                                <input type="text" readonly="readonly" value="" size="22" id="end_time" name="end_time" class="text" placeholder="{$lang.order_end_time}">
+                            </div>
+                            <div  class="imitate_select select_w145">
+                                <div class="cite"></div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="" class="ftx-01">{$lang.all_order}</a></li>
+                                    <li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.is_settlement}</a></li>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.no_settlement}</a></li>
+                                </ul>
+                                <input name="state" type="hidden" />
+                            </div>
+                            <input type="submit" value="{$lang.button_search}" class="sc-btn btn30 sc-blueBg-btn" />
+                        </form>
+                    </div>
+				</div>
+                
+                <div class="clear"></div>
+                <div class="list-div" id="listDiv">
+                {/if}
+                <form method="post" action="" name="listForm" onsubmit="return confirm(batch_drop_confirm);" style="position:relative">
+                <div class="m_rl_zs">
+                    <span class="green">当前佣金模式：{if $filter.commission_model}{$lang.category_model}{else}{$lang.seller_model}{/if}</span>
+                    {if !$filter.commission_model}&nbsp;&nbsp;{$lang.percent_value}：<font class="red" id="all_brokerage_amount">{$filter.percent_value}%</font>{/if}
+                    &nbsp;&nbsp;{$lang.all_brokerage_amount}：<font style="color:#C00" id="all_brokerage_amount">{$order_list.brokerage_amount.all}</font><!--改变颜色 liu-->
+                    
+                    <!--分销商品开关begin -->
+                    {if $is_dir}
+                    &nbsp;&nbsp;{$lang.all_drp}：<font style="color:#F00" id="no_brokerage_amount">{$order_list.brokerage_amount.no_settlement}</font><!--liu-->
+                    {/if}
+                    <!--分销商品开关end -->
+                    
+                    &nbsp;&nbsp;{$lang.is_brokerage_amount}：<font style="color:#179f27" id="is_brokerage_amount">{$order_list.brokerage_amount.is_settlement}</font><!--liu-->
+                    &nbsp;&nbsp;{$lang.no_brokerage_amount}：<font style="color:#F00" id="no_brokerage_amount">{$order_list.brokerage_amount.no_settlement}</font><!--liu-->
+                </div>
+                  <table class="ecsc-default-table">
+                    <thead>
+                    <tr>
+                      <th width="17%"><div class="first_all"><input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox" id="all" class="ui-checkbox" /><label class="ui-label" for="all">{$lang.order_sn}</label></div></th>
+                      <th width="8%" class="tl">{$lang.order_time}</th>
+                      <th width="9%" class="tl">{$lang.consignee}</th>
+                      <th width="7%">{$lang.total_fee}</th>
+                      <th width="9%"><div class="tDiv">有效优惠</div></th>
+                      <!--分销商品开关begin -->
+                    {if $is_dir}
+                    <th width="6%"><div class="tDiv">{$lang.drp_comm}</div></th>
+                    {/if}
+                    <!--分销商品开关end -->
+                      <th width="7%">{$lang.return_amount}</th>
+                      <th width="7%">{$lang.effective_amount_into}</th>
+                      <th width="7%">{$lang.brokerage_amount}</th>
+                      <th width="7%">{$lang.all_status}</th>
+                      <th width="5%">{$lang.settlement_state}</th>
+                      <th width="5%">{$lang.handler}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$order_list item=order name=noorder}
+                    {if !$smarty.foreach.noorder.last}
+                    <tr>
+                      <td class="first_td_checkbox"><div class="first_all tl"><input type="checkbox" name="checkboxes[]" value="{$order.order_id}" id="checkbox_{$order.order_id}" class="ui-checkbox" /><label for="checkbox_{$order.order_id}" class="ui-label">{$order.order_sn}{if $order.return_amount > 0}<br/><font class="red" style=" padding-left:12px;">【{$lang.refund}】</font>{/if}</label></div></td>
+                      <td class="tl">{$order.buyer|escape}<br />{$order.short_order_time}</td>
+                      <td class="tl"><a href="mailto:{$order.email}">{$order.consignee|escape}</a>{if $order.tel} [TEL: {$order.tel|escape}]{/if} <br />{$order.address|escape}</td>
+                      <td>
+                        {$order.formated_order_total_fee}
+                        <!-- {if $order.shipping_fee neq 0} -->
+                        <br/><em style="color:#F00">（含运费：{$order.formated_shipping_fee}）</em>
+                        <!-- {/if} -->
+                      </td>  
+                      <td>
+                            折扣：-{$order.formated_discount}<br />
+                            优惠券：-{$order.formated_coupons}<br />
+                            积分：-{$order.formated_integral_money}<br />
+                            红包：-{$order.formated_bonus}<br />
+                      </td>  
+                      <!--分销商品开关begin -->
+                      {if $is_dir}
+                      <td><div class="tDiv">{$order.formated_drp_commission}</div></td>
+                      {/if}
+                      <!--分销商品开关end -->
+                      <td>{$order.formated_return_amount}{if $order.return_amount > 0}<br/><a href="order.php?act=return_list&order_id={$order.order_id}&return_type=1" target="_blank" style="color:#930">(查看)</a>{/if}</td>
+                      <td>
+                        <!-- {if $order.shipping_fee neq 0} -->
+                        {$order.formated_order_amount_field}
+                        <br/> - {$order.formated_shipping_fee}
+                        <br/><em style="color:#F00"> = {$order.formated_effective_amount}</em>
+                        <!-- {else} -->
+                        {$order.formated_effective_amount}
+                        <!-- {/if} -->
+                      </td>
+                      
+                      <td>
+                        <p>
+                        <!-- {if $order.shipping_fee neq 0} -->
+                        + {$order.formated_effective_amount_price}
+                        <br/>+ {$order.formated_shipping_fee}
+                        <br/><em style="color:#F00"> = {$order.formated_brokerage_amount}</em>
+                        <!-- {else} -->
+                        {$order.formated_brokerage_amount}
+                        <!-- {/if} -->
+                        </p>
+                        {if $order.is_goods_rate}
+                            <p>
+                                <em style=" color:#31b4e1;">(部分商品比例)</em>
+                            </p>
+                        {/if}
+                      </td>
+                      <td>{$lang.os[$order.order_status]}<br />{$lang.ps[$order.pay_status]}<br />{$lang.ss[$order.shipping_status]}</td>
+                      <td>
+                        <img src="images/{if $order.is_settlement}yes{else}no{/if}.png" />
+                      </td>
+                      <td align="center"  width="5%">
+                          <a href="merchants_commission.php?act=handle_log&id={$order.order_id}&user_id={$order.ru_id}">操作日志</a>
+                      </td>
+                    </tr>
+                    {/if}
+                    {foreachelse}
+                    <tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+                    {/foreach}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="10">{include file="page.dwt"}</td>
+                        </tr>
+                    </tfoot>
+                  </table>
+                  </form>
+                  {if $full_page}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--高级搜索 start-->
+{include file="library/commission_order_search.lbi"}
+<!--高级搜索 end-->
+
+{include file ='library/seller_footer.lbi'}
+<script type="text/javascript" src="js/jquery.purebox.js"></script>
+<!--start-->
+<script type="text/javascript">
+  <!--
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+  listTable.query = "order_query";
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+
+  {literal}
+  
+  /**
+     * 搜索订单
+     */
+    function merchants_searchOrder()
+    {
+        listTable.filter['start_time'] = Utils.trim(document.forms['searchForm'].elements['start_time'].value);
+        listTable.filter['end_time'] = Utils.trim(document.forms['searchForm'].elements['end_time'].value);
+        listTable.filter['state'] = Utils.trim(document.forms['searchForm'].elements['state'].value);
+        listTable.filter['page'] = 1;
+        listTable.loadList();
+		listTable.query = "order_query";
+    }
+	
+//	//导出商家佣金列表
+//	function order_downloadList()
+//	{
+//	  var args = '';
+//	  for (var i in listTable.filter)
+//	  {
+//		if (typeof(listTable.filter[i]) != "function" && typeof(listTable.filter[i]) != "undefined")
+//		{
+//		  args += "&" + i + "=" + encodeURIComponent(listTable.filter[i]);
+//		}
+//	  }
+//
+//	  location.href = "merchants_commission.php?act=merchant_download" + args;
+//	}
+	function order_downloadList(){
+            page_downloadList("{$page_count}",'merchants_commission','ajax_download','merchants_commission','merchant_download','订单结算导出弹窗');
+        }
+	//日期选择插件调用start sunle
+	var opts1 = {
+		'targetId':'start_time',//时间写入对象的id
+		'triggerId':['start_time'],//触发事件的对象id
+		'alignId':'text_time1',//日历对齐对象
+		'format':'-'//时间格式 默认'YYYY-MM-DD HH:MM:SS'
+	},opts2 = {
+		'targetId':'end_time',
+		'triggerId':['end_time'],
+		'alignId':'text_time2',
+		'format':'-'
+	}
+
+	xvDate(opts1);
+	xvDate(opts2);
+	//日期选择插件调用end sunle
+  {/literal}
+  //-->
+</script>
+<!--end-->
+</body>
+</html>
+{/if}

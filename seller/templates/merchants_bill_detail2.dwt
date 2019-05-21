@@ -1,0 +1,219 @@
+{if $full_page}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>{include file ='library/seller_html_head.lbi'}</head>
+
+<body>
+{include file ='library/seller_header.lbi'}
+<div class="ecsc-layout">
+    <div class="site wrapper">
+        {include file ='library/seller_menu_left.lbi'}
+        <div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+                {include file ='library/url_here.lbi'}
+				{include file ='library/seller_menu_tab.lbi'}
+                <div class="explanation clear mb20" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i><h4>温馨提示</h4></div>
+                    <ul>
+                        <li>当前页面仅显示确认收货订单。</li>
+                        <li>运费金额将不计入收取佣金。</li>
+                        <li>退单金额将不计入收取佣金。</li>
+                        <li>【订单】：表示是按店铺比例或者分类比例</li>
+                    	<li>【商品】：表示是商品单独设置比例结算</li>
+                    </ul>
+                </div>
+                <div class="search-info">
+                    <form name="TimeInterval"  action="javascript:getList()" style="margin:0px">
+                        <div class="search-form">
+                            <strong class="fl lh mr10">{$lang.start_end_date}：</strong>
+                            <div class="text_time" id="text_time1">
+                                <input name="start_time" type="text" id="start_date" size="15" value='{$start_time}' readonly class="text"/>
+                            </div>
+                            <span class="bolang">&nbsp;&nbsp;~&nbsp;&nbsp;</span>
+                            <div class="text_time" id="text_time2">
+                                <input name="end_time" type="text" id="end_date" size="15" value='{$end_time}' readonly class="text" />
+                            </div>
+                            <input type="submit" name="submit" value="{$lang.query}" class="sc-btn sc-blueBg-btn btn30 ml10" />
+                        </div>
+                    </form>
+                </div>
+
+                <div class="clear"></div>
+                <div class="list-div" id="listDiv">
+                {/if}
+                  <table class="ecsc-default-table mt20">
+                    <thead>
+                    <tr>
+                      <th width="7%">
+                        <div class="first_all">
+                            <input onclick='listTable.selectAll(this, "checkboxes")' type="checkbox" id="all" class="ui-checkbox" /><label class="ui-label" for="all">{$lang.record_id}</label>
+                        </div>
+                      </th>
+                      <th style="text-align:left;">订单总金额</th>
+                      <th>有效分佣金额</th>
+                      <th>运费金额</th>
+                      <th>退单金额</th>
+                      {if $is_dir}
+                      <th>分销金额</th>
+                      {/if}
+                      <th>应结比例</th>
+                      <th>本期应结</th>
+                       <th>本期应结</th>
+                      <th>订单状态</th>
+                      <th>{$lang.handler}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach from=$bill_list item=bill name=nobill}
+                    <tr>
+                      <td class="first_td_checkbox">
+                        <div class="first_all">
+                            <input type="checkbox" name="checkboxes[]" value="{$bill.id}" id="checkbox_{$bill.id}" class="ui-checkbox" />
+                            <label class="ui-label" for="checkbox_{$bill.id}">{$bill.id}</label>
+                        </div>
+                      </td>
+                      <td style="text-align:left;">
+                      	{$bill.format_order_amount}<br/><em class="org2">(含运费)</em>
+                      </td>
+                      <td>{$bill.format_commission_total_fee}<br/><em class="org2">(不含运费)</em></td>
+                      <td>{$bill.format_shipping_fee}</td>
+                      <td>{$bill.format_return_amount}</td>
+                      {if $is_dir}
+                      <td>{$bill.format_drp_money}</td>
+                      {/if}
+                      <td>
+                          {if $bill.commission_model neq 1}
+                          {$bill.should_proportion}%
+                          {/if}
+                      </td>
+
+                      <td>
+                        {if $bill.goods_rate && $bill.should_amount > 0}
+                            <p class="red"> + {$bill.should_amount}【订单】</p>
+                            <p class="red"> + {$bill.goods_rate.should_amount}【商品】</p>
+                        {/if}
+                        <p>
+                            {$bill.format_should_amount}
+                            <br/>
+                            <em class="org2">(不含运费)</em>
+                        </p>
+                      </td>
+                        <td>
+                            <p>
+                                {$bill.format_shipping_should_amount}
+                                <br/>
+                                <em class="org2">(含运费)</em>
+                            </p>
+                        </td>
+                      <td>
+                      	{$lang.os[$bill.order_status]}<br />{$lang.ps[$bill.pay_status]}<br />{$lang.ss[$bill.shipping_status]}
+                      </td>
+                      <td class="ecsc-table-handle tr">
+                      	<span><a href="merchants_commission.php?act=bill_goods&order_id={$bill.order_id}&seller_id={$filter.seller_id}&commission_model={$filter.commission_model}" class="btn-orange"><i class="sc_icon_see"></i><p>订单明细</p></a></span>
+                      </td>
+                    </tr>
+                    <tr>
+                    	<td colspan="20" style="text-align:left; border-bottom:1px #f90 solid; padding-left:12px;">
+                        	<table width="100%">
+                            	<tr>
+                                	<td width="30%" style="border:none; padding:0px;">
+                                    	<em class="fl">订单编号：</em>
+                                        <em class="fl">{$bill.order_sn}</em>
+                                        <em class="red">(
+                                            {if $bill.commission_model eq 1}
+                                            {$lang.category_model}
+                                            {else}
+                                            {$lang.seller_model}
+                                            {/if}
+                                            )</em>
+                                    </td>
+                                    <td style="border:none; padding:0px;">
+                                    	{if $bill.is_settlement}
+                                    	<p class="red">【手动结算】</p></em>
+                                        {/if}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    {foreachelse}
+                    <tr><td class="no-records" colspan="20">{$lang.no_records}</td></tr>
+                    {/foreach}
+                    </tbody>
+                  </table>
+                  {include file="page.dwt"}
+                {if $full_page}
+                </div>
+                </form>
+                <!--end-->
+
+            </div>
+        </div>
+    </div>
+</div>
+{include file ='library/seller_footer.lbi'}
+<!--start-->
+<script type="text/javascript">
+  <!--
+  listTable.recordCount = {$record_count};
+  listTable.pageCount = {$page_count};
+  listTable.query = "bill_detail_query";
+
+  {foreach from=$filter item=item key=key}
+  listTable.filter.{$key} = '{$item}';
+  {/foreach}
+  //-->
+
+      //日期选择插件调用start sunle
+      var opts1 = {
+          'targetId':'start_date',//时间写入对象的id
+          'triggerId':['start_date'],//触发事件的对象id
+          'alignId':'text_time1',//日历对齐对象
+          'format':'-'//时间格式 默认'YYYY-MM-DD HH:MM:SS'
+      },opts2 = {
+          'targetId':'end_date',
+          'triggerId':['end_date'],
+          'alignId':'text_time2',
+          'format':'-'
+      }
+
+      xvDate(opts1);
+      xvDate(opts2);
+  //日期选择插件调用end sunle
+      function getList()
+      {
+          var frm =  document.forms['TimeInterval'];
+
+          listTable.filter['start_date'] = frm.elements['start_date'].value;
+          listTable.filter['end_date'] = frm.elements['end_date'].value;
+
+          listTable.filter['start_time'] = Utils.trim(frm.elements['start_date'].value);
+          listTable.filter['end_time'] = Utils.trim(frm.elements['end_date'].value);
+
+          listTable.filter['page'] = 1;
+          listTable.loadList();
+          getDownUrl();
+      }
+
+      function getDownUrl()
+      {
+          var aTags = document.getElementsByTagName('A');
+          for (var i = 0; i < aTags.length; i++)
+          {
+              if (aTags[i].href.indexOf('download') >= 0)
+              {
+                  if (listTable.filter['start_date'] == "")
+                  {
+                      var frm =  document.forms['TimeInterval'];
+                      listTable.filter['start_date'] = frm.elements['start_date'].value;
+                      listTable.filter['end_date'] = frm.elements['end_date'].value;
+                  }
+                  aTags[i].href = "merchants_commission.php?act=download&start_date=" + listTable.filter['start_date'] + "&end_date=" + listTable.filter['end_date'];
+              }
+          }
+      }
+</script>
+<!--end-->
+</body>
+</html>
+{/if}

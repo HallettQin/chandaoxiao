@@ -1,0 +1,232 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">商品 - {$ur_here}</div>
+        <div class="content">
+        	<div class="tabs_info">
+            	<ul>
+                    <li {if $menu_select.current eq '01_goods_list'}class="curr"{/if}>
+                    	<a href="goods.php?act=list">普通商品 {if $menu_select.current neq '01_goods_list'}{if $goods_list_type}<em class="li_color">({$goods_list_type.ordinary|default:0})</em>{/if}{/if}</a>
+                    </li>
+                    <li {if $menu_select.current eq '50_virtual_card_list'}class="curr"{/if}>
+                    	<a href="goods.php?act=list&extension_code=virtual_card">虚拟商品 {if $menu_select.current neq '50_virtual_card_list'}{if $goods_list_type}<em class="li_color">({$goods_list_type.virtual_card|default:0})</em>{/if}{/if}</a>
+                    </li>
+                    {if $cfg.review_goods}
+                	<li {if $menu_select.current eq '01_review_status'}class="curr"{/if}>
+                    	<a href="goods.php?act=review_status">商品审核 {if $menu_select.current neq '01_review_status'}{if $goods_list_type}<em class="li_color">({$goods_list_type.review_status|default:0})</em>{/if}{/if}</a>
+                    </li>
+                    {/if}
+					<li {if $menu_select.current eq '11_goods_trash'}class="curr"{/if}>
+                    	<a href="goods.php?act=trash">商品回收站 {if $menu_select.current neq '11_goods_trash'}{if $goods_list_type}<em class="li_color">({$goods_list_type.delete|default:0})</em>{/if}{/if}</a>
+                    </li>
+                    <li {if $menu_select.current eq '19_is_sale'}class="curr"{/if}>
+                    	<a href="goods.php?act=is_sale">已上架商品 {if $menu_select.current neq '19_is_sale'}{if $goods_list_type}<em class="li_color">({$goods_list_type.is_sale|default:0})</em>{/if}{/if}</a>
+                    </li>
+                    
+                    <li {if $menu_select.current eq '20_is_sale'}class="curr"{/if}>
+                    	<a href="goods.php?act=on_sale">未上架商品 {if $menu_select.current neq '20_is_sale'}{if $goods_list_type}<em class="li_color">({$goods_list_type.on_sale|default:0})</em>{/if}{/if}</a>
+                    </li>
+                </ul>
+            </div>			
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>删除后的商品可在商品回收站保存。</li>
+                    <li>可以进行商品还原，也可以彻底删除。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<!--商品列表-->
+                <div class="common-head">
+                    <div class="refresh ml0">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+					<div class="search">
+                    	<div class="input">
+                        	<input type="text" name="keyword" class="text nofocus" placeholder="商品名称" autocomplete="off">
+							<button class="btn" name="secrch_btn"></button>
+                        </div>
+                    </div>						
+                </div>
+                <div class="common-content">
+					<form method="post" action="" name="listForm">
+                	<div class="list-div" id="listDiv">
+						{/if}
+                    	<table cellpadding="0" cellspacing="0" border="0">
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                	<th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="35%"><div class="tDiv">{$lang.goods_name}</div></th>
+									<th width="15%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_type}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_sn}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.shop_price}</div></th>
+                                    <th width="12%" class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+								{foreach from=$goods_list item=goods}
+                            	<tr>
+                                    <td class="sign">
+                                        <div class="tDiv">
+                                            <input type="checkbox" name="checkboxes[]" value="{$goods.goods_id}" class="checkbox" id="checkbox_{$goods.goods_id}" />
+                                            <label for="checkbox_{$goods.goods_id}" class="checkbox_stars"></label>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{$goods.goods_id}</div></td>
+									<td>
+                                        <div class="tDiv goods_list_info">
+											<div class="img"><a href="../goods.php?id={$goods.goods_id}" target="_blank" title="{$goods.goods_name|escape:html}"><img src="{$goods.goods_thumb}" width="68" height="68" /></a></div>
+                                            <div class="desc">
+                                        	<div class="name">
+                                                	<span onclick="listTable.edit(this, 'edit_goods_name', {$goods.goods_id})" title="{$goods.goods_name|escape:html}" data-toggle="tooltip" class="span">{$goods.goods_name|escape:html}</span>
+                                                </div>
+                                            	{if $goods.brand_name}<p class="brand">品牌：<em>{$goods.brand_name}</em></p>{/if}
+                                                <p class="activity"> 
+                                                    {if $goods.is_shipping}
+                                                    <em class="free">免邮</em>
+                                                    {/if}
+    
+                                                    {if $goods.stages}
+                                                    <em class="byStage">分期</em>
+                                                    {/if}
+                                                    {if !$goods.is_alone_sale}
+                                                    <em class="parts">配件</em>
+                                                    {/if}
+                                                    
+                                                    {if $goods.is_promote}
+                                                        {if $nowTime gte $goods.promote_end_date}
+                                                    <em class="saleEnd">特卖结束</em>
+                                                        {else}
+                                                    <em class="sale">特卖</em>    
+                                                        {/if}
+                                                    {/if}
+                                                    
+                                                    {if $goods.is_xiangou}
+                                                        {if $nowTime gte $goods.xiangou_end_date}
+                                                    <em class="purchaseEnd">限购结束</em>
+                                                        {else}
+                                                    <em class="purchase">限购</em>    
+                                                        {/if}
+                                                    {/if}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{if $goods.user_name}<font class="red">{$goods.user_name}</font>{else}<font class="blue3">{$lang.self}</font>{/if}</div></td>                           
+                                    <td><div class="tDiv">{if $goods.is_real}{$lang.material_object}{else}{$lang.virtual_card}{/if}</div></td>
+                                    <td><div class="tDiv">{$goods.goods_sn}</div></td>
+                                    <td><div class="tDiv">{$goods.shop_price}</div></td>                               
+                                    <td class="handle">
+                                        <div class="tDiv a2">
+                                            <a href="javascript:;" onclick="listTable.remove({$goods.goods_id}, '{$lang.restore_goods_confirm}', 'restore_goods')" class="btn_see"><i class="sc_icon sc_icon_see"></i>还原</a>
+                                            <a href="javascript:;" onclick="listTable.remove({$goods.goods_id}, '{$lang.drop_goods_confirm}', 'drop_goods')" class="btn_trash"><i class="icon icon-trash"></i>删除</a>									
+                                        </div>
+                                    </td>
+                                </tr>
+								{foreachelse}
+								<tr><td class="no-records" colspan="20">{$lang.no_records}</td></tr>								
+								{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+                                	<td colspan="12">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                                <div class="shenhe">
+                                                    <div class="checkbox_item fl font12 mt5 mr5">
+                                                	<input type="checkbox" name="all_list" class="ui-checkbox" id="all_list"><label for="all_list" class="ui-label">全选</label>
+                                                </div>
+                                                  <input type="hidden" name="act" value="batch" />
+                                                    <div id="" class="imitate_select select_w120">
+                                                        <div class="cite">请选择</div>
+                                                        <ul>
+                                                            <li><a href="javascript:;" data-value="" class="ftx-01">{$lang.select_please}</a></li>
+                                                            <li><a href="javascript:;" data-value="restore" class="ftx-01">{$lang.restore}</a></li>
+                                                            <li><a href="javascript:;" data-value="drop" class="ftx-01">{$lang.remove}</a></li>
+                                                        </ul>
+                                                        <input name="type" type="hidden" value="" id="">
+                                                    </div>											  
+                                                  <select name="target_cat" style="display:none" onchange="checkIsLeaf(this)" class="select mr10">
+                                                    <option value="0">{$lang.select_please}</option>
+                                                    {$cat_list}
+                                                  </select>
+                                                  <input type="submit" value="{$lang.button_submit}" id="btnSubmit" name="btnSubmit" class="btn btn_disabled" disabled="true" onclick="changeAction();" ectype="btnSubmit" />
+                                                </div> 										
+                                            </div>
+                                            <div class="list-page">
+                                               {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                    </div>
+					</form>
+                </div>
+                <!--商品列表end-->
+            </div>
+		</div>
+	</div>
+	
+	<!--高级搜索 start-->
+	{include file="library/goods_search.lbi"}
+	<!--高级搜索 end-->
+	 {include file ='library/pagefooter.lbi'}
+	<script language="JavaScript">
+	  listTable.recordCount = {$record_count|default:0};
+	  listTable.pageCount = {$page_count|default:1};
+
+	  {foreach from=$filter item=item key=key}
+	  listTable.filter.{$key} = '{$item}';
+	  {/foreach}
+
+	  {literal}
+	  
+	  function confirmSubmit(frm, ext)
+	  {
+		if (frm.elements['type'].value == 'restore')
+		{
+		  {/literal}
+		  return confirm("{$lang.restore_goods_confirm}");
+		  {literal}
+		}
+		else if (frm.elements['type'].value == 'drop')
+		{
+		  {/literal}
+		  return confirm("{$lang.batch_drop_confirm}");
+		  {literal}
+		}
+		else if (frm.elements['type'].value == '')
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	  }
+
+	  function changeAction()
+	  {
+		  var frm = document.forms['listForm'];
+
+		  if (!document.getElementById('btnSubmit').disabled &&
+			  confirmSubmit(frm, false))
+		  {
+			  frm.submit();
+		  }
+	  }
+	  {/literal}
+	</script>
+</body>
+</html>
+{/if}

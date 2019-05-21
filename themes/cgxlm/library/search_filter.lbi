@@ -1,0 +1,17 @@
+<div class="filter-wrap">
+    <div class="filter-sort">
+        <a href="search.php?keywords={$pager.search.keywords}&display={$pager.display}&price_min={$pager.search.price_min}&price_max={$pager.search.price_max}&page={$pager.page}&sort=goods_id&is_ship={$pager.search.is_ship}&order=<!-- {if $pager.search.sort == 'goods_id' && $pager.search.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->{if $cou_id}&cou_id={$cou_id}{/if}" class="<!-- {if $pager.search.sort == 'goods_id'}-->curr<!-- {/if} -->">{$lang.default}<i class="iconfont <!-- {if $pager.search.sort == 'goods_id' && $pager.search.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+        <a href="search.php?keywords={$pager.search.keywords}&display={$pager.display}&price_min={$pager.search.price_min}&price_max={$pager.search.price_max}&page={$pager.page}&sort=sales_volume&is_ship={$pager.search.is_ship}&order=<!-- {if $pager.search.sort == 'sales_volume' && $pager.search.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->{if $cou_id}&cou_id={$cou_id}{/if}" class="<!-- {if $pager.search.sort == 'sales_volume'}-->curr<!-- {/if} -->">{$lang.sales_volume}<i class="iconfont <!-- {if $pager.search.sort == 'sales_volume' && $pager.search.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+        <a href="search.php?keywords={$pager.search.keywords}&display={$pager.display}&price_min={$pager.search.price_min}&price_max={$pager.search.price_max}&page={$pager.page}&sort=last_update&is_ship={$pager.search.is_ship}&order=<!-- {if $pager.search.sort == 'last_update' && $pager.search.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->{if $cou_id}&cou_id={$cou_id}{/if}" class="<!-- {if $pager.search.sort == 'last_update'}-->curr<!-- {/if} -->">{$lang.is_new}<i class="iconfont <!-- {if $pager.search.sort == 'last_update' && $pager.search.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+        <a href="search.php?keywords={$pager.search.keywords}&display={$pager.display}&price_min={$pager.search.price_min}&price_max={$pager.search.price_max}&page={$pager.page}&sort=comments_number&is_ship={$pager.search.is_ship}&order=<!-- {if $pager.search.sort == 'comments_number' && $pager.search.order == 'ASC'} -->DESC<!-- {else} -->ASC<!-- {/if} -->{if $cou_id}&cou_id={$cou_id}{/if}#goods_list" class="<!-- {if $pager.search.sort == 'comments_number'}-->curr<!-- {/if} -->">{$lang.Comment_number}<i class="iconfont <!-- {if $pager.search.sort == 'comments_number' && $pager.search.order == 'DESC'} -->icon-arrow-down<!-- {else} -->icon-arrow-up<!-- {/if} -->"></i></a>
+    </div>
+    <div class="filter-right">
+        {if !$category_load_type}
+        <div class="button-page">
+            <span class="pageState"><span>{$pager.page}</span>/{$pager.page_count}</span>
+            <a href="{if $pager.page_prev}{$pager.page_prev}{else}javascript:void(0);{/if}"{if $pager.page_prev} class="page page_prev"{/if} title="{$lang.page_prev}"><i class="iconfont icon-left"></i></a>
+            <a href="{if $pager.page_next}{$pager.page_next}{else}javascript:void(0);{/if}"{if $pager.page_next} class="page page_next"{/if} title="{$lang.page_next}"><i class="iconfont icon-right"></i></a>
+        </div>
+        {/if}
+    </div>
+</div>

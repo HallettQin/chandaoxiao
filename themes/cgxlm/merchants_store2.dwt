@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable -->
+    <!-- TemplateBeginEditable name="head" -->
+    <!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+    <link rel="stylesheet" type="text/css" href="{$site_domain}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/css/preview.css">
+    <link rel="stylesheet" type="text/css" href="{$site_domain}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/css/store.css">
+    <style>
+        .all_cats_tcc{ top: 38px; }
+        .shop-head-category:hover .all_cats_tcc{
+            display: block;
+        }
+        .all_cats_tcc li .square_box{
+            margin-top: 17px;
+        }
+        .jOneLevelarea:hover .s_b{
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+<div class="shop-header">
+    <div class="shop-header">
+        <!-- #BeginLibraryItem "/library/merchants_store_top.lbi" --><!-- #EndLibraryItem -->
+    </div>
+    <div class="bottom">
+        <div class="w w1200">
+            <div class="shop-head-category">
+                <div class="all-cate"><a href="javascript:;">{$lang.all_seller_cat}<i class="iconfont icon-liebiao"></i></a></div>
+                {if $all_cat_list}
+                <div class="all_cats_tcc">
+                    <ul>
+                        {foreach from=$all_cat_list item=cat}
+                        <li>
+                            <div class="jOneLevelarea user_temp_one">
+                                <div class="jTwoLevel">
+                                    <span class="square_box"></span>
+                                    <a href="{$cat.url}" target="_blank">{$cat.cat_name}</a>
+                                </div>
+                                <div class="s_b">
+                                    {foreach from=$cat.child_tree item=tree}
+                                    <a href="{$tree.url}">{$tree.name}</a>
+                                    {/foreach}
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </div>
+                {/if}
+            </div>
+            <div class="shop-nav">
+                <ul>
+                    <li>
+                        <a href="{$merchants_url}" {if $cat_id eq 0 && empty($mode)}class="current"{/if}>{$lang.Shop_home}</a>
+                    </li>
+                    <li>
+                        <a href="{$merchants_url}&mode=group_buy" {if $mode eq group_buy}class="current"{/if}>拼单商品</a>
+                    </li>
+                    <li>
+                        <a href="{$merchants_url}&mode=presale" {if $mode eq presale}class="current"{/if}>预定商品</a>
+                    </li>
+                    <li>
+                        <a href="{$merchants_url}&mode=sample" {if $mode eq sample}class="current"{/if}>样品商品</a>
+                    </li>
+                    <li>
+                        <a href="{$merchants_url}&mode=wholesale" {if $mode eq wholesale}class="current"{/if}>现货商品</a>
+                    </li>
+                    {foreach from=$store_category item=category key=key name=no}
+                    <!-- {if $smarty.foreach.no.iteration<6}-->
+                    <li class="s_box_id">
+                        <a href="{$category.url}" {if $category.opennew eq 1} target="_blank"{/if}>{$category.cat_name}</a>
+                    </li>
+                    <!-- {/if} -->
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="seller-list-main" style="height: 1000px">
+
+</div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+<!-- {if $site_domain} -->
+<script type="text/javascript" src="{$site_domain}js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript" src="{$site_domain}js/jquery.yomi.js"></script>
+<script type="text/javascript" src="{$site_domain}js/common.js"></script>
+<script type="text/javascript" src="{$site_domain}js/utils.js"></script>
+<script type="text/javascript" src="{$site_domain}js/compare.js"></script>
+<script type="text/javascript" src="{$site_domain}js/cart_common.js"></script>
+<script type="text/javascript" src="{$site_domain}js/parabola.js"></script>
+<script type="text/javascript" src="{$site_domain}js/shopping_flow.js"></script>
+<!-- {else} -->
+{insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js,common.js,compare.js,parabola.js,shopping_flow.js'}
+<!-- {/if} -->
+<script type="text/javascript" src="{$site_domain}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+<script type="text/javascript" src="{$site_domain}themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //点击切换下拉模块
+        function slideToggle(){
+            var wp = $(".j-slideToggle-wp");
+            wp.each(function(i,el){
+                var $this = $(el);
+                var handle = $this.find(".j-slideToggle-handle");
+                var con = $this.find(".j-slideToggle-con");
+                handle.click(function(){
+                    con.slideToggle();
+                    $this.toggleClass("active");
+                })
+            })
+        }
+        slideToggle();
+    })
+</script>
+</body>
+</html>

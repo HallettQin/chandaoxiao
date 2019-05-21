@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="{$action_link.href}" class="s-back">{$lang.back}</a>商家 - {$ur_here}</div>
+        <div class="content">
+        	{include file="library/commission_tab.lbi"}
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>涉及资金管理请谨慎处理信息。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info">
+                        <form method="post" action="merchants_commission.php" name="theForm" id="merchants_account_form" enctype="multipart/form-data">
+                            <div class="switch_info">
+                            	<!-- {if $type eq 'frozen' || $type eq 'unfreeze'} -->
+                                <div class="item">
+                                    <div class="label">收取比例：</div>
+                                    <div class="label_value">{$bill.gain_proportion}%</div>
+                                </div>
+                                <div class="item">
+                                	{if $bill.chargeoff_status eq 2}
+                                    <div class="label">已收取佣金：</div>
+                                    {else}
+                                    <div class="label">收取佣金：</div>
+                                    {/if}
+                                    <div class="label_value red">{$bill.format_gain_commission}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">应结比例：</div>
+                                    <div class="label_value">{$bill.should_proportion}%</div>
+                                </div>
+                                <div class="item">
+                                	{if $bill.chargeoff_status eq 2}
+                                    <div class="label">已结算佣金：</div>
+                                    {else}
+                                    <div class="label">本期应结：</div>
+                                    {/if}
+                                    <div class="label_value red">
+                                    {if $bill.settle_accounts > 0}{$bill.should_amount}【总额】 - {$bill.settle_accounts}【已结】 = {/if}{$bill.format_should_amount}{if $bill.settle_accounts > 0}【实结】{/if}
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">已冻结金额：</div>
+                                    <div class="label_value red">{$bill.format_frozen_money}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">已设置冻结天数：</div>
+                                    <div class="label_value red">{$bill.frozen_data} 天</div>
+                                </div>
+                                {if $bill.chargeoff_status neq 2}
+                                <div class="item">
+                                    <div class="label">冻结金额：</div>
+                                    <div class="label_value">
+                                    	<div class="date-item">
+                                            <div id="div_frozen_money" class="imitate_select select_w75">
+                                              <div class="cite">{$lang.add}</div>
+                                              <ul>
+                                                 <li><a href="javascript:;" data-value="1" class="ftx-01">添加</a></li>
+                                                 <li><a href="javascript:;" data-value="-1" class="ftx-01">减少</a></li>
+                                              </ul>
+                                            </div>
+                                            <input type="text" name="frozen_money" class="text w120" value="" placeholder="0.00" />
+                                            <div class="notic">可输入需要冻结账单的部分金额</div>
+                                            <input name="add_sub_frozen_money" type="hidden" value="1" id="input_frozen_money">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">冻结时间：</div>
+                                    <div class="label_value">
+                                    	<div id="div_frozen_data" class="imitate_select select_w75">
+                                              <div class="cite">{$lang.add}</div>
+                                              <ul>
+                                                 <li><a href="javascript:;" data-value="1" class="ftx-01">添加</a></li>
+                                                 <li><a href="javascript:;" data-value="-1" class="ftx-01">减少</a></li>
+                                              </ul>
+                                            </div>
+                                            <input type="text" name="frozen_data" class="text w120" value="" placeholder="0" />
+                                            <div class="notic">天数</div>
+                                            <input name="add_sub_frozen_data" type="hidden" value="1" id="input_frozen_data">
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value">
+                                        <div class="notic">&nbsp;&nbsp;备注：可输入冻结时间，时间以账单结束时间 + 冻结天数 = 冻结资金解冻</div>
+                                    </div>
+                                </div>
+                                {else}
+                                <div class="item">
+                                    <div class="label">解冻金额：</div>
+                                    <div class="label_value">
+                                    	<input type="text" name="frozen_money" class="text w120" value="" placeholder="0.00" />
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value">
+                                        <div class="notic">&nbsp;&nbsp;备注：解冻账单金额，解冻金额将直接汇入商家可用余额；解冻金额等于已冻结金额，冻结时间将清零。</div>
+                                    </div>
+                                </div>
+                                {/if}
+                                
+                                <!-- {else} -->
+                                <div class="item">
+                                    <div class="label">账单编号：</div>
+                                    <div class="label_value">{$bill.bill_sn}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">账单时间：</div>
+                                    <div class="label_value">{$bill.format_start_time} ～ {$bill.format_end_time}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">订单金额：</div>
+                                    <div class="label_value">{$bill.format_order_amount}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">运费金额：</div>
+                                    <div class="label_value">{$bill.format_shipping_amount}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">退单金额：</div>
+                                    <div class="label_value">
+                                    	<span class="fl"><em class="org2">{$bill.format_return_fee}</em> + <em class="org2">{$bill.format_shipping_fee}</em> =&nbsp;&nbsp;</span>
+                        				<span class="fl"><em class="org2 fl">{$bill.format_return_amount}</em>&nbsp;&nbsp;&nbsp;&nbsp;<em class="notic fl">（备注：退单金额 + 退运费 = 退单金额）</em></span>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">收取比例：</div>
+                                    <div class="label_value">{$bill.gain_proportion}%</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">收取佣金：</div>
+                                    <div class="label_value red">{$bill.format_gain_commission}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">应结比例：</div>
+                                    <div class="label_value">{$bill.should_proportion}%</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">本期应结：</div>
+                                    <div class="label_value red">
+                                    {if $bill.settle_accounts > 0}{$bill.should_amount}【总额】 - {$bill.settle_accounts}【已结】 = {/if}{$bill.format_should_amount}{if $bill.settle_accounts > 0}【实结】{/if}
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">出账状态：</div>
+                                    <div class="label_value">
+                                    	{if $bill.chargeoff_status eq 1}
+                                            已出账
+                                        {elseif $bill.chargeoff_status eq 2}
+                                            账单结束
+                                            <br/>
+                                            {$bill.format_settleaccounts_time}
+                                        {elseif $bill.chargeoff_status eq 3}
+                                            关闭账单
+                                        {else}
+                                            未出账
+                                        {/if}
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">出账时间：</div>
+                                    <div class="label_value">{$bill.format_chargeoff_time}</div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">申请状态：</div>
+                                    <div class="label_value red">
+                                    	{if $bill.bill_apply eq 1}
+                                            已申请
+                                        {else}
+                                            未申请
+                                        {/if}
+                                    </div>
+                                </div>
+                                {if $bill.bill_apply neq 0}
+                                    {if $bill.apply_time}
+                                    <div class="item">
+                                        <div class="label">申请时间：</div>
+                                        <div class="label_value">{$bill.format_apply_time}</div>
+                                    </div>
+                                    {/if}
+                                    {if $bill.apply_note}
+                                    <div class="item">
+                                        <div class="label">账单描述：</div>
+                                        <div class="label_value"><textarea class="textarea" name="apply_note" style=" background:#FFF" disabled>{$bill.apply_note}</textarea></div>
+                                    </div>
+                                    {/if}
+                                    <div class="item">
+                                        <div class="label">审核状态：</div>
+                                        <div class="label_value">
+                                            <div class="checkbox_items">
+                                                {if $bill.check_status eq 0}
+                                                    <div class="checkbox_item">
+                                                        <input type="radio" name="check_status" value="0" class="ui-radio" autocomplete="off" id="check_status0" checked />
+                                                        <label class="ui-radio-label" for="check_status0">待处理</label>
+                                                    </div>
+                                                    <div class="checkbox_item">
+                                                        <input type="radio" name="check_status" value="1" class="ui-radio" autocomplete="off" id="check_status1" />
+                                                        <label class="ui-radio-label" for="check_status1">同意</label>
+                                                    </div>
+                                                    <div class="checkbox_item">
+                                                        <input type="radio" name="check_status" value="2" class="ui-radio" autocomplete="off" id="check_status2" />
+                                                        <label class="ui-radio-label" for="check_status2">拒绝</label>
+                                                    </div>
+                                                
+                                                {else}    
+                                                    {if $bill.check_status eq 1}
+                                                        同意结账
+                                                    {else eq 2}
+                                                        拒绝结账  
+                                                    {/if}
+                                                {/if}
+                                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {if $bill.check_status eq 0}
+                                    <div class="item reject_note hide">
+                                        <div class="label">拒绝账单理由：</div>
+                                        <div class="label_value"><textarea class="textarea" name="reject_note"></textarea></div>
+                                    </div>
+                                    {else}
+                                        {if $bill.reject_note}
+                                        <div class="item">
+                                            <div class="label">拒绝账单理由：</div>
+                                            <div class="label_value"><textarea class="textarea" name="reject_note" style=" background:#FFF" disabled>{$bill.reject_note}</textarea></div>
+                                        </div>
+                                        {/if}
+                                    {/if}
+                                {/if}    
+                                <!-- {/if} -->
+                                {if $bill.bill_apply neq 0}
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value info_btn">
+                                        <input type="submit" value="{$lang.button_submit}" class="button" id="submitBtn" />
+                                        <input type="reset" value="{$lang.button_reset}" class="button button_reset" />
+                                        <input type="hidden" name="act" value="{$form_act}" />
+                                        <!-- {if $type eq 'frozen'} -->
+                                        <input type="hidden" name="type" value="bill_frozen" />
+                                        <!-- {elseif $type eq 'unfreeze'} -->
+                                        <input type="hidden" name="type" value="bill_unfreeze" />
+                                        <!-- {/if} -->
+                                        <input type="hidden" name="bill_id" value="{$bill.id}"/>
+                            			<input type="hidden" name="seller_id" value="{$bill.seller_id}"/>
+                                    </div>
+                                </div>	
+                                {/if}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </div>
+ 	{include file ='library/pagefooter.lbi'}
+	<script type="text/javascript">
+	$(function(){
+		
+		$.divselect("#div_frozen_money","#input_frozen_money");
+        $.divselect("#div_frozen_data","#input_frozen_data");
+		
+		$(":input[name='check_status']").click(function(){
+			var val = $(this).val();
+			
+			if(val == 2){
+				$(".reject_note").show();
+			}else{
+				$(".reject_note").hide();
+			}
+		});
+	})
+	</script>
+</body>
+</html>

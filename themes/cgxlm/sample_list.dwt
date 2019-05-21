@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable -->
+    <!-- TemplateBeginEditable name="head" -->
+    <!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+    <link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/css/select.css" />
+</head>
+
+<body>
+<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/page_category.lbi" --><!-- #EndLibraryItem -->
+<div class="content">
+    <div class="w w1200">
+        <div class="crumbs-nav">
+            <div class="crumbs-nav-main clearfix">
+                <span>
+                <a href="sample.php">样品首页</a>
+                </span>
+                <span class="arrow">&gt;</span>
+                <span class="finish">样品列表</span>
+            </div>
+        </div>
+        <div class="selector">
+            <!-- #BeginLibraryItem "/library/brand_filter.lbi" --><!-- #EndLibraryItem -->
+        </div>
+        <div class="mod-list-sort">
+            <form method="GET" class="sort" name="listform">
+                <div class="sort-l fl">
+                    <div class="sort-t">{$lang.sort}：</div>
+                    <a href="sample.php?act=list&id={$cat_id}&brand={$brand}&price_min={$price_min}&price_max={$price_max}&page={$pager.page}&sort=act_id&order=<!-- {if $pager.search.sort == 'act_id' && $pager.search.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->" class="sort-item <!-- {if $pager.search.sort == 'act_id'}-->curr<!-- {/if} -->">{$lang.default}<i class="iconfont <!-- {if $pager.search.sort == 'act_id' && $pager.search.order == 'DESC'} -->icon-down1<!-- {else} -->icon-up1<!-- {/if} -->"></i></a>
+                    <a href="sample.php?act=list&id={$cat_id}&brand={$brand}&price_min={$price_min}&price_max={$price_max}&page={$pager.page}&sort=start_time&order=<!-- {if $pager.search.sort == 'start_time' && $pager.search.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->" class="sort-item <!-- {if $pager.search.sort == 'start_time'}-->curr<!-- {/if} -->">{$lang.Newest}<i class="iconfont <!-- {if $pager.search.sort == 'start_time' && $pager.search.order == 'DESC'} -->icon-down1<!-- {else} -->icon-up1<!-- {/if} -->"></i></a>
+                    <a href="sample.php?act=list&id={$cat_id}&brand={$brand}&price_min={$price_min}&price_max={$price_max}&page={$pager.search.page}&sort=comments_number&order=<!-- {if $pager.search.sort == 'comments_number' && $pager.search.order == 'DESC'} -->ASC<!-- {else} -->DESC<!-- {/if} -->" class="sort-item <!-- {if $pager.search.sort == 'comments_number'}-->curr<!-- {/if} -->">{$lang.Comment_number}<i class="iconfont <!-- {if $pager.search.sort == 'comments_number' && $pager.search.order == 'DESC'} -->icon-down1<!-- {else} -->icon-up1<!-- {/if} -->"></i></a>
+                </div>
+                <input type="hidden" name="act" value="list">
+                <input type="hidden" name="page" value="{$pager.page}" />
+                <input type="hidden" name="sort" value="{$pager.search.sort}" />
+                <input type="hidden" name="order" value="{$pager.search.order}" />
+            </form>
+        </div>
+        <!--{if $list}-->
+        <ul class="gb-index-list clearfix">
+            <!-- {foreach from=$list item=item name=foo} 循环团购活动开始 -->
+            <li class="mod-shadow-card">
+                <a href="{$item.url}" target="_blank" class="img"><img src="{$item.goods_thumb}" alt="{$group_buy.goods_name|escape:html}" title="{$group_buy.goods_name|escape:html}"></a>
+                <div class="clearfix">
+                    <div class="price" style="margin-bottom:20px;">¥{$item.price_ladder.0.price}</div>
+                    <!-- <div class="man"> $item.sales_volume $lang.people_participate </div> -->
+                </div>
+                <a href="{$item.url}" target="_blank" class="name" title="{$item.goods_name|escape:html}">{$group_buy.goods_name|escape:html}</a>
+                <a href="{$item.url}" class="gb-btn">立即订购</a>
+            </li>
+            <!-- {/foreach}-->
+        </ul>
+        <!-- #BeginLibraryItem "/library/pages.lbi" --> <!-- #EndLibraryItem -->
+        <!--{else}-->
+        <div class="no_records no_records_tc">
+            <i class="no_icon_two"></i>
+            <div class="no_info">
+                <h3>{$lang.information_null}</h3>
+            </div>
+        </div>
+        <!--{/if}-->
+    </div>
+</div>
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+
+{insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js,parabola.js,cart_common.js,cart_quick_links.js,jd_choose.js,perfect-scrollbar/perfect-scrollbar.min.js'}
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+<script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //倒计时
+        $(".lefttime").each(function(){
+            $(this).yomi();
+        });
+    });
+</script>
+</body>
+</html>

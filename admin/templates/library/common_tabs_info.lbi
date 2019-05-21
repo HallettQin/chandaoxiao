@@ -1,0 +1,10 @@
+<div class="tabs_info">
+    <ul>
+        <li {if !$common_tabs.info}class="curr"{/if}>
+            <a href="{$common_tabs.url}">自营</a>
+        </li>
+        <li {if $common_tabs.info}class="curr"{/if}>
+            <a href="{$common_tabs.url}&seller_order_list=1">店铺</a>
+        </li>
+    </ul>
+</div>

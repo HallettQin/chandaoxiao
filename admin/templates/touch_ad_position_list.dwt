@@ -1,0 +1,213 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">{if $type eq 1}手机{else}广告{/if} - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>{$lang.operating_hints}</h4><span id="explanationZoom" title="{$lang.fold_tips}"></span></div>
+                <ul>
+                	<li>展示手机端网站页面所有的广告位置。</li>
+                    <li>点击查看可查看广告位置相关广告位的广告。</li>
+                    <li>可搜索广告名关键词进行查询。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                    	{if $action_link}
+                    	<div class="fl">
+                            <a href="{$action_link.href}"><div class="fbutton"><div class="add" title="{$action_link.text}"><span><i class="icon icon-plus"></i>{$action_link.text}</span></div></div></a>
+                        </div>
+                        {/if}
+                        <div class="refresh">
+                        <div class="refresh_tit" title="{$lang.refresh_data}"><i class="icon icon-refresh"></i></div>
+                        <div class="refresh_span">{$lang.refresh} - {$lang.total_data}{$record_count}{$lang.data}</div>
+                    </div>
+                    <form action="javascript:searchAd_position()" name="searchForm">
+                        <div class="search">
+                            <div class="input">
+                                <input type="text" name="keyword" class="text nofocus" placeholder="广告位名称"  autocomplete="off" /><input type="submit" value="" class="not_btn" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="common-content">
+                	<div class="list-div"  id="listDiv">
+                        {/if}
+                    	<table cellpadding="0" cellspacing="0" border="0">
+                        	<thead>
+                            	<tr>
+                                    <th width="30%"><div class="tDiv">{$lang.position_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.posit_width}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.posit_height}</div></th>
+                                    <th width="20%"><div class="tDiv">{$lang.position_desc}</div></th>
+                                    <th width="20%" class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$position_list item=list}
+                            	<tr>
+                                    <td><div class="tDiv">{$list.position_name|escape:html}</div></td>
+                                    {if $list.is_public eq 1}
+                                        {if $priv_ru eq 1}
+                                        <td><div class="tDiv"><font style="color:#F60;">公共</font></div></td>
+                                        {/if}
+                                    {else}
+                                        {if $priv_ru eq 1}
+                                        <td><div class="tDiv">{if $list.user_name}<font style="color:#F00;">{$list.user_name}</font>{else}<font class="blue">自营</font>{/if}</div></td>
+                                        {/if}
+                                    {/if}
+                                    <td><div class="tDiv">{$list.ad_width}</div></td>
+                                    <td><div class="tDiv">{$list.ad_height}</div></td>
+                                    <td><div class="tDiv">{$list.position_desc|escape:html}</div></td>
+                                    <td class="handle">
+                                        <div class="tDiv a3">
+                                            <a href="{if $type eq 1}touch_ads.php{else}ads.php{/if}?act=list&pid={$list.position_id}" title="{$lang.view}{$lang.ad_content}" class="btn_see"><i class="sc_icon sc_icon_see"></i>{$lang.view}</a>
+                                            <a href="{if $type eq 1}touch_ad_position.php{else}ad_position.php{/if}?act=edit&id={$list.position_id}" title="{$lang.edit}" class="btn_edit"><i class="icon icon-edit"></i>{$lang.edit}</a>
+                                            <a href="javascript:;" onclick="listTable.remove({$list.position_id}, '{$lang.drop_confirm}')" title="{$lang.remove}" class="btn_trash"><i class="icon icon-trash"></i>{$lang.remove}</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                    <tr><td class="no-records" colspan="12">{$lang.no_records}</td></tr>
+                                {/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+                                    <td colspan="12">
+                                    	<div class="list-page">
+                                            {include file="library/page.lbi"}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {if $full_page}
+                    </div>
+                </div>
+            </div>
+            <!--<div class="gj_search">
+                <div class="search-gao-list" id="searchBarOpen">
+                    <i class="icon icon-zoom-in"></i>{$lang.advanced_search}
+                </div>
+                <div class="search-gao-bar">
+                    <div class="handle-btn" id="searchBarClose"><i class="icon icon-zoom-out"></i>{$lang.pack_up}</div>
+                    <div class="title"><h3>{$lang.advanced_search}</h3></div>
+                    <form method="get" name="formSearch_senior" action="javascript:searchAd_position()">
+                        <div class="searchContent">
+                            <div class="layout-box">
+                                <dl>
+                                    <dt>{$lang.keyword}</dt>
+                                    <dd><input type="text" value="" name="keyword"  class="s-input-txt" autocomplete="off" /></dd>
+                                </dl>
+                                <dl>
+                                    <dt>{$lang.steps_shop_name}</dt>
+                                    <dd>
+                                        <div id="shop_name_select" class="select_w120 imitate_select">
+                                            <div class="cite">{$lang.select_please}</div>
+                                            <ul>
+                                               <li><a href="javascript:;" data-value="0">{$lang.select_please}</a></li>
+                                               <li><a href="javascript:;" data-value="1">{$lang.s_shop_name}</a></li>
+                                               <li><a href="javascript:;" data-value="2">{$lang.s_qw_shop_name}</a></li>
+                                               <li><a href="javascript:;" data-value="3">{$lang.s_brand_type}</a></li>
+                                            </ul>
+                                            <input name="store_search" type="hidden" value="0" id="shop_name_val">
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl style="display:none" id="merchant_box">
+                                    <dd>
+                                        <div class="select_w120 imitate_select">
+                                            <div class="cite">{$lang.select_please}</div>
+                                            <ul>
+                                               <li><a href="javascript:;" data-value="0">{$lang.select_please}</a></li>
+                                               {foreach from=$store_list item=store}
+                                               <li><a href="javascript:;" data-value="{$store.ru_id}">{$store.store_name}</a></li>
+                                               {/foreach}
+                                            </ul>
+                                            <input name="merchant_id" type="hidden" value="0" >
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl id="store_keyword" style="display:none" >
+                                    <dd><input type="text" value="" name="store_keyword" class="s-input-txt" autocomplete="off" /></dd>
+                                </dl>
+                                <dl style="display:none" id="store_type">
+                                    <dd>
+                                        <div class="select_w120 imitate_select">
+                                            <div class="cite">{$lang.select_please}</div>
+                                            <ul>
+                                               <li><a href="javascript:;" data-value="0">{$lang.steps_shop_type}</a></li>
+                                               <li><a href="javascript:;" data-value="{$lang.flagship_store}">{$lang.flagship_store}</a></li>
+                                               <li><a href="javascript:;" data-value="{$lang.exclusive_shop}">{$lang.exclusive_shop}</a></li>
+                                               <li><a href="javascript:;" data-value="{$lang.franchised_store}">{$lang.franchised_store}</a></li>
+                                               <li><a href="javascript:;" data-value="{$lang.shop_store}">{$lang.shop_store}</a></li>
+                                            </ul>
+                                            <input name="store_type" type="hidden" value="0" >
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <div class="bot_btn">
+                            <input type="submit" class="btn red_btn" name="tj_search" value="{$lang.button_inquire}" /><input type="reset" class="btn btn_reset" name="reset" value="{$lang.button_reset}" />
+                        </div>
+                    </form>
+                </div>
+            </div>-->
+        </div>
+    </div>
+ 	{include file ='library/pagefooter.lbi'}
+    <script type="text/javascript">
+		listTable.recordCount = {$record_count|default:0};
+		listTable.pageCount = {$page_count|default:1};
+
+		{foreach from=$filter item=item key=key}
+		listTable.filter.{$key} = '{$item}';
+		{/foreach}
+
+        $.divselect("#shop_name_select","#shop_name_val",function(obj){
+            var val = obj.attr("data-value");
+            get_store_search(val);
+        });
+        function get_store_search(val){
+                if(val == 1){
+                        $("#merchant_box").css("display",'');
+                        $("#store_keyword").css("display",'none');
+                        $("#store_type").css("display",'none')
+                }else if(val == 2){
+                        $("#merchant_box").css("display",'none');
+                        $("#store_keyword").css("display",'');
+                        $("#store_type").css("display",'none')
+                }else if(val == 3){
+                        $("#merchant_box").css("display",'none');
+                        $("#store_keyword").css("display",'');
+                        $("#store_type").css("display",'')
+                }else{
+                         $("#merchant_box").css("display",'none');
+                        $("#store_keyword").css("display",'none');
+                        $("#store_type").css("display",'none')
+                }
+        }
+
+    function searchAd_position()
+    {
+        var frm = $("form[name='formSearch_senior']");
+        listTable.filter['store_search'] = Utils.trim(frm.find("input[name='store_search']").val());
+        listTable.filter['merchant_id'] = Utils.trim(frm.find("input[name='merchant_id']").val());
+        listTable.filter['store_keyword'] = Utils.trim(frm.find("input[name='store_keyword']").val());
+        listTable.filter['store_type'] = Utils.trim(frm.find("input[name='store_type']").val());
+
+        listTable.filter['keyword'] = Utils.trim(($("form[name='searchForm']").find("input[name='keyword']").val() != '') ? $("form[name='searchForm']").find("input[name='keyword']").val() :  frm.find("input[name='keyword']").val());
+        listTable.filter['page'] = 1;
+
+        listTable.loadList();
+    }
+    $.gjSearch("-240px");  //高级搜索
+    </script>
+</body>
+</html>
+{/if}

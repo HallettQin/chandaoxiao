@@ -1,0 +1,53 @@
+<ul class="gu_category1">
+        <li gu_id="001"><div style="border-bottom: 1px solid rgb(255, 255, 255);">为您推荐</div></li>
+        <li gu_id="002"><div style="border-bottom: 1px solid rgb(255, 255, 255);">品牌街</div></li>
+        <!--{foreach from=$categories_pro item=cat name=categories_pro}-->
+        <li gu_id="{$cat.id}"><div>{$cat.name|escape:html}</div></li>
+        <!-- {/foreach} -->
+</ul>
+<div class="gu_category">
+    <ul class="gu_category2 gu_id_001" style="display: none;">
+        <!--{foreach from=$recommends item=recommend}-->
+        <li><a target="_blank" href="{$recommend.ad_link}" class="purchasers"><img src="{$recommend.ad_code}"><p>{$recommend.b_title}</p></a></li>
+        <!--{/foreach}-->
+    </ul>
+    <ul class="gu_category2 gu_id_002" style="display: none;">
+        <!--{foreach from=$brands item=brand}-->
+        <li><a target="_blank" href="{$brand.ad_link}" class="purchasers"><img src="{$brand.ad_code}"><p>{$brand.b_title}</p></a></li>
+        <!--{/foreach}-->
+    </ul>
+    <!--{foreach from=$categories_pro item=cat name=categories_pro}-->
+    <!--{if $smarty.foreach.categories_pro.index < $nav_cat_num}-->
+    <ul class="gu_category2 gu_id_{$cat.id}" style="display: none;">
+        <!--{foreach from=$cat.child_tree item=child_two name=name}-->
+        <li><a target="_blank" href="{if $act_type eq 'wholesale'}wholesale_cat.php?id={$child_two.id}&act=list{elseif $act_type eq 'group_buy'}group_buy.php?act=list&cat_id={$child_two.id}{elseif $act_type eq 'presale'}presale.php?cat_id={$child_two.id}&act=category{/if}" class="purchasers"><img src="{$child_two.cat_icon}"><p>{$child_two.name}</p></a></li>
+        <!--{/foreach}-->
+    </ul>
+    <!--{/if}-->
+    <!-- {/foreach} -->
+
+    <script type="text/javascript">
+        $(function(){
+            $(".gu_category1 li").eq($(".gu_category1 li").length-1).find("div").css("border-bottom","none");
+            $(".gu_category2").hide();
+            $(".shop_list").hide();
+            <!--$(".gu_category1 li").eq(0).attr("style","background-color:#fff");-->
+            $(".gu_category1 li").eq(0).find("div").css("border-bottom","none");
+            $(".gu_category2").eq(0).show();
+            $(".shop_list").eq(0).show();
+            $(".gu_category1 li").mouseover(function() {
+                $(".gu_category2").hide();
+                $(".shop_list").hide();
+                <!--$(".gu_category1 li").attr("style","background-color:#fff");-->
+                $(".gu_category1 li").find("div").css("border-bottom","1px #fff solid");
+                $(".gu_category1 li").eq($(".gu_category1 li").length-1).find("div").css("border-bottom","none");
+                <!--$(this).attr("style","background-color:#fff");-->
+                $(this).find("div").css("border-bottom","none");
+                $(this).find("div").css("border-bottom","1px solid #792f6e");
+                $(".gu_id_"+$(this).attr("gu_id")).show();
+
+            });
+        })
+
+    </script>
+</div>

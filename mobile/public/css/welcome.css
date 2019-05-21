@@ -1,0 +1,184 @@
+html, body {
+    position: relative;
+    height: 100%;
+}
+body {
+    background: #fff;
+    color: #616161;
+    font-family: "Microsoft Yahei";
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0}
+.swiper-container {
+    width: 100%;
+}
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.swiper-slide{
+    padding: 0;
+}
+.swiper-slide img{
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+}
+
+.home-lg{
+    /*padding: 20px 0px;*/
+}
+.home-welcome{
+    font-size: 1rem;
+    margin: 20px 15px 5px;
+}
+.home-btns{
+    margin: 20px 15px 0;
+    text-align: center;
+}
+.home-btn{
+    background: #792f6e;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    display: block;
+    text-decoration: none;
+    color:#fff;
+}
+.home-btn1{
+    background: #7a4172;
+}
+.home-btn a{
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+/*welcome*/
+.goway{overflow: hidden;width: 95%;margin:auto;margin-top: 2rem;}
+.gowayo{margin-bottom:80px; }
+.leftb .topb h1{font-size:1.5rem;line-height:3rem;font-weight: bold;color: #792f6e;}
+.leftb .topb h3{
+    font-size:1rem;
+    color: #000;
+    font-weight: normal;
+    text-align:center;
+    margin-bottom: 1rem;
+}
+.leftb .topb b{color: #000;}
+.bottomb{
+    overflow: hidden;
+    border-top: 1px solid #000;
+    margin-top:1.2rem;
+}
+.bottomb .cellp{ 
+    margin-top: 25px;
+}
+.bottomb .cellp span{
+    display: block;
+    height: 2rem;
+    padding-left: 50px;
+    font-size: 1.5rem;
+    color: #000;
+    font-weight: bold;
+    line-height: 2rem;
+    text-align: center;
+}
+.bottomb .cellp span img{
+        width: 10%;
+        display: inline-block;
+        float: left;
+        margin-right: .5rem;
+}
+.bottomb .cellp span b{
+    float: left;
+}
+.bottomb .cellp p{
+    font-size: 1rem;
+    color: #000;
+    line-height: 35px;
+    text-align: center;
+}
+.bottomb a{
+    border-radius: 5px;
+    border: solid 1px #792f6e;
+    cursor: pointer;
+    font-size: 1.6rem;
+    color: #792f6e;
+    background: #ffffff; 
+    margin-top: 25px;
+    width: 95%;
+    display: block;
+    margin: auto;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.bottomb a:hover{background: #792f6e;color: #fff;}
+.leftb .topb p{font-size: 1rem;line-height: 1.5rem;color: #000;display: inline-block;margin-top: .45rem;}
+.goway .rightb img{
+    width: 100%;
+}
+.gowayo .topb p.noll{
+    text-indent: 0rem;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+.leftb .topb p{
+    display: block;
+    font-size: 1.4rem;
+    line-height: 2.5rem;
+}
+.bottomb .cellp p{
+    text-align: left;
+    font-size: 1.4rem;
+    line-height: 2rem;
+}
+.home-welcome{
+    font-size: 1.5rem;
+    font-family: "Microsoft Yahei";
+}
+.home-btn{
+    padding: 25px;
+    font-family: "Microsoft Yahei";
+    font-size: 1.4rem;
+}
+.leftb .topb h1{
+    font-size: 2rem;
+    line-height: 4rem;
+}
+.leftb .topb h3{
+    font-size: 1.4rem;
+}
+.bottomb .cellp span{
+    font-size: 2rem;
+}
+.bottomb a{
+    font-size: 1.4rem;
+    height: 4rem;
+    line-height: 4rem;
+}
+
+
+
+}

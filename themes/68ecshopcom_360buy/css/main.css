@@ -1,0 +1,71 @@
+@charset "utf-8";
+/* CSS Document */
+*{margin:0;padding:0;list-style-type:none;}
+a,img{border:0;}
+a:hover{text-decoration:none;}
+/*按钮样式*/
+#ClickMe {
+	width: 200px;
+	height: 30px;
+	border: 1px solid #C40000;
+	background-color: #000;
+	color: #FFF;
+	margin:0 auto;
+}
+#goodcover {
+	display: none;
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 133%;
+	background-color: black;
+	z-index: 1001;
+	-moz-opacity: 0.8;
+	opacity: 0.50;
+	filter: alpha(opacity=80);
+}
+#code {
+	background-color: #fff;
+	padding: 10px;
+	position: absolute;
+	display: none;
+	left: 45%;
+	z-index: 1002;
+}
+.close1 {
+	height: 30px;
+}
+#closebt {
+	float: right;
+}
+#closebt img {
+	width: 20px;
+}
+.goodtxt {
+	text-align: center;
+}
+.goodtxt p {
+	height: 30px;
+	line-height: 30px;
+	font-size: 16px;
+	color: #000;
+	font-weight: 600;
+}
+.code-img {
+	width: 250px;
+	margin: 30px auto 0 auto;
+	padding: 10px;
+}
+.code-img img {
+	width: 240px;
+}
+
+a{text-decoration:none}
+.zhezao{width: 100%;height: 100%;text-align: center;float: left;}
+.tishi{width: 60%;background-color: #fff;margin: 10% auto;padding: 0 10px;overflow:hidden;}
+.fanhui{text-align: left;color: #00c786;}
+.fanhui a{color: #00c786;}
+.xiaom{color: #b0b0b0;}
+.login{padding: 3px 30px; background-color: #00c786;margin-right: 20px;color: #fff;border-radius:15px;}
+.register{padding: 3px 30px;color: #00c786;border-radius:15px;border: 1px solid #00c786;}

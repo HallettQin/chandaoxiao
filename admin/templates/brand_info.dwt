@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="{$action_link.href}" class="s-back">{$lang.back}</a>商品 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>请按提示文案填写信息，以免出错。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info">
+                        <form action="brand.php" method="post" name="theForm" enctype="multipart/form-data" id="brandForm">
+                            <div class="switch_info">
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}{$lang.brand_name_cn}：</div>
+                                    <div class="label_value">
+										<input type="text" name="brand_name" maxlength="60" value="{$brand.brand_name}" class="text" autocomplete="off" />
+                                    	<div class="form_prompt"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.brand_name_en}：</div>
+                                    <div class="label_value">
+										<input type="text" name="brand_letter" maxlength="60" value="{$brand.brand_letter}" class="text" autocomplete="off" />
+                                    	<div class="form_prompt"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.brand_first_char}：</div>
+                                    <div class="label_value">
+										<input type="text" name="brand_first_char" maxlength="60" value="{$brand.brand_first_char}" class="text" autocomplete="off" />
+                                    	<div class="form_prompt"></div>
+										<div class="notic">用于解决某些生僻字无法正确生成品牌首字母的情况。</div>
+                                    </div>
+                                </div>								
+                                <div class="item">
+                                    <div class="label">{$lang.site_url}：</div>
+                                    <div class="label_value">
+										<input type="text" name="site_url" size="40" value="{$brand.site_url}" class="text" autocomplete="off" />
+                                    </div>
+                                </div>									
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}{$lang.brand_logo}：</div>
+                                    <div class="label_value">
+                                        <div class="type-file-box">
+                                            <input type="button" name="button" id="button" class="type-file-button" value="">
+                                            <input type="file" class="type-file-file" id="logo" name="brand_logo" size="30" data-state="imgfile" hidefocus="true" value="">
+                                            {if $brand.brand_logo neq ""}
+                                            <span class="show">
+                                            	<a href="{$brand.brand_logo}" target="_blank" class="nyroModal"><i class="icon icon-picture" onmouseover="toolTip('<img src={$brand.brand_logo}>')" onmouseout="toolTip()"></i></a>
+                                            </span>
+                                            {/if}
+											<input type="text" name="textfile" class="type-file-text" id="textfield" value="{$brand.brand_logo}" autocomplete="off" readonly>
+                                        </div>
+                                        <div class="form_prompt"></div>
+										<div class="notic" id="warn_brandlogo">
+										{if $brand.brand_logo eq ''}
+											{$lang.up_brandlogo}标准尺寸200*88
+										{else}
+											{$lang.warn_brandlogo}标准尺寸200*88
+										{/if}
+                                        </div>
+                                    </div>
+                                </div>
+								<!--品牌专区大图 by wu start-->						
+								{if $is_need}
+                                <div class="item">
+                                    <div class="label">{$lang.index_img}：</div>
+                                    <div class="label_value">
+                                        <div class="type-file-box">
+                                            <input type="button" name="button" id="button" class="type-file-button" value="">
+                                            <input type="file" class="type-file-file" id="logo" name="index_img" size="30" data-state="imgfile" hidefocus="true" value="">
+                                            {if $brand.index_img neq ""}
+                                            <span class="show">
+                                            	<a href="{$brand.index_img}" target="_blank" class="nyroModal"><i class="icon icon-picture" onmouseover="toolTip('<img src={$brand.index_img}>')" onmouseout="toolTip()"></i></a>
+                                            </span>
+                                            {/if}
+                                        	<input type="text" name="textfile" class="type-file-text" id="textfield" value="{$brand.index_img}" autocomplete="off" readonly>
+                                        </div>
+                                        <div class="form_prompt"></div>
+										<div class="notic" id="warn_brandlogo">标准尺寸278*285</div>
+                                    </div>
+                                </div>		
+								{/if}
+								<!--品牌专区大图 by wu end-->	
+								<!-- 品牌背景图 start -->
+								<div class="item">
+                                    <div class="label">{$lang.brand_bg}：</div>
+                                    <div class="label_value">
+                                        <div class="type-file-box">
+                                            <input type="button" name="button" id="button" class="type-file-button" value="">
+                                            <input type="file" class="type-file-file" id="logo" name="brand_bg" size="30" data-state="imgfile" hidefocus="true" value="">
+                                            {if $brand.brand_bg neq ""}
+                                            <span class="show">
+                                            	<a href="{$brand.brand_bg}" target="_blank" class="nyroModal"><i class="icon icon-picture" onmouseover="toolTip('<img src={$brand.brand_bg}>')" onmouseout="toolTip()"></i></a>
+                                            </span>
+                                            {/if}
+                                        	<input type="text" name="textfile" class="type-file-text" id="textfield" value="{$brand.brand_bg}" autocomplete="off" readonly>
+                                        </div>
+                                        <div class="form_prompt"></div>
+										<div class="notic" id="warn_brandlogo">使用于品牌详情页头部分类背景，建议尺寸：1920*200</div>
+                                    </div>
+                                </div>
+								<!-- 品牌背景图 end -->
+                                <div class="item">
+                                    <div class="label">{$lang.brand_desc}：</div>
+                                    <div class="label_value">
+										<textarea name="brand_desc" cols="60" rows="4" class="textarea">{$brand.brand_desc}</textarea>
+                                    </div>
+                                </div>								
+                                <div class="item">
+                                    <div class="label">{$lang.sort_order}：</div>
+                                    <div class="label_value">
+										<input type="text" name="sort_order" maxlength="40" size="15" value="{$brand.sort_order}" class="text text_5" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.is_show}：</div>
+                                    <div class="label_value">
+                                        <div class="checkbox_items" style="width:auto;">
+                                            <div class="checkbox_item">
+                                                <input type="radio" class="ui-radio" name="is_show" id="is_show_1" value="1" {if $brand.is_show eq 1} checked="true" {/if}  />
+                                                <label for="is_show_1" class="ui-radio-label">{$lang.yes}</label>
+                                            </div>
+                                            <div class="checkbox_item">
+                                                <input type="radio" class="ui-radio" name="is_show" id="is_show_0" value="0" {if $brand.is_show eq 0} checked="true" {/if}  />
+                                                <label for="is_show_0" class="ui-radio-label">{$lang.no}</label>
+                                            </div>
+                                        </div>
+										<div class="notic">({$lang.visibility_notes})</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.lab_intro}：</div>
+                                    <div class="label_value">
+                                        <div class="checkbox_items">
+                                            <div class="checkbox_item">
+                                                <input type="radio" class="ui-radio" name="is_recommend" id="is_recommend_1" value="1" {if $brand.is_recommend eq 1} checked="true" {/if}  />
+                                                <label for="is_recommend_1" class="ui-radio-label">{$lang.yes}</label>
+                                            </div>
+                                            <div class="checkbox_item">
+                                                <input type="radio" class="ui-radio" name="is_recommend" id="is_recommend_0" value="0" {if $brand.is_recommend eq 0} checked="true" {/if}  />
+                                                <label for="is_recommend_0" class="ui-radio-label">{$lang.no}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>								
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value info_btn">
+										<input type="button" class="button" value="{$lang.button_submit}" id="submitBtn" />
+										<input type="reset" class="button button_reset" value="{$lang.button_reset}" />
+										<input type="hidden" name="act" value="{$form_action}" />
+										<input type="hidden" name="old_brandname" value="{$brand.brand_name}" />
+										<input type="hidden" name="id" value="{$brand.brand_id}" />
+										<input type="hidden" name="old_brandlogo" value="{$brand.brand_logo}">
+                                    </div>
+                                </div>								
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </div>
+    {include file ='library/pagefooter.lbi'}
+	{literal}
+	<script type="text/javascript">
+	$(function(){
+		//表单验证
+		$("#submitBtn").click(function(){
+			if($("#brandForm").valid()){
+				$("#brandForm").submit();
+			}
+		});
+		
+		$(function(){
+			$('.nyroModal').nyroModal();
+		});
+		
+		$('#brandForm').validate({
+			errorPlacement:function(error, element){
+				var error_div = element.parents('div.label_value').find('div.form_prompt');
+				element.parents('div.label_value').find(".notic").hide();
+				error_div.append(error);
+			},
+			rules:{
+				brand_name :{
+					required : true
+				},
+				textfile:{
+					required : true
+				}
+			},
+			messages:{
+				brand_name:{
+					required : '<i class="icon icon-exclamation-sign"></i>请输入中文品牌名称'
+				},
+				textfile:{
+					required : '<i class="icon icon-exclamation-sign"></i>请上传品牌logo'
+				}
+			}			
+		});
+	});
+	</script>
+	{/literal}
+</body>
+</html>

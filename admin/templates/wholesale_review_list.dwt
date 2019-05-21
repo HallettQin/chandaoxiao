@@ -1,0 +1,227 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">供求 - {$ur_here}</div>
+        <div class="content">
+        	<div class="tabs_info">
+            	<ul>
+                    <li {if $menu_select.current eq '01_goods_list'}class="curr"{/if}>
+                    <a href="wholesale.php?act=list">现货商品列表 {if $menu_select.current neq '01_goods_list'}{if $goods_list_type}<em class="li_color"></em>{/if}{/if}</a>
+                    </li>
+                    <li {if $menu_select.current eq '01_review_status'}class="curr"{/if}>
+                    <a href="wholesale.php?act=review_status">商品审核 {if $menu_select.current neq '01_review_status'}{if $goods_list_type}<em class="li_color"></em>{/if}{/if}</a>
+                    <li><a href="wholesale_cat.php?act=list">现货分类列表</a></li>
+		</ul>
+            </div>
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6545.html" target="_blank">商城现货管理活动说明</a>
+                        </div>
+                    </div>
+                    {/if}
+				</div>
+                <ul>
+                	<li>展示了所有现货方案相关信息：商家名称、商品名称、使用会员等级、是否启用现货方案。</li>
+                    <li>可以进行添加现货方案、批量添加、批量删除等操作。</li>
+                    <li>可根据条件如商品名称、店铺名称等搜索出具体现货方案信息。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="wholesale.php?act=review_status&type=not_audit"><div class="fbutton"><div class="edit" title="未审核"><span><i class="icon icon-edit"></i>未审核 ({$goods_list_type.not_status|default:0})</span></div></div></a>
+                        <a href="wholesale.php?act=review_status&type=not_pass"><div class="fbutton"><div class="add" title="审核未通过"><span><i class="icon icon-edit"></i>审核未通过 ({$goods_list_type.not_pass|default:0})</span></div></div></a>
+					</div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+                    <div class="search">
+						{include file ='library/search_store.lbi'}
+                        <div class="select m0">
+                            <div class="imitate_select select_w170">
+                                <div class="cite">{$lang.adopt_status}</div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.adopt_status}</a></li>
+                                    <li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.not_audited}</a></li>
+                                    <li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.audited_not_adopt}</a></li>
+                                    <li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.audited_yes_adopt}</a></li>
+                                </ul>
+                                <input name="review_status" type="hidden" value="0" id="">
+                            </div>
+                        </div>
+                    	<div class="input">
+                        	<input type="text" name="keyword" class="text nofocus" placeholder="商品名称" autocomplete="off" /><button class="btn" name="secrch_btn"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="common-content">
+					<form method="post" onsubmit="return confirmSubmit(this)">
+                	<div class="list-div"  id="listDiv" >
+						{/if}
+                    	<table cellpadding="1" cellspacing="1">
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="45%"><div class="tDiv">{$lang.goods_name}</div></th>
+                                    <th width="15%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="16%"><div class="tDiv">最小起订量</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.enabled}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$wholesale_list item=wholesale}
+								<tr>
+                                    <td class="sign">
+                                        <div class="tDiv">
+                                            <input type="checkbox" name="checkboxes[]" value="{$wholesale.act_id}" class="checkbox" id="checkbox_{$wholesale.act_id}" />
+                                            <label for="checkbox_{$wholesale.act_id}" class="checkbox_stars"></label>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv">{$wholesale.act_id}</div></td>
+                                    <td><div class="tDiv"><a href="../wholesale_goods.php?id={$wholesale.act_id}" target="_blank">{$wholesale.goods_name|escape:html}</a></div></td>
+                                    <td><div class="tDiv">{if $wholesale.ru_name}<font style="color:#F00;">{$wholesale.ru_name}</font>{else}<font class="blue">自营</font>{/if}</div></td>
+                                    <td><div class="tDiv">{$wholesale.moq}</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <div class="switch mauto {if $wholesale.enabled}active{/if}" onclick="listTable.switchBt(this, 'toggle_enabled', {$wholesale.act_id})" title="是">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <input type="hidden" value="0" name="">
+                                        </div>
+                                    </td>
+                                    <td>
+                                    	<div class="tDiv">
+                                            {if $wholesale.review_status eq 1}
+                                            <font class="org2">{$lang.not_audited}</font>
+                                            {elseif $wholesale.review_status eq 2}
+                                            <font class="red">{$lang.audited_not_adopt}</font><br/>
+                                            <i class="tip yellow" title="{$wholesale.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                            {elseif $wholesale.review_status eq 3}
+                                            <font class="blue">{$lang.audited_yes_adopt}</font>
+                                            {/if}
+                                        </div>
+                                    </td>
+								</tr>
+								{foreachelse}
+								<tr><td class="no-records" colspan="8">{$lang.no_records}</td></tr>
+								{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+									<td colspan="8">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                                <div class="shenhe">
+                                                    <input type="submit" name="audited" id="btnSubmit" value="{$lang.audited}" class="btn btn_disabled" disabled="true" ectype="btnSubmit" />
+                                                </div>
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+					{if $full_page}
+                    </div>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+	<script type="text/javascript">
+        //分页传值
+        listTable.recordCount = {$record_count|default:0};
+        listTable.pageCount = {$page_count|default:1};
+
+        <!--{foreach from=$filter item=item key=key}-->
+        listTable.filter.{$key} = '{$item}';
+        <!--{/foreach}-->
+        /** **/
+
+        function confirmSubmit(frm) {
+            return false
+        }
+
+        $(document).on("click","input[ectype='btnSubmit']",function(){
+            var checkboxs = $('form input[name="checkboxes[]"]:checked')
+
+            var ids = [];
+            for (var i = 0; i < checkboxs.length; i++) {
+                ids.push($(checkboxs[i]).val())
+            }
+
+            var content  = 	'<form id="reviewForm" enctype="multipart/form-data" method="post" action="wholesale.php?act=update_review_status">' +
+                '<div class="item fl" style="width:333px">' +
+                '<div class="fl" style="padding-top:9px">商品审核：</div>' +
+                '<div class="checkbox_items" style="padding-top:10px; width:80%">' +
+                '<div class="checkbox_item">' +
+                '<input name="review_status" class="ui-radio review_status" id="pro_no" value="3" checked="checked" type="radio" onclick="handleReviewStatus(this);">' +
+                '<label for="pro_no" class="ui-radio-label">审核通过</label>' +
+                '</div>' +
+                '<div class="checkbox_item mr15">' +
+                '<input name="review_status" class="ui-radio review_status" id="pro_yes" value="2" type="radio" onclick="handleReviewStatus(this);">' +
+                '<label for="pro_yes" class="ui-radio-label">审核未通过</label> ' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="item fl hide" id="review_content" style="padding:20px 0px; width:333px">' +
+                '<textarea name="review_content" value="" cols="60" rows="4" class="textarea"></textarea>' +
+                '</div>' +
+                '<input name="ids" type="hidden" value="' + ids.join(',') + '">' +
+                '</form>';
+            pb({
+                id:"review_status_dialog",
+                title:"商品审核",
+                width:403,
+                content:content,
+                ok_title:"确定",
+                cl_title:"取消",
+                drag:true,
+                foot:true,
+                onOk:function(){
+                    insert_review_status();
+                }
+            });
+        })
+
+        function insert_review_status(){
+            var actionUrl = "wholesale.php?act=update_review_status";
+            $("#reviewForm").ajaxSubmit({
+                type: "POST",
+                dataType: "JSON",
+                url: actionUrl,
+                data: { "action": "TemporaryImage" },
+                success: function (data) {
+                    window.location.reload()
+                },
+                async: true
+            });
+        }
+
+        function handleReviewStatus(t){
+            if(t.value == 2){
+                $("#review_content").show();
+            }else{
+                $("#review_content").hide();
+                $(":input[name='review_content']").val('');
+            }
+        }
+    </script>
+</body>
+</html>
+{/if}

@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+		<div class="title">
+        	{if $parent_id > 0}
+            <a href="category_store.php?act=list&parent_id={$parent_id}&back_level={$level}" class="s-back">{$lang.back}</a>
+            {/if}
+            商品 - {$ur_here}
+        </div>
+        <div class="content">
+        	<div class="tabs_info">
+            	<ul>
+                    <li {if $menu_select.current eq '03_category_list'}class="curr"{/if}><a href="category.php?act=list">平台商品分类</a></li>
+                    <li {if $menu_select.current eq '03_store_category_list'}class="curr"{/if}><a href="category_store.php?act=list">店铺商品分类</a></li>
+                </ul>
+            </div>		
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>展示了店铺所有的商品分类。</li>
+                    <li>可查看下一级分类。</li>
+                    <li>鼠标移动“设置”位置，可新增下一级分类、查看下一级分类、转移商品等操作</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<!--商品分类列表-->
+                
+                {if $cat_belongs neq 1}
+                <div class="common-head">
+                    <div class="fl">
+                    	<a href="category_store.php?act=category_separate"><div class="fbutton"><div class="add" title="分离平台分类"><span><i class="icon icon-plus"></i>分离平台分类</span></div></div></a>
+                    </div>
+                </div>
+                {/if}
+                <div class="common-content">
+                	<div class="list-div">
+                    	<table cellpadding="0" cellspacing="0" border="0">
+                        	<thead>
+                            	<tr>
+                                	<th width="8%"><div class="tDiv">级别({$cat_level}级)</div></th>
+                                	<th width="12%"><div class="tDiv">分类名称</div></th>
+									<th width="13%"><div class="tDiv">商家名称</div></th>
+                                    <th width="10%"><div class="tDiv">商品数量</div></th>
+                                    <th width="10%"><div class="tDiv">数量单位</div></th>
+                                    <th width="10%"><div class="tDiv">导航栏</div></th>
+                                    <th width="10%"><div class="tDiv">是否显示</div></th>
+                                    <th width="10%"><div class="tDiv">价格分级</div></th>
+                                    <th width="5%"><div class="tDiv">排序</div></th>
+                                    <th width="12%" class="handle">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+								{foreach from=$cat_info item=cat}
+                            	<tr>
+                                	<td>
+                                    	<div class="tDiv first_setup">
+                                        	<div class="setup_span">
+                                            	<em><i class="icon icon-cog"></i>设置<i class="arrow"></i></em>
+                                                <ul>
+                                                    <li><a href="category_store.php?act=list&parent_id={$cat.cat_id}&level={$level}">查看下一级</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv"><a href="goods.php?act=list&cat_id={$cat.cat_id}&cat_type=seller" class="ftx-01">{$cat.cat_name}</a></div></td>
+									<td><div class="tDiv"><font class="red">{$cat.user_name}</font></div></td>
+                                    <td><div class="tDiv">{$cat.goods_num}</div></td>
+                                    <td><div class="tDiv"><input type="text" name="measure_unit" class="text w40" value="{$cat.measure_unit}" onkeyup="listTable.editInput(this, 'edit_measure_unit', {$cat.cat_id})"/></div></td>
+                                    <td>
+                                    	<div class="tDiv">
+                                        	<div class="switch {if $cat.show_in_nav}active{/if}" title="{if $cat.show_in_nav}是{else}否{/if}" onclick="listTable.switchBt(this, 'toggle_show_in_nav', {$cat.cat_id})">
+                                            	<div class="circle"></div>
+                                            </div>
+                                            <input type="hidden" value="0" name="">
+                                        </div>
+                                    </td>
+                                    <td>
+                                    	<div class="tDiv">
+                                        	<div class="switch {if $cat.is_show}active{/if}" title="{if $cat.is_show}是{else}否{/if}" onclick="listTable.switchBt(this, 'toggle_is_show', {$cat.cat_id})">
+                                            	<div class="circle"></div>
+                                            </div>
+                                            <input type="hidden" value="0" name="">
+                                        </div>
+                                    </td>
+                                    <td><div class="tDiv"><input type="text" name="grade" class="text w40" value="{$cat.grade}" onkeyup="listTable.editInput(this, 'edit_grade', {$cat.cat_id})"/></div></td>
+                                    <td><div class="tDiv"><input type="text" name="sort_order" class="text w40" value="{$cat.sort_order}" onkeyup="listTable.editInput(this, 'edit_sort_order', {$cat.cat_id})" autocomplete="off" /></div></td>
+                                    <td class="handle">
+                                        <div class="tDiv a2">
+                                            <a href="category_store.php?act=edit&amp;cat_id={$cat.cat_id}" class="btn_see"><i class="sc_icon sc_icon_see"></i>查看</a>
+                                            <a href="javascript:remove_cat({$cat.cat_id},{$cat.level});" class="btn_trash"><i class="icon icon-trash"></i>删除</a>
+                                        </div>
+                                    </td>
+                                </tr>
+								{foreachelse}
+								<tr><td class="no-records" colspan="10">{$lang.no_records}</td></tr>
+								{/foreach}
+                            </tbody>                        
+                        </table>        
+                    </div>
+                </div>
+                <!--商品分类列表end-->
+            </div>
+		</div>
+	</div>
+    <div id="dialog">
+    	<div class="transfer_goods_info">
+        	<div class="prompt">
+            	<h4>什么是转移商品分类?</h4>
+                <span>在添加商品或者在商品管理中,如果需要对商品的分类进行变更,那么你可以通过此功能,正确管理你的商品分类。</span>
+            </div>
+            <div class="pb_content">
+            	<div class="item">
+                    <span>从此分类</span>
+                    <div class="select_list w120" id="category_original">
+                        <div class="cite">家用电器</div>
+                        <ul>
+                            <li><a href="javascript:void(0);" data-value="1">服饰鞋帽</a></li>
+                            <li><a href="javascript:void(0);" data-value="2">礼品箱包</a></li>
+                            <li><a href="javascript:void(0);" data-value="3">家居家装</a></li>
+                            <li><a href="javascript:void(0);" data-value="4">服饰鞋帽</a></li>
+                        </ul>
+                    </div>
+                    <input name="category_original" type="hidden" value="4" id="category_original_val">
+                </div>
+                <div class="item">
+                    <span>转移到</span>
+                    <div class="select_list w120" id="category_now">
+                        <div class="cite">生活电器</div>
+                        <ul>
+                            <li><a href="javascript:void(0);" data-value="1">服饰鞋帽</a></li>
+                            <li><a href="javascript:void(0);" data-value="2">礼品箱包</a></li>
+                            <li><a href="javascript:void(0);" data-value="3">家居家装</a></li>
+                            <li><a href="javascript:void(0);" data-value="4">服饰鞋帽</a></li>
+                        </ul>
+                    </div>
+                    <input name="category_now" type="hidden" value="4" id="category_now_val">
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+    <script type="text/javascript" src="js/jquery.purebox.js"></script>
+    <script type="text/javascript">
+		//列表导航栏设置下路选项
+    	$(".ps-container").perfectScrollbar();
+		
+		//转移分类
+		$(document).on('click',"*[ectype='transfer_goods']",function(){
+			var cat_id = $(this).data("cid");
+			$.jqueryAjax("category_store.php", "act=move&cat_id="+cat_id, function(data){
+				var content = data.content;
+				pb({
+					id:"transfer_dialog",
+					title:"转移商品",
+					width:680,
+					content:content,
+					ok_title:"开始转移",
+					cl_title:"重置",
+					drag:false,
+					foot:true,
+					onOk:function(){
+						$("#moveCategory").submit();
+					}
+				});
+			});
+			
+			$.divselect("#category_original","#category_original_val");
+			$.divselect("#category_now","#category_now_val");
+		});
+    </script>  
+	<script type="text/javascript">
+	function remove_cat(cat_id,level){
+		if (confirm('确定删除吗')) {
+		   Ajax.call('category_store.php?is_ajax=1&act=remove', "cat_id="+cat_id+"&level="+level, remove_catResponse, "GET", "JSON");
+		}
+	}
+
+	function remove_catResponse(result){
+		if(result.error == 2){
+			alert(result.massege);
+		}else{
+			window.location.reload();
+		}
+	}	
+	</script>
+</body>
+</html>

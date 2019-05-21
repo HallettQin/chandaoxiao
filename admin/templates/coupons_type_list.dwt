@@ -1,0 +1,197 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">模式 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6550.html" target="_blank">商城优惠券功能说明</a>
+                        </div>
+                    </div>			
+                    {/if}				
+				</div>
+                <ul>
+                	<li>展示了优惠券的相关信息列表。</li>
+                    <li>通过优惠券名称关键字、筛选使用类型搜索出具体优惠券信息。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="coupons.php?act=add"><div class="fbutton"><div class="add" id="actionSpan" title="添加优惠券类型"><span><i class="icon icon-plus"></i>添加优惠券类型</span></div></div></a>
+                    </div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+                    <div class="search">
+						<div class="select">		
+							<div id="" class="imitate_select select_w120">
+								<div class="cite">{$lang.use_type}</div>
+								<ul>
+									<li><a href="javascript:;" data-value="1,2,3,4" class="ftx-01">{$lang.use_type}</a></li>
+									<li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.coupons_type_01}</a></li>
+									<li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.coupons_type_02}</a></li>
+									<li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.coupons_type_03}</a></li>
+									<li><a href="javascript:;" data-value="4" class="ftx-01">{$lang.coupons_type_04}</a></li>
+								</ul>
+								<input name="cou_type" type="hidden" value="1,2,3,4" id="">
+							</div>
+						</div>			
+                        <div class="select m0">
+                            <div class="imitate_select select_w170">
+                                <div class="cite">{$lang.adopt_status}</div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.adopt_status}</a></li>
+                                    <li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.not_audited}</a></li>
+                                    <li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.audited_not_adopt}</a></li>
+                                    <li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.audited_yes_adopt}</a></li>
+                                </ul>
+                                <input name="review_status" type="hidden" value="0" id="">
+                            </div>
+                        </div>			
+                    	<div class="input">
+                        	<input type="text" name="cou_name" class="text nofocus" placeholder="优惠券名称" autocomplete="off" /><button class="btn" name="secrch_btn"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="common-content">
+				<form method="post" action="" name="listForm">
+                	<div class="list-div" id="listDiv" >
+						{/if}
+                    	<table cellpadding="1" cellspacing="1" >
+                        	<thead>
+                            	<tr>
+                                    <th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="18%"><div class="tDiv">{$lang.coupons_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.coupons_type}</div></th>
+                                    <th width="6%"><div class="tDiv">{$lang.use_goods}</div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.use_limit}</div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.coupons_value}</div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.give_out_amount}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.valid_date}</div></th>
+									<th width="5%"><div class="tDiv">{$lang.is_overdue}</div></th>
+                                    <th width="7%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                    <th class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$cou_list item=vo}
+                            <tr>
+                                <td><div class="tDiv">{$vo.cou_id}</div></td>
+                                <td><div class="tDiv">{$vo.cou_name}</div></td>
+                                <td><div class="tDiv red">{$vo.user_name}</div></td>
+                                <td><div class="tDiv" {if $vo.type eq 5} title='{$vo.free_value_name}' data-toggle="tooltip"{/if}>{$vo.cou_type}</div></td>
+                                <td>
+                                	<div class="tDiv">
+                                    	{if !$vo.cou_goods && !$vo.spec_cat}
+                                        	<span class="blue">{$lang.goods_all}</span>
+                                        {elseif $vo.cou_goods && !$vo.spec_cat}
+                                        	<span class="red">{$lang.goods_appoint}</span>
+                                        {elseif !$vo.cou_goods && $vo.spec_cat}
+                                        	<span class="green">{$lang.spec_cat}</span>
+                                        {/if}	
+                                    </div>
+                                </td>
+                                <td><div class="tDiv">{$vo.cou_man}</div></td>
+                                <td><div class="tDiv">{$vo.cou_money}</div></td>
+                                <td><div class="tDiv">{$vo.cou_total}</div></td>
+                                <td><div class="tDiv">{$vo.cou_start_time}<br>{$vo.cou_end_time}</div></td>
+                                <td><div class="tDiv">{$vo.cou_is_time}</div></td> 
+                                <td>
+                                    <div class="tDiv">
+                                        {if $vo.review_status eq 1}
+                                        	<font class="org2">{$lang.not_audited}</font>
+                                        {elseif $vo.review_status eq 2}
+                                        	<font class="red">{$lang.audited_not_adopt}</font><br/>
+                                        	<i class="tip yellow" title="{$vo.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                        {elseif $vo.review_status eq 3}
+                                        	<font class="blue">{$lang.audited_yes_adopt}</font>
+                                        {/if}									
+                                    </div>
+                                </td>
+                                <td class="handle">
+                                    <div class="tDiv a3">
+										{if $vo.type eq 3 || $vo.type eq 4 || $vo.type eq 5}
+                                        <div id="clip_container" class="clip_container">
+                                        	<a href="javascript:void(0);" data-url="{$url}coupons.php?act=coupons_info&id={$vo.cou_id}" data-id="{$vo.cou_id}" title="{$lang.copy_url}" class="btn_inst" ectype="clip_button" id="clip_button_{$vo.cou_id}"><i class="icon icon-copy"></i>{$lang.copy_url}</a> 
+                                        </div>	
+										{/if}										
+                                        <a href="coupons.php?act=coupons_list&cou_id={$vo.cou_id}" title="{$lang.view_detail}" class="btn_see"><i class="sc_icon sc_icon_see"></i>{$lang.view}</a>
+                                        <a href="coupons.php?act=edit&cou_id={$vo.cou_id}" title="{$lang.edit}" class="btn_edit"><i class="icon icon-edit"></i>{$lang.edit}</a>
+                                        <a href="javascript:;" onclick="coupons_del({$vo.cou_id})" title="{$lang.remove}" class="btn_trash"><i class="icon icon-trash"></i>{$lang.remove}</a>									
+                                    </div>
+                                </td>
+                            </tr>
+							{foreachelse}
+							<tr><td class="no-records" align="center" colspan="15">{$lang.no_records}</td></tr>
+							{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+                                    <td colspan="15">
+                                    	<div class="list-page">
+											{include file="library/page.lbi"}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                    </div>
+				</form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{include file ='library/pagefooter.lbi'}
+	{insert_scripts files='../js/ZeroClipboard/ZeroClipboard.js'}
+	<script type="text/javascript">
+        //分页传值
+        listTable.recordCount = {$record_count|default:0};
+        listTable.pageCount = {$page_count|default:1};
+    
+        {foreach from=$filter item=item key=key}
+        listTable.filter.{$key} = '{$item}';
+        {/foreach}
+        
+        /* 优惠券删除 */
+        function coupons_del(cou_id){
+            if(confirm('确定删除吗?')){
+                $.get('coupons.php?act=remove_coupons', { cou_id:cou_id }, function (data) { if(data=='ok')location.href=location.href;else alert('删除失败!') });
+            }
+        }
+		
+		function init(){
+			var clip = null;
+			$("*[ectype='clip_button']").each(function(index, element){
+				var val = $(this).data("url");
+				var id = $(this).data("id");
+				if(val){
+					clip = new ZeroClipboard.Client();
+					ZeroClipboard.setMoviePath("../js/ZeroClipboard/ZeroClipboard.swf");
+					clip.setHandCursor(true);   
+					clip.setText(val);
+					clip.addEventListener('complete', function (client, text){
+						alert("链接复制成功");
+					});
+					clip.glue('clip_button_' + id);
+					clip.reposition();
+				}
+            });
+		}
+		init();
+    </script>
+</body>
+</html>
+{/if}

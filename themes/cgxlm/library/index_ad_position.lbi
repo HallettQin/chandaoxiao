@@ -1,0 +1,8 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+{foreach from=$ad_child item=ad name=noad}
+<li style="background:url({$ad.ad_code}) center center no-repeat;">
+<div class="banner-width"><a href="{$ad.ad_link}" target="_blank" class="purchasers"></a>
+</div></li>
+{/foreach}

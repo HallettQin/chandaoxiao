@@ -1,0 +1,445 @@
+{include file="supplier/header"}
+<div class="con order-manage">
+    <div class="order-step-info">
+        <div class="step-title" onclick="$('.slideToggle1').slideToggle()">
+            <i class="dian"></i>
+            <h3>
+                {L('fee_info')}
+                {if !$order.child_order && $order.pay_status neq 2}
+                <a href="{url('order/edit', array('step'=>'money', 'order_id'=>$order[order_id]))}" class="edit">编辑</a>
+                {/if}
+            </h3>
+        </div>
+        <div class="ecsc-order-content">
+            <div class="total">
+                <div class="slideToggle1 slideToggle">
+                    <div class="item">
+                        {L('label_goods_amount')}<strong>{$order.formated_goods_amount}</strong>
+                        + {L('label_tax')}<strong>{$order.formated_tax}</strong>
+                        + {L('label_shipping_fee')}<strong>{$order.formated_shipping_fee}</strong>
+                        + {L('label_insure_fee')}<strong>{$order.formated_insure_fee}</strong>
+                        + {L('label_pay_fee')}<strong>{$order.formated_pay_fee}</strong>
+                        - {L('label_discount')}<strong>{$order.formated_discount}</strong>
+                    </div>
+                    <div class="item"> = {L('label_order_amount')}<strong class="em">{$order.formated_total_fee}</strong></div>
+                    <div class="item">
+                        - {L('label_surplus')} <strong>{$order.formated_surplus}</strong>
+                        - {L('label_integral')} <strong>{$order.formated_integral_money}</strong>
+                        - {L('label_bonus')} <strong>{$order.formated_bonus}</strong>
+                        - {L('label_coupons')} <strong>{$order.formated_coupons}</strong>
+                        - {L('label_value_card')}<strong>{$order.formated_value_card}</strong>
+                        - {L('label_money_paid')}<strong>{$order.formated_money_paid}</strong>
+                    </div>
+                </div>
+                <div class="item order_amount">
+                    = {if $order.order_amount >= 0}
+                    {L('label_money_dues')}
+                    <strong class="em">{$order.formated_order_amount}（净利润约：{$order.formated_profit_amount}）</strong>
+                    {else}
+                    {L('label_money_refund')}
+                    <strong>{$order.formated_money_refund}</strong>
+                    <input name="refund" type="button" value="{L('refund')}" class="sc-btn sc-blueBg-btn mr0 fn" onclick="location.href='order.php?act=process&func=load_refund&anonymous={if $order.user_id <= 0}1{else}0{/if}&order_id={$order.order_id}&refund_amount={$order.money_refund}'" />
+                    {/if}
+                    {if $order.extension_code eq "group_buy"}
+                    <br />{L('notice_gb_order_amount')}
+                    {/if}
+                </div>
+                {if $order.is_delete}
+                <div class="item red">{L('notice_delete_order')}</div>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class="order-step-info">
+        <div class="step-title">
+            <i class="dian"></i>
+            <h3>{L('goods_info')}
+            </h3>
+        </div>
+        <div class="ecsc-order-content">
+            <div class="order_goods">
+                {foreach from=$goods_list item=goods}
+                <table class="ecsc-good-table">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                {$goods.goods_name}<span style="padding-left: 1rem" class="attr">({$goods.goods_attr})</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{$goods.formated_goods_price} * <span>{$goods.goods_number}（{L('goods_number')}）</span></td>
+                            <td>{L('storage')}：{$goods.storage}</td>
+                            <td>{L('subtotal')}：{$goods.formated_subtotal}
+                                {if $goods.dis_amount > 0}
+                                <br/>
+                                <font class="org">({L('ciscount')}：{$goods.discount_amount})</font>
+                                {/if}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+    <div class="order-step-info">
+        <div class="step-title" onclick="$('.slideToggle2').slideToggle()">
+            <i class="dian"></i>
+            <h3>{L('order_info')}</h3>
+        </div>
+        <ul class="order-info-list slideToggle2 slideToggle">
+            <li>
+                <dl>
+                    <dt>{L('label_buyer')}</dt>
+                    <dd>
+                        <span class="txt">{$order.user_name}</span>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt>{L('label_how_oos')}</dt>
+                    <dd><span class="txt">{$order.how_oos}</span></dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt>{L('auto_delivery_time')}</dt>
+                    <dd>
+                        <span>{$order.auto_delivery_time}</span>{L('dateType_unit')}
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt>{L('label_shipping')}</dt>
+                    <dd>
+                        {if $exist_real_goods}
+                        {if $order.shipping_id > 0}
+                        <span class="txt" id="shipping_name">{$order.shipping_name}</span>
+                        {else}
+                        <span class="txt">{L('require_field')}</span>
+                        {/if}
+                        <span class="handle">
+                        {if !$order.child_order && $order.shipping_status eq 0}
+                        <a href="{url('order/edit', array('step'=>'shipping', 'order_id'=>$order[order_id]))}" class="mr10"><i class="icon icon-edit ecs-edit">编辑</i></a>
+                        {/if}
+                        </span>
+                        {if $order.insure_fee > 0}（{L('label_insure_fee')}{$order.formated_insure_fee}）{/if}
+                        {/if}
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>{L('label_order_sn')}</dt>
+                    <dd>
+                        <span class="txt">{$order.order_sn}</span>
+                        <span class="handle">
+                            {if $order.extension_code eq "group_buy"}
+                            <a href="group_buy.php?act=edit&id={$order.extension_id}">
+                                {L('group_buy')}
+                            </a>
+                            {elseif $order.extension_code eq "exchange_goods"}
+                            <a href="exchange_goods.php?act=edit&id={$order.extension_id}">
+                                {L('exchange_goods')}</a>
+                            {/if}
+                            <a href="tp_api.php?act=order_print&order_id={$order.order_id}" target="_blank">
+                                <i class="icon icon-print"></i>
+                            </a>
+                        </span>
+                    </dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt>{L('label_payment')}</dt>
+                    <dd>
+                        <span class="txt">
+                            {if $order.pay_id > 0}{$order.pay_name}{else}{L('require_field}{/if}</span>
+                                <span class="handle">
+                                {if !$order.child_order && $order.pay_status neq 2}
+                                <a href="{url('order/edit', array('step'=>'payment', 'order_id'=>$order[order_id]))}" class="blue"><i class="icon icon-edit ecs-edit">编辑</i></a>
+                                {/if}
+                            </span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>{L('label_order_time')}</dt>
+                    <dd><span class="txt">{$order.formated_add_time}</span></dd>
+                </dl>
+            </li>
+            <li>
+
+                <dl>
+                    <dt>{L('label_pay_time')}</dt>
+                    <dd><span class="txt">{$order.pay_time}</span></dd>
+                </dl>
+                <dl>
+                    <dt>{L('label_shipping_time')}</dt>
+                    <dd><span class="txt">{$order.shipping_time}</span></dd>
+                </dl>
+            </li>
+            {if $order['invoice_type'] eq 0}
+            <li>
+                <dl>
+                    <dt>{L('label_inv_payee')}</dt>
+                    <dd>
+                        <span class="txt">{$order.inv_payee}</span>
+                        <span class="handle">{if !$order.child_order}<a href="{url('order/edit', array('step'=>'other', 'order_id'=>$order[order_id]))}"><i class="icon icon-edit ecs-edit">编辑</i></a>{/if}</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>{L('label_inv_content')}</dt>
+                    <dd><span class="txt">{$order.inv_content}</span></dd>
+                </dl>
+
+            </li>
+            <li>
+                <dl>
+                    <dt>识别码：</dt>
+                    <dd>
+                        <span class="txt">
+                            {if $order.tax_id}{$order.tax_id}{else}无{/if}
+                        </span>
+                    </dd>
+                </dl>
+                <dl></dl>
+            </li>
+
+            {else}
+            <li>
+                <dl>
+                    <dt>{L('label_inv_payee')}</dt>
+                    <dd>
+                        <span class="txt">{$vat_info.company_name}</span>
+                        <span class="handle">{if !$order.child_order}<a href="{url('order/edit', array('step'=>'other', 'order_id'=>$order[order_id]))}"><i class="icon icon-edit ecs-edit">编辑</i></a>{/if}</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>审核状态：</dt>
+                    <dd>
+                        <span class="txt">
+                            {if $vat_info.audit_status eq 0}
+                                未审核
+                            {elseif $vat_info.audit_status eq 1}
+                                审核通过
+                            {elseif $vat_info.audit_status eq 2}
+                                审核未通过
+                            {/if}
+                        </span>
+                    </dd>
+                </dl>
+
+            </li>
+            <li>
+                <dl>
+                    <dt>识别码：</dt>
+                    <dd>
+                        <span class="txt">
+                            {$vat_info.tax_id}
+                        </span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>收票地址：</dt>
+                    <dd>
+                        <span class="txt">
+                            [{$vat_info.region}] {$vat_info.consignee_address}
+                        </span>
+                    </dd>
+                </dl>
+            </li>
+            {/if}
+
+            <li>
+                <dl>
+                    <dt>{L('buyer_message')}：</dt>
+                    <dd>
+                        {if $order.postscript neq ''}{$order.postscript}{else}<span class="grey">{L('wu')}</span>{/if}
+                        <span class="handle">{if !$order.child_order}<a href="{url('order/edit', array('step'=>'other', 'order_id'=>$order[order_id]))}"><i class="icon icon-edit ecs-edit">编辑</i></a>{/if}</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>{L('from_order')}</dt>
+                    <dd>{if $order.referer eq 'mobile'}APP{elseif $order.referer eq 'touch'}WAP{elseif $order.referer eq 'ecjia-cashdesk'}收银台{else}PC{/if}</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt>{L('seller_message')}：</dt>
+                    <dd>{if $order.to_buyer neq ''}{$order.to_buyer}{else}<span class="grey">{L('wu')}</span>{/if}
+                        <span class="handle">{if !$order.child_order}<a href="{url('order/edit', array('step'=>'other', 'order_id'=>$order[order_id]))}"><i class="icon icon-edit ecs-edit">编辑</i></a>{/if}</span>
+                    </dd>
+                </dl>
+                {if $order.shipping_id>0 and $order.shipping_status>0}
+                <dl>
+                    <dt>{L('label_invoice_no')}</dt>
+                    <dd>
+                        <span id="invoice_no">{if $order.invoice_no}{$order.invoice_no}{else}<span class="grey">{L('not_filled')}</span>{/if}</span>
+                        <span class="handle">{if !$order.child_order}<a href="{url('order/edit', array('step'=>'shipping', 'order_id'=>$order[order_id]))}"><i class="icon icon-edit ecs-edit">编辑</i></a>{/if}</span>
+                    </dd>
+                </dl>
+                {else}
+                {/if}
+            </li>
+            {if $order.is_stages}
+            <li>
+                <dl>
+                    <dt>{L('total_stage')}：</dt>
+                    <dd>{$order.stages_total}&nbsp;{L('stage')}</dd>
+                </dl>
+                <dl>
+                    <dt>{L('by_stage')}：</dt>
+                    <dd>{$order.stages_one_price}{L('yuan_stage')}</dd>
+                </dl>
+            </li>
+            {/if}
+        </ul>
+    </div>
+    <style>
+    </style>
+    <div class="order-step-info">
+        <div class="step-title" onclick="$('.slideToggle5').slideToggle()">
+            <i class="dian"></i>
+            <h3>物流信息</h3>
+        </div>
+        <div class="ecsc-order-condition slideToggle5 slideToggle">
+            {if $order.invoice_no}
+            <div id="retData" style="-webkit-overflow-scrolling:touch; overflow: scroll; width: 100%;margin-bottom: -100px;"></div>
+            {else}
+            暂无信息,请填写快递单号
+            {/if}
+        </div>
+    </div>
+    <div class="order-step-info">
+        <div class="step-title">
+            <i class="dian"></i>
+            <h3>操作</h3>
+        </div>
+        <form action="{url('order/operate')}" method="post" name="theForm">
+            <input name="order_id" type="hidden" value="{$_GET['order_id']}">
+            <div class="order-form">
+                {if $is_apply eq 0}
+                <div class="handle-state">
+                    <i class="{if $order.can_remove eq 1}iconNo{else}iconOk{/if}"></i><div class="tit">当前{L('label_order_status')}<strong>{$order.status}</strong></div>
+                </div>
+                <div class="handle-info">
+                    {if !$order.child_order}
+                    <div class="handle-note"><textarea name="action_note" cols="80" rows="3" class="textarea" placeholder="操作备注"></textarea></div>
+                    <div class="handle-btn">
+                        {if $operable_list.confirm && $order.order_status neq 4 && $order.order_status neq 7}
+                        <input name="confirm" type="submit" value="{L('op_confirm')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.pay && $pay_code eq 1}
+                        <input name="pay" type="submit" value="{L('op_pay')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.prepare}
+                        <input name="prepare" type="submit" value="{L('op_prepare')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.split}
+                        <input name="ship" type="submit" value="{L('op_split')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.unship}
+                        <input name="unship" type="submit" value="{L('op_unship')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.receive}
+                        <input name="receive" type="submit" value="{L('op_receive')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.cancel}
+                        <input name="cancel" type="submit" value="{L('op_cancel')}" class="sc-btn sc-redBg-btn" />
+                        {/if} {if $operable_list.invalid}
+                        <input name="invalid" type="submit" value="{L('op_invalid')}" class="sc-btn sc-redBg-btn" />
+                        {/if}
+
+                        {if $order.is_settlement eq 0 && $order.chargeoff_status neq 2}
+                        {if $operable_list.return && $order_back_apply || $order.pay_status eq 2}
+                        <input name="return" type="submit" value="{L('op_return')}" class="sc-btn sc-redBg-btn" />
+                        {/if}
+                        {/if}
+
+                        {if $operable_list.to_delivery}
+                        <input name="to_delivery" type="submit" value="{L('op_to_delivery')}" class="sc-btn sc-redBg-btn"/>
+                        <input name="order_sn" type="hidden" value="{$order.order_sn}" />
+                        {/if} <input name="after_service" type="submit" value="{L('op_after_services')}" class="sc-btn sc-redBg-btn" />{if $operable_list.remove && $order_os_remove}
+                        <input name="remove" type="submit" value="{L('removes')}" class="sc-btn sc-redBg-btn" onClick="return window.confirm('{L('js_languages.remove_confirm')}');" />
+                        {/if}
+                        <div style="clear: both"></div>
+                        <div class="tips">
+                            {if $order.extension_code eq "group_buy"}{L('notice_gb_ships')}{/if}
+                        </div>
+                        {if $agency_list}
+                        <input name="assign" type="submit" value="{L('op_assign')}" class="sc-btn sc-redBg-btn" onclick="return assignTo(document.forms['theForm'].elements['agency_id'].value)" />
+                        <div  class="imitate_select select_w170">
+                            <div class="cite">{L('select_pleases')}</div>
+                            <ul>
+                                <li><a href="javascript:;" data-value="0" class="ftx-01">{L('select_please}</a></li>
+                                {foreach from=$agency_list item=agency}
+                                <li><a href="javascript:;" data-value="{$agency.agency_id}" class="ftx-01">{$agency.agency_name}</a></li>
+                                {/foreach}
+                            </ul>
+                            <input name="agency_id" type="hidden" value="{$order.agency_id}"/>
+                        </div>
+                        {/if}
+                    </div>
+                    {/if}
+                </div>
+                {else}
+                <div class="step_info">
+                    此订单已确认为退换货订单，无法继续订单操作！
+                </div>
+                {/if}
+            </div>
+        </form>
+    </div>
+
+    <div class="order-step-info">
+        <div class="step-title" onclick="$('.slideToggle3').slideToggle()">
+            <i class="dian"></i>
+            <h3>操作日志</h3>
+        </div>
+        <div class="ecsc-order-condition slideToggle3 slideToggle">
+            <table class="ecsc-default-table order">
+                <thead>
+                <tr>
+                    <th width="25%" class="tc">{L('action_user')}</th>
+                    <th width="25%" class="tc">{L('order_status')}</th>
+                    <th width="25%" class="tc">{L('pay_status')}</th>
+                    <th width="25%" class="tc">{L('shipping_status')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {if $action_list}
+                {foreach from=$action_list item=action}
+                <tr>
+                    <td class="bdl">{$action.action_user}</td>
+                    <td class="bdl">{$action.order_status}</td>
+                    <td class="bdl">{$action.pay_status}</td>
+                    <td class="bdl">{$action.shipping_status}</td>
+                </tr>
+                {/foreach}
+                {else}
+                <tr><td class="bdl bdr no-records" colspan="6">{L('not_action_jilu}</td></tr>
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav"}
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+
+</script>
+{if $order.invoice_no}
+<script type="text/javascript">
+    $(function() {
+        if(document.getElementById("shipping_name")){
+            document.getElementById("retData").innerHTML="<center>正在查询物流信息，请稍后...</center>";
+            var expressid = document.getElementById("shipping_name").innerHTML;
+            var expressno = document.getElementById("invoice_no").innerHTML;
+            $.get('../plugins/kuaidi100/kuaidi100_post.php?com='+ expressid+'&nu=' + expressno,'showtest=showtest', function(data){
+                document.getElementById("retData").innerHTML=data;
+            })
+        }
+    })
+</script>
+{/if}
+</body>
+</html>

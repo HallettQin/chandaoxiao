@@ -1,0 +1,25 @@
+<style>
+    .jinhuodan{
+        background: #792f6e;
+        color: #fff;
+        height: 15px;
+        padding: 0 3px;
+        line-height: 15px;
+        margin-left: 5px;
+        position: relative;
+        display: inline-block;
+    }
+    .jinhuodan:before{
+        position: absolute;
+        display: block;
+        content: ' ';
+        width: 0;
+        height: 0;
+        border-width:4px 4px 4px 0;
+        border-style: solid;
+        border-color:transparent #792f6e transparent transparent;
+        top: 3px;
+        left: -4px;
+    }
+</style>
+<a target="_top" id="J_SnMyBrand" class="sn-mybrand-link" href="flow.php">进货单<span class="jinhuodan cart_num">{$cart_info.number|default:0}</span></a>

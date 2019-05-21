@@ -1,0 +1,172 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">模式 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6548.html" target="_blank">商城积分商城活动说明</a>
+                        </div>
+                    </div>			
+                    {/if}				
+				</div>
+                <ul>
+                	<li>展示了积分商城商品的相关信息列表。</li>
+                    <li>可通过搜索关键字商品名称，筛选店铺名称搜索出具体积分商城商品信息。</li>
+                    <li>点击查看直接进入前台兑换积分商品信息页面，进行添加、编辑、删除等操作。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="exchange_goods.php?act=add"><div class="fbutton"><div class="add" title="添加新商品"><span><i class="icon icon-plus"></i>添加新商品</span></div></div></a>
+                    </div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+                    <div class="search">
+						{include file ='library/search_store.lbi'}
+                        <div class="select m0">
+                            <div class="imitate_select select_w170">
+                                <div class="cite">{$lang.adopt_status}</div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{$lang.adopt_status}</a></li>
+                                    <li><a href="javascript:;" data-value="1" class="ftx-01">{$lang.not_audited}</a></li>
+                                    <li><a href="javascript:;" data-value="2" class="ftx-01">{$lang.audited_not_adopt}</a></li>
+                                    <li><a href="javascript:;" data-value="3" class="ftx-01">{$lang.audited_yes_adopt}</a></li>
+                                </ul>
+                                <input name="review_status" type="hidden" value="0" id="">
+                            </div>
+                        </div>
+                    	<div class="input">
+                        	<input type="text" name="keyword" class="text nofocus" placeholder="商品名称" autocomplete="off" /><button class="btn" name="secrch_btn"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="common-content">
+					<form method="POST" action="exchange_goods.php?act=batch_remove" name="listForm">
+                	<div class="list-div" id="listDiv" >
+						{/if}
+                    	<table cellpadding="1" cellspacing="1" >
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.goods_id}</div></th>
+                                    <th width="22%"><div class="tDiv">{$lang.goods_name}</div></th>
+                                    <th width="12%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.exchange_integral}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.is_exchange}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.is_hot}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.is_best}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                    <th width="16%" class="handle">{$lang.handler}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$goods_list item=list}
+							<tr>
+								<td class="sign">
+                                    <div class="tDiv">
+                                        <input type="checkbox" name="checkboxes[]" value="{$list.eid}" class="checkbox" id="checkbox_{$list.eid}" />
+                                        <label for="checkbox_{$list.eid}" class="checkbox_stars"></label>
+                                    </div>
+                                </td>
+								<td><div class="tDiv">{$list.eid}</div></td>
+								<td><div class="tDiv">{$list.goods_name|escape:html}</div></td>
+								<td><div class="tDiv red">{if $list.user_name}<font style="color:#F00;">{$list.user_name}</font>{else}<font class="blue">{$lang.self}</font>{/if}</div></td>
+								<td><div class="tDiv">{$list.exchange_integral}</div></td>
+								<td>
+                                    <div class="tDiv">
+                                        <div class="switch mauto {if $list.is_exchange}active{/if}" onclick="listTable.switchBt(this, 'toggle_exchange', {$list.eid})" title="是">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
+                                    </div>
+                                </td>
+								<td>
+                                    <div class="tDiv">
+                                        <div class="switch mauto {if $list.is_hot}active{/if}" onclick="listTable.switchBt(this, 'toggle_hot', {$list.eid})" title="是">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
+                                    </div>
+                                </td>
+								<td>
+                                    <div class="tDiv">
+                                        <div class="switch mauto {if $list.is_best}active{/if}" onclick="listTable.switchBt(this, 'toggle_best', {$list.eid})" title="是">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <input type="hidden" value="0" name="">
+                                    </div>
+                                </td>    
+                                <td>
+                                    <div class="tDiv">
+                                        {if $list.review_status eq 1}
+                                        <font class="org2">{$lang.not_audited}</font>
+                                        {elseif $list.review_status eq 2}
+                                        <font class="red">{$lang.audited_not_adopt}</font><br/>
+                                        <i class="tip yellow" title="{$list.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                        {elseif $list.review_status eq 3}
+                                        <font class="blue">{$lang.audited_yes_adopt}</font>
+                                        {/if}									
+                                    </div>
+                                </td>   
+								<td class="handle">
+									<div class="tDiv a3">
+										<a href="../exchange.php?id={$list.goods_id}&act=view" target="_blank" title="{$lang.view_detail}" class="btn_see"><i class="sc_icon sc_icon_see"></i>{$lang.view}</a>
+										<a href="exchange_goods.php?act=edit&id={$list.goods_id}" title="{$lang.edit}" class="btn_edit"><i class="icon icon-edit"></i>{$lang.edit}</a>
+										<a href="javascript:;" onclick="listTable.remove({$list.eid},'{$lang.drop_confirm}')" title="{$lang.remove}" class="btn_trash"><i class="icon icon-trash"></i>{$lang.remove}</a>									
+									</div>
+								</td>
+							</tr>
+							{foreachelse}
+							<tr><td class="no-records" align="center" colspan="10">{$lang.no_records}</td></tr>
+							{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+									<td colspan="12">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                              <div class="shenhe">
+                                                  <input type="submit" name="drop" id="btnSubmit" value="{$lang.drop}" class="btn btn_disabled" disabled="true" ectype="btnSubmit" />
+                                              </div>										
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                    </div>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+	<script type="text/javascript">
+        //分页传值
+        listTable.recordCount = {$record_count|default:0};
+        listTable.pageCount = {$page_count|default:1};
+    
+        {foreach from=$filter item=item key=key}
+        listTable.filter.{$key} = '{$item}';
+        {/foreach}
+    </script>
+</body>
+</html>
+{/if}

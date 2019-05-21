@@ -1,0 +1,508 @@
+{include file="supplier/header"}
+<div class="con order-manage">
+    <div class="main-content" id="mainContent" style="padding: 1rem 1.5rem">
+        {if $step neq 'return_edit'}
+        {/if}
+        {if $step eq "user"}
+        <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post" onsubmit="return checkUser()">
+            <div class="order_user_select">
+                <div class="anonymous_user checkbox_user checked_user">
+                    <div class="checkbox_item">
+                        <input type="radio" name="anonymous" value="1" class="ui-radio" id="anonymous_user" checked />
+                        <label for="anonymous_user" class="ui-radio-label">{L('anonymous')}</label>
+                    </div>
+                </div>
+                <div class="register_user checkbox_user">
+                    <div class="checkbox_item">
+                        <input type="radio" name="anonymous" value="0" class="ui-radio" id="register_user" />
+                        <label for="register_user" class="ui-radio-label">{L('by_useridname')}</label>
+                    </div>
+                    <div class="register_user_warp">
+                        <div class="search">
+                            <input type="text" name="keyword" class="text text_2 mr0" placeholder="会员名称/编号" autocomplete="off" readonly />
+                            <input type="button" class="select_btn" name="search" onclick="searchUser();" />
+                            <div id="user" class="imitate_select select_w190">
+                                <div class="cite">会员名称</div>
+                                <ul style="display: none;">
+                                    <li class="li_not">请先搜索会员名称</li>
+                                </ul>
+                                <input name="user" type="hidden" value="" id="user_val">
+                            </div>
+                            <div class="div_readonly"></div>
+                        </div>
+                        <div class="notic fl">
+                            <strong>注意：</strong>搜索结果只显示前20条记录，如果没有找到相应会员，请更精确地查找。<br>
+                            另外，如果该会员是从论坛注册的且没有在商城登录过，也无法找到，需要先在商城登录。
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="goods_btn">
+                <input type="button" value="{L('button_cancel')}" class="sc-btn btn35 sc-blue-btn" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+                <input name="submit" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{L('button_next')}" />
+            </div>
+        </form>
+
+        {elseif $step eq "goods"}
+
+        {elseif $step eq "consignee"}
+        <script type="text/javascript">region.isAdmin=true;</script>
+        <div class="ecsc-form-goods">
+            <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post" onsubmit="return checkConsignee()">
+                <div class="wrapper-list" id="checkPage">
+                    <dl>
+                        <dt>{L('require_field')}&nbsp;{L('label_consignee')}</dt>
+                        <dd><input name="consignee" type="text" value="{$order.consignee}" class="text text_2"/></dd>
+                    </dl>
+                    {if $exist_real_goods}
+                    <dl>
+                        <dd>
+                            <!--address-start-->
+                            <div class="text-all" id="editAddressForm">
+                                <input type="hidden" id="province_id" name="province" value="{$order.province}">
+                                <input type="hidden" id="city_id" name="city" value="{$order.city}">
+                                <input type="hidden" id="district_id" name="district" value="{$order.district}">
+                                <input type="hidden" id="town_id" name="street" value="{$order.street}">
+                                <input type="hidden" id="village_id" name="village_region_id" value="">
+                                <input type="hidden" id="region_id" name="region_id" value="">
+                                <div class="address-box" id="selectAddressBtn" region-data="">
+                                    <label class="fl">所在地区<em class="color-red">*</em></label>
+                                    <span class="fl text-all-span addressdetail" id="addressLabelId">{$province_list}{$city_list}{$district_list}{$street_list}</span>
+                                    <span class="t-jiantou fr"><i class="iconfont icon-jiantou"></i></span>
+                                </div>
+                            </div>
+                            <!--address-end-->
+                        </dd>
+                    </dl>
+                    {/if}
+                    <dl>
+                        <dt>{L('require_field')}&nbsp;{L('label_email')}</dt>
+                        <dd><input name="email" type="text" value="{$order.email}" size="40" class="text text_2" /></dd>
+                    </dl>
+                    {if $exist_real_goods}
+                    <dl>
+                        <dt>{L('require_field')}&nbsp;{L('label_address')}</dt>
+                        <dd><input name="address" type="text" value="{$order.address}" size="40" class="text text_2"/></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_zipcode')}</dt>
+                        <dd><input name="zipcode" type="text" value="{$order.zipcode}" class="text text_2"/></dd>
+                    </dl>
+                    {/if}
+                    <dl>
+                        <dt>{L('label_tel')}</dt>
+                        <dd><input name="tel" type="text" value="{$order.tel}" class="text text_2"/></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_mobile')}</dt>
+                        <dd><input name="mobile" type="text" value="{$order.mobile}" class="text text_2"/></dd>
+                    </dl>
+                    {if $exist_real_goods}
+                    <dl>
+                        <dt>{L('label_sign_building')}</dt>
+                        <dd><input name="sign_building" type="text" value="{$order.sign_building}" size="40" class="text text_2"/></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_best_time')}</dt>
+                        <dd><input name="best_time" type="text" value="{$order.best_time}" size="40" class="text text_2"/></dd>
+                    </dl>
+                    <div class="clear"></div>
+                    <div class="goods_btn">
+                        <input type="button" value="{L('button_cancel')}" class="sc-btn btn35 sc-blue-btn" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+                        {if $step_act eq "add"}{if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blue-btn btn35" onclick="history.back()" />{/if}{/if}
+                        <input name="{if $step_act eq 'add'}next{else}finish{/if}" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{if $step_act eq 'add'}{L('button_next')}{else}{L('button_submit')}{/if}" />
+                    </div>
+                    {/if}
+                </div>
+                <!--地区选择 s-->
+                {include file="address"}
+                <!--地区选择 e-->
+            </form>
+        </div>
+        {elseif $step eq "shipping"}
+        <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post" onsubmit="return checkShipping()">
+            <div class="list-div table_list2" id="listDiv">
+                <table class="ecsc-default-table ecsc-table-seller mt20" width="100%">
+                    <tr>
+                        <th width="25%"><div class="th">{L('name')}</div></th>
+                        <th width="45%"><div class="th">{L('desc')}</div></th>
+                        <th width="50%"><div class="th">{L('shipping_fee')}</div></th>
+                    </tr>
+                    {foreach from=$shipping_list item=shipping}
+                    <tr>
+                        <td align="center"><input name="shipping" type="radio" class="ui-radio" value="{$shipping.shipping_id}" id="shipping_{$shipping.shipping_id}" {if $order.shipping_id eq $shipping.shipping_id}checked{/if} /><label for="shipping_{$shipping.shipping_id}" class="ui-radio-label">{$shipping.shipping_name}</label></td>
+                        <td align="left">{$shipping.shipping_desc}</td>
+                        <td align="center">
+                            {$shipping.format_shipping_fee}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    <tr><td colspan="6" align="center"><label for="baojia"><input name="insure" type="checkbox" class="checkbox" id="baojia" value="1" {if $order.insure_fee > 0}checked{/if} />&nbsp;{L('want_insure')}</label></td></tr>
+                </table>
+                <div class="bottom tc">
+                    <div class="button_info">
+                        {if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blueBg-btn btn35" onclick="history.back()" />{/if}
+                        <input name="{if $step_act eq 'add'}next{else}finish{/if}" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{if $step_act eq 'add'}{L('button_next')}{else}{L('button_submit')}{/if}" />
+                        <input type="button" value="{L('button_cancel')}" class="sc-btn sc-blue-btn btn35" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {elseif $step eq "payment"}
+        <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post" onsubmit="return checkPayment()">
+            <div class="list-div table_list2" id="listDiv">
+                <table class="ecsc-default-table ecsc-table-seller mt20" width="100%">
+                    <tr>
+                        <th width="30%"><div class="th">{L('name')}</div></th>
+                        <th width="60%"><div class="th">{L('desc')}</div></th>
+                        <th width="10%"><div class="th">{L('pay_fee')}</div></th>
+                    </tr>
+                    {foreach from=$payment_list item=payment}
+                    <tr>
+                        <td class="tl"><input type="radio" class="ui-radio" name="payment" value="{$payment.pay_id}" id="payment_{$payment.pay_id}" {if $order.pay_id eq $payment.pay_id}checked{/if} /><label class="ui-radio-label" for="payment_{$payment.pay_id}">{$payment.pay_name}</label></td>
+                        <td class="tl">{$payment.pay_desc}</td>
+                        <td align="center">{$payment.pay_fee}</td>
+                    </tr>
+                    {/foreach}
+                </table>
+                <div class="goods_btn">
+                    <input type="button" value="{L('button_cancel')}" class="sc-btn sc-blue-btn btn35" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+                    {if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blue-btn btn35" onclick="history.back()" />{/if}
+                    <input name="{if $step_act eq 'add'}next{else}finish{/if}" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{if $step_act eq 'add'}{L('button_next')}{else}{L('button_submit')}{/if}" />
+                </div>
+            </div>
+        </form>
+
+        {elseif $step eq "other"}
+        <div class="ecsc-form-goods">
+            <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post">
+                {if $exist_real_goods and ($pack_list or $card_list)}
+                <div class="info_warp">
+                    <table class="table_item" width="100%">
+                        {if $pack_list}
+                        <tr>
+                            <th colspan="4"><div class="th" style="border-bottom: 1px dotted #CBE9F3;">{L('select_pack}</div></th>
+                        </tr>
+                        <tr>
+                            <th width="3%">&nbsp;</th>
+                            <th width="35%" align="left"><div class="th">{L('name')}</div></th>
+                            <th width="22%"><div class="th">{L('pack_fee')}</div></th>
+                            <th width="22%"><div class="th">{L('free_money')}</div></th>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="radio" name="pack" value="0" {if $order.pack_id eq 0}checked{/if} /></td>
+                            <td align="left">{L('no_pack')}</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                        </tr>
+                        {foreach from=$pack_list item=pack}
+                        <tr>
+                            <td align="center"><input type="radio" name="pack" value="{$pack.pack_id}" {if $order.pack_id eq $pack.pack_id}checked{/if} /></td>
+                            <td align="left">{$pack.pack_name}</td>
+                            <td align="center">{$pack.format_pack_fee}</td>
+                            <td align="center">{$pack.format_free_money}</td>
+                        </tr>
+                        {/foreach}
+                        {/if}
+                        {if $card_list}
+                        <tr>
+                            <th colspan="4"><div class="th" style="border-bottom: 1px dotted #CBE9F3;">{L('select_card}</div></th>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th align="left"><div class="th">{L('name')}</div></th>
+                            <th><div class="th">{L('card_fee')}</div></th>
+                            <th><div class="th">{L('free_money}</div></th>
+                        </tr>
+                        <tr>
+                            <td align="center"><input type="radio" name="card" value="0" {if $order.card_id eq 0}checked{/if} /></td>
+                            <td align="left">{L('no_card')}</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                        </tr>
+                        {foreach from=$card_list item=card}
+                        <tr>
+                            <td align="center"><input type="radio" name="card" value="{$card.card_id}" {if $order.card_id eq $card.card_id}checked{/if} /></td>
+                            <td align="left">{$card.card_name}</td>
+                            <td align="center">{$card.format_card_fee}</td>
+                            <td align="center">{$card.format_free_money}</td>
+                        </tr>
+                        {/foreach}
+                        {/if}
+                    </table>
+                </div>
+                {/if}
+                <div class="wrapper-list mt10">
+                    {if $exist_real_goods}
+                    {if $card_list}
+                    <dl>
+                        <dt>{L('label_card_message')}</dt>
+                        <dd><textarea name="card_message" class="textarea" cols="60" rows="3">{$order.card_message}</textarea></dd>
+                    </dl>
+                    {/if}
+                    {if $order.invoice_type eq 0}
+                    <dl>
+                        <dt>{L('label_inv_type')}</dt>
+                        <dd><input name="inv_type" type="text" class="text" id="inv_type" value="{if $order.invoice_type eq 0}普通发票{else}增值税发票{/if}" size="40" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_inv_payee')}</dt>
+                        <dd><input name="inv_payee" type="text" value="{$order.inv_payee}" class="text" size="40" text="text" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_inv_content')}</dt>
+                        <dd><input name="inv_content" type="text" value="{$order.inv_content}" class="text" size="40" text="text" /></dd>
+                    </dl>
+                    {else}
+                    <dl>
+                        <dt>{L('label_inv_type')}</dt>
+                        <dd><input name="inv_type" type="text" class="text" id="inv_type" value="{if $order.invoice_type eq 0}普通发票{else}增值税发票{/if}" size="40" disabled="true" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>审核状态</dt>
+                        <dd><input name="inv_type" type="text" class="text" id="inv_type" value="{if $vat_info.audit_status eq 0}未审核{elseif $vat_info.audit_status eq 1}审核通过{elseif $vat_info.audit_status eq 2}审核未通过{/if}" size="40" disabled="true" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_inv_payee')}</dt>
+                        <dd><input name="inv_type" type="text" class="text" id="inv_type" value="{$vat_info.company_name}" size="40" disabled="true" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>识别码</dt>
+                        <dd><input name="inv_type" type="text" class="text" id="inv_type" value="{$vat_info.tax_id}" size="40" disabled="true" /></dd>
+                    </dl>
+                    {/if}
+                    {/if}
+                    <dl>
+                        <dt>{L('label_postscript')}</dt>
+                        <dd><textarea name="postscript" class="textarea" cols="60" rows="3">{$order.postscript}</textarea></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_how_oos')}</dt>
+                        <dd><input name="how_oos" type="text" class="text" value="{$order.how_oos}" size="40" /></dd>
+                    </dl>
+                    <dl>
+                        <dt>{L('label_to_buyer')}</dt>
+                        <dd><textarea name="to_buyer" class="textarea" cols="60" rows="3">{$order.to_buyer}</textarea></dd>
+                    </dl>
+                    <div class="clear"></div>
+                    <div class="goods_btn">
+                        <input type="button" value="{L('button_cancel')}" class="sc-btn sc-blue-btn btn35" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+                        {if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blue-btn btn35" onclick="history.back()" />{/if}
+                        <input name="{if $step_act eq 'add'}next{else}finish{/if}" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{if $step_act eq 'add'}{L('button_next')}{else}{L('button_submit')}{/if}" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        {elseif $step eq "money"}
+        <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post">
+            <div class="list-div">
+                <table class="ecsc-default-table ecsc-table-seller mt20">
+                    <tr>
+                        <th width="35%">{L('label_goods_amount')}</th>
+                        <td width="65%" class="tl">
+                            {$order.formated_goods_amount}
+                            <input name="goods_amount" type="hidden" value="{$order.goods_amount}" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(-){L('label_bonus')}</th>
+                        <td class="tl" width="65%">
+                            {if $order.bonus_id > 0}
+                            - <input name="bonus" type="text" class="text w80 fn" value="{$order.bonus}" autocomplete="off" />
+                            <input name="bonus_id" type="hidden" value="{$order.bonus_id}" />
+                            {else}
+                            <div  class="imitate_select select_w145" id="bonus_id">
+                                <div class="cite"></div>
+                                <ul>
+                                    <li><a href="javascript:;" data-value="0" class="ftx-01">{L('select_please')}</a></li>
+                                    {foreach from=$available_bonus item=bonus}
+                                    <li><a href="javascript:;" data-value="{$bonus.bonus_id}" class="ftx-01" data-money="{$bonus.type_money}">{$bonus.type_name} - {$bonus.type_money}</a></li>
+                                    {/foreach}
+                                </ul>
+                                <input name="bonus_id" type="hidden" id="bonus_id_val" value="0" autocomplete="off" />
+                                <input name="bonus" type="hidden" value="0" autocomplete="off" />
+                            </div>
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th  width="35%">(+){L('label_tax')}</th>
+                        <td class="tl"  width="65%"><input name="tax" type="text" id="tax" value="{$order.tax}" size="15" class="text text_2" /></td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(-){L('label_money_paid')}</th>
+                        <td class="tl" width="65%">
+                            {$order.formated_money_paid}
+                            <input name="money_paid" type="hidden" value="{$order.money_paid}" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(+){L('label_shipping_fee')}</th>
+                        <td class="tl" width="65%">
+                            {if $exist_real_goods}
+                            <input name="shipping_fee" type="text" value="{$order.shipping_fee}" size="15" class="text text_2">
+                            {else}
+                            0<input name="shipping_fee" type="hidden" value="0" autocomplete="off" />
+                            {/if}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(-){L('label_surplus')}</th>
+                        <td class="tl" width="65%">{if $order.user_id >0}<input name="surplus" type="text" class="mr10 text text_2" value="{$order.surplus}" size="15">{/if}{L('available_surplus')}{if $available_user_money}{$available_user_money}{else}0{/if}</td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(+){L('label_insure_fee')}</th>
+                        <td class="tl" width="65%">{if $exist_real_goods}<input name="insure_fee" type="text" value="{$order.insure_fee}" size="15" class="text text_2">{else}0{/if}</td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(-){L('label_integral')}</th>
+                        <td class="tl" width="65%">{if $order.user_id > 0}<input name="integral" type="text" class="mr10 text text_2" value="{$order.integral}" size="15">{/if}{L('available_integral')}{if $available_pay_points}{$available_pay_points}{else}0{/if}</td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(+){L('label_pay_fee')}</th>
+                        <td class="tl" width="65%"><input name="pay_fee" type="text" value="{$order.pay_fee}" size="15" class="text text_2"></td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(-){L('label_coupons')}</th>
+                        <td class="tl" width="65%"><input name="coupons" type="text" class="text w80 fn" value="{$order.coupons}" autocomplete="off" /></td>
+                    </tr>
+                    <tr>
+                        <th width="35%">(-){L('label_discount')}</th>
+                        <td class="tl" width="65%"><input name="discount" type="text" id="discount" value="{$order.discount}" size="15"  class="text text_2"/></td>
+                    </tr>
+                    <tr>
+                    <th width="35%">(-){L('label_value_card')}</th>
+                        <td class="tl" width="65%">
+                            - {$order.formated_value_card}
+                            <input name="value_card" type="hidden" value="{$order.use_val}" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="35%">{L('label_order_amount')}</th>
+                        <td class="tl" width="65%">
+                            {$order.formated_total_fee}
+                            <input name="total_fee" type="hidden" value="{$order.total_fee}" autocomplete="off" />
+                        </td>
+                    </tr>
+                    <tr>
+                    <th width="35%">{if $order.order_amount >= 0} {L('label_money_dues')} {else} {L('label_money_refund')} {/if}</th>
+                        <td class="tl" width="65%">
+                            {$order.formated_order_amount}
+                            <input name="order_amount" type="hidden" value="{$order.order_amount}" autocomplete="off" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="goods_btn">
+                {if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blueBg-btn btn35" onclick="history.back()" />{/if}
+                <input name="button" type="button" onClick="get_order_amount();" class="sc-btn sc-blueBg-btn btn35" value="{L('button_finish')}" />
+                <input name="finish" type="hidden" value="{L('button_finish')}" />
+                <input type="button" value="{L('button_cancel')}" class="sc-btn sc-blue-btn btn35" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+            </div>
+        </form>
+
+        {elseif $step eq "invoice"}
+        <form name="theForm" action="{url('supplier/order/step_post', ['step'=>$step, 'order_id'=>$order_id, 'step_act'=>$step_act])}" method="post" onsubmit="return checkShipping()">
+            <div class="list-div" id="listDiv">
+                <table class="ecsc-default-table ecsc-table-seller mt20" width="100%">
+                    <tr>
+                        <th width="5%">&nbsp;</th>
+                        <th width="10%" class="tl"><div class="th ml10">{L('name')}</div></th>
+                        <th width="85%" align="center"><div class="th">{L('desc')}</div></th>
+                    </tr>
+                    {foreach from=$shipping_list item=shipping}
+                    <tr>
+                        <td align="center"><input name="shipping" type="radio" value="{$shipping.shipping_id}" id="shipping_{$shipping.shipping_id}" {if $order.shipping_id eq $shipping.shipping_id}checked{/if} onclick="" /></td>
+                        <td class="tl"><label for="shipping_{$shipping.shipping_id}">{$shipping.shipping_name}</label></td>
+                        <td class="tl">{$shipping.shipping_desc}</td>
+                    </tr>
+                    {/foreach}
+                    <tr>
+                        <td colspan="3"><strong class="fl lh ml20">{L('shipping_note')}</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong class="fl lh ml20">{L('label_invoice_no')}</strong><input name="invoice_no" type="text" value="{$order.invoice_no}" size="30" class="text" /><!--<label class="blue_label fl">{L('invoice_no_mall}</label>--></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="buttom tc">
+                <div class="button_info">
+                    {if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blueBg-btn btn35" onclick="history.back()" />{/if}
+                    <input name="{if $step_act eq 'add'}next{else}finish{/if}" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{if $step_act eq 'add'}{L('button_next')}{else}{L('button_submit')}{/if}" />
+                    <input type="button" value="{L('button_cancel')}" class="sc-btn btn35 sc-blue-btn" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+                </div>
+            </div>
+        </form>
+
+        {elseif $step eq "return_edit"}
+        <form name="theForm" action="order.php?act=edit_shipping&step={$step}&order_id={$order_id}&step_act={$step_act}" method="post" onsubmit="return checkShipping()">
+            <div class="list-div" id="listDiv">
+                <table class="ecsc-default-table ecsc-table-seller mt20" width="100%">
+                    <tr>
+                        <th width="5%">&nbsp;</th>
+                        <th width="10%" class="tl"><div class="th ml10">{L('name')}</div></th>
+                        <th width="85%" align="center"><div class="th">{L('desc')}</div></th>
+                    </tr>
+                    {foreach from=$shipping_list item=shipping}
+                    <tr>
+                        <td align="center"><input name="shipping" type="radio" value="{$shipping.shipping_id}" id="shipping_{$shipping.shipping_id}" {if $return.out_shipping_name eq $shipping.shipping_id}checked{/if} onclick="" /></td>
+                        <td class="tl"><label for="shipping_{$shipping.shipping_id}">{$shipping.shipping_name}</label></td>
+                        <td class="tl">{$shipping.shipping_desc}</td>
+                    </tr>
+                    {/foreach}
+                    <tr>
+                        <td colspan="3"><strong class="fl lh ml20">{L('label_invoice_no')}</strong><input name="invoice_no" type="text" value="{$return.out_invoice_no}" size="30" class="text" /><!--<label class="blue_label fl">{L('invoice_no_mall}</label>--></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="buttom tc">
+                <div class="button_info">
+                    <input name='ret_id' value='{$return.ret_id}' type='hidden'/>
+                    <input name='rec_id' value='{$return.rec_id}' type='hidden'/>
+                    {if $step_act eq "add"}<input type="button" value="{L('button_prev')}" class="sc-btn sc-blueBg-btn btn35" onclick="history.back()" />{/if}
+                    <input name="{if $step_act eq 'add'}next{else}finish{/if}" type="submit" class="sc-btn sc-blueBg-btn btn35" value="{if $step_act eq 'add'}{L('button_next')}{else}{L('button_submit')}{/if}" />
+                    <input type="button" value="{L('button_cancel')}" class="sc-btn btn35 sc-blue-btn" onclick="location.href='order.php?act=process&func=cancel_order&order_id={$order_id}&step_act={$step_act}'" />
+                </div>
+            </div>
+        </form>
+
+        {/if}
+    </div>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav"}
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    /* 运算订单总金额不能为负数 */
+    function get_order_amount(){
+
+        var goods_amount = $(":input[name='goods_amount']").val();
+        var tax = $(":input[name='tax']").val();
+        var shipping_fee = $(":input[name='shipping_fee']").val();
+        var pay_fee = $(":input[name='pay_fee']").val();
+        var discount = $(":input[name='discount']").val();
+
+        var bonus = $(":input[name='bonus']").val();
+        var money_paid = $(":input[name='money_paid']").val();
+        var surplus = $(":input[name='surplus']").val();
+        var integral = $(":input[name='integral']").val();
+        var coupons = $(":input[name='coupons']").val();
+        var value_card = $(":input[name='value_card']").val();
+
+        var total_fee = Number(goods_amount) + Number(tax) + Number(shipping_fee) + Number(pay_fee) - Number(discount);
+        var concessionary = Number(bonus) + Number(money_paid) + Number(surplus) + Number(integral) + Number(coupons) + Number(value_card);
+        var order_amount = Number(total_fee) - Number(concessionary);
+
+        if(order_amount < 0){
+            if(confirm("您修改的费用信息产生了负数（" + order_amount.toFixed(2) + "），是否继续？")){
+                $("form[name='theForm']").submit();
+            }
+        }else{
+            $("form[name='theForm']").submit();
+        }
+    }
+</script>
+</body>
+</html>

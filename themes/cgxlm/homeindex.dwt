@@ -1,0 +1,531 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/index.css" />
+<link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css" />
+<link rel="stylesheet" href="themes/68ecshopcom_360buy/css/main.css" />
+<!-- #BeginLibraryItem "/library/js_languages_new.lbi" --><!-- #EndLibraryItem -->
+</head>
+
+<body class="home_visual_body">
+	<!-- #BeginLibraryItem "/library/page_header_common.lbi" --><!-- #EndLibraryItem -->
+    <div class="globa-nav">
+        <div class="w">
+            <div class="allGoodsCat Left" >
+                <a class="menuEvent" href="article.php?id=77" target="_blank">
+                    <img src="themes/68ecshopcom_360buy/images/header/hg.png" id="hg">
+                    <strong class="catName">VIP专区</strong>
+                </a>
+            </div>
+            <ul class="allMenu Left">
+                <li><a class="index nav " href="wholesale.php" class="" title="采购模式" target="_blank">采购模式</a></li>
+                <li><a href="http://www.chandaoxiao.net/"  class="nav " title="走进产供销" class=""  target="_blank" >走进产到销</a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">function _show_(h,b){if(!h){return;}if(b&&b.source&&b.target){var d=(typeof b.source=="string")?M.$("#"+b.source):b.source;var e=(typeof b.target=="string")?M.$("#"+b.target):b.target;if(d&&e&&!e.isDone){e.innerHTML=d.value;d.parentNode.removeChild(d);if(typeof b.callback=="function"){b.callback();}e.isDone=true;}}M.addClass(h,"hover");if(b&&b.isLazyLoad&&h.isDone){var g=h.find("img");for(var a=0,c=g.length;a<c;a++){var f=g[a].getAttribute("data-src_index_menu");if(f){g[a].setAttribute("src",f);g[a].removeAttribute("data-src_index_menu");}}h.isDone=true;}}function _hide_(a){if(!a){return;}if(a.className.indexOf("hover")>-1){M.removeClass(a,"hover");}}</script>
+    <div class="fsFixedTopContent">
+        <div class="fsFixedTop">
+            {foreach from=$categorys item=category}
+            <a class="smooth" href="javascript:;"> <b class="fs fs{{$category.cat_id}}">{$category.cat_name}</b> <em class="fs-name">{$category.cat_name}</em> <i class="fs-line"></i> </a>
+            {/foreach}
+        </div>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+        function checkSearchForm()
+        {
+            if(document.getElementById('keyword').value)
+            {
+                var frm  = document.getElementById('searchForm');
+                var type = parseInt(document.getElementById('searchtype').value);
+                frm.action = type==0 ? 'search.php' : 'stores.php';
+                return true;
+            }
+            else
+            {
+                alert("请输入商品关键词！");
+                return false;
+            }
+        }
+        function myValue1()
+        {
+            document.getElementById('keyword').value = "请输入商品名称或编号...";
+        }
+        function myValue2()
+        {
+            document.getElementById('keyword').value = "";
+        }
+        //]]>
+    </script>
+    <div class="blank10"></div>
+    <script>
+        /* *
+         * 清除购物车购买商品数量
+         */
+        function delet(rec_id)
+        {
+            var formBuy      = document.forms['formCart'];
+            var domname='goods_number_'+rec_id;
+            var attr = getSelectedAttributes(document.forms['formCart']);
+            var qty = parseInt(document.getElementById(domname).innerHTML)==0;
+            Ajax.call('flow.php', 'step=price&rec_id=' + rec_id + '&number=' + qty, changecartPriceResponse, 'GET', 'JSON');
+        }
+        /* *
+         * 增加购物车购买商品数量
+         */
+        function addcartnum(rec_id)
+        {
+            var attr = getSelectedAttributes(document.forms['formCart']);
+            var domname='goods_number_'+rec_id;
+            var qty = parseInt(document.getElementById(domname).innerHTML)+1;
+            Ajax.call('flow.php', 'step=price&rec_id=' + rec_id + '&number=' + qty, changecartPriceResponse, 'GET', 'JSON');
+        }
+        /* *
+         * 减少购买商品数量
+         */
+        function lesscartnum(rec_id)
+        {
+            var formBuy      = document.forms['formCart'];
+            var domname='goods_number_'+rec_id;
+            var attr = getSelectedAttributes(document.forms['formCart']);
+            var qty = parseInt(document.getElementById(domname).innerHTML)-1;
+            Ajax.call('flow.php', 'step=price&rec_id=' + rec_id + '&number=' + qty, changecartPriceResponse, 'GET', 'JSON');
+        }
+        /**
+         * 接收返回的信息
+         */
+        function changecartPriceResponse(res)
+        {
+            if (res.err_msg.length > 0 )
+            {
+                alert(res.err_msg);
+            }
+            else
+            {
+                var domnum='goods_number_'+res.rec_id;
+                if(res.qty <= 0){
+                    document.getElementById('CART_INFO').innerHTML = res.content1;
+                }else{
+                    document.getElementById(domnum).innerHTML = res.qty;
+                }
+                document.getElementById('ECS_CARTINFO').innerHTML = res.result;
+            }
+        }
+        function changallser(allser)
+        {
+            document.getElementById(allser).className='item fore';
+        }
+    </script>
+    <script>
+        $('.search-type li').click(function() {
+            $(this).addClass('cur').siblings().removeClass('cur');
+            $('#searchtype').val($(this).attr('num'));
+        });
+    </script>		<div class="home-focus-layout">
+        <ul id="fullScreenSlides" class="full-screen-slides">
+            {insert name='get_adv_child' ad_arr=$topBanner}
+        </ul>
+        <div class="jfocus-trigeminy" style="display:none;">
+            <div class="tm-chaoshi-markets">
+                <div class="markets">
+                    <p class="row2">
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="right-sidebar">
+            <div class="order_type" >
+                <!-- <div class="title">四种方式下订单</div>  -->
+                <ul>
+                    <!-- <li>
+                        <a href="article.php?id=77" class="purchasers" target="_blank">地方品牌OEM贴牌采购</a>
+                    </li> -->
+                    <li>
+                        <a href="article.php?id=77" class="purchasers" target="_blank">平台产品专卖合作</a>
+                    </li>
+                    <li>
+                        <a href="article.php?id=77" class="purchasers" target="_blank">平台品牌加盟合作</a>
+                    </li>
+                    <li>
+                        <a href="article.php?id=77" class="purchasers" target="_blank">个性化私人定制</a>
+                    </li>
+                    <li class="ke">
+                        VIP客服专线
+                        <p class="phone">400-060-7168</p>
+                    </li>
+                    <li class="wei">
+                        <div class="wei_shop">
+                            关注微信公众号
+                            <img src="themes/68ecshopcom_360buy/images/shengji_ad/weixin.jpg" alt="扫描二维码，关注产到销微信公众号" />
+                        </div>
+                        <div class="wei_shop">
+                            手机端下订单
+                            <img src="themes/68ecshopcom_360buy/images/shengji_ad/shouji.jpg" alt="手机APP" />
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function fun(type_id, no_have_val)
+        {
+            no_have = (typeof(no_have_val) == "undefined" ? 0 : no_have_val)
+            Ajax.call('user.php?act=user_bonus', 'id=' + type_id + '&no_have=' + no_have, collectResponse, 'GET', 'JSON');
+        }
+        function collectResponse(result)
+        {
+            alert(result.message);
+        }
+    </script>
+    <div class="index-gg">
+        <div class="gg-img">
+            <img src="themes/68ecshopcom_360buy/images/lmgg.png">
+        </div>
+        <div class="gg-list">
+            <ul class="gg-ul">
+                {foreach from=$artciles_list item=article}
+                <li>
+                    <a href="{$article.url}" target="_blank">
+                        <span class="title">{$article.title}</span>
+                        <span class="dateline">{$article.add_time}</span>
+                        <span class="author">{$article.author}</span>
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+            <ul class="swap"></ul>
+        </div>
+    </div>
+    <script>
+        var _timer = '';
+        function b(){
+            t = parseInt(x.css('top'));
+            y.css('top','21px');
+            x.animate({top: t - 21 + 'px'},'slow');
+            if(Math.abs(t) == h-21){
+                y.animate({top:'0px'},'slow');
+                z=x;
+                x=y;
+                y=z;
+            }
+            _timer = setTimeout(b,3000);
+        }
+        $(document).ready(function(){
+            $('.swap').html($('.gg-ul').html());
+            x = $('.gg-ul');
+            y = $('.swap');
+            h = $('.gg-ul li').length * 21;
+            ii = 0;
+            x.animate({top: -(ii * 21) + 'px'}, 0);
+            _timer = setTimeout(b,3000);
+
+            $('.gg-list').mouseover(function(){
+                clearTimeout(_timer);
+            }).mouseout(function(){
+                _timer = setTimeout(b,3000);
+            })
+
+        })
+        $(document).ready(function(){
+
+        });
+    </script>
+    <div class="bf-content" >
+        <!-- <span class="title"></span> -->
+        {insert name='get_adv_child' ad_arr=$recommend}
+    </div>
+
+    <div class="floorList">
+        <div class="floor"></div>
+
+        <script type="text/javascript">
+            function Move(btn1,btn2,box,btnparent,shu){
+                var llishu=$(box).first().children().length;
+                var liwidth=121;
+                var boxwidth=llishu*liwidth-1;
+                var shuliang=llishu-shu;
+                $(box).css('width',''+boxwidth+'px');
+                var num=0;
+                $(btn1).click(function(){
+                    num++;
+                    if (num>shuliang) {
+                        num=shuliang;
+                    }
+                    var move=-liwidth*num;
+                    $(this).closest(btnparent).find(box).stop().animate({'left':''+move+'px'},300);
+                });
+                $(btn2).click(function(){
+                    num--;
+                    if (num<0) {
+                        num=0;
+                    }
+                    var move=liwidth*num;
+                    $(this).closest(btnparent).find(box).stop().animate({'left':''+-move+'px'},300);
+                })
+            }
+        </script>
+    </div>
+    <div class="floor_list">
+        <!--{foreach from=$categorys item=category name=noad}-->
+        <div class="w floor">
+            <div class="floor02 clearfix">
+                <div id="f0" class="home-standard-layout tm-chaoshi-floorlayout style-six">
+                    <div class="m-floor">
+                        <div class="header left_floor">
+                            <h2><a href="category.php?id={$category.id}" target="_blank">{$category.cat_name}</a></h2>
+                            <div class="recommend">
+                                {insert name='get_adv_child' ad_arr=$category.floorBanner}
+                            </div>
+                        </div>
+
+                        <div class="promo" style="display:none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--{/foreach}-->
+    </div>
+
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            $(".anli_con").find(".anniu").hide();
+            $(".anli_con").hover(function(){
+                        var num = $(this).find("li").length;
+                        if(num > 10){
+                            $(this).find(".anniu").show();
+                        }
+                    },
+                    function(){
+
+                        $(this).find(".anniu").hide();
+                    })
+        })
+    </script>
+    <div class="wrapper">
+        <div class="mt10">
+
+
+        </div>
+    </div>
+    <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+    	
+	<!--首页弹出广告-->
+    {if $bonusadv.img_file && $cfg_bonus_adv eq 1}
+    <div class="ejectAdv" ectype="ejectAdv">
+    	<div class="ejectAdvbg"></div>
+    	<div class="ejectAdvimg">
+        	<a href="{$bonusadv.fileurl}" target="_blank"><img src="{$bonusadv.img_file}"></a>
+            <a href="javascript:void(0);" class="ejectClose" ectype="ejectClose"></a>
+        </div>
+    </div>
+     {/if}
+    {insert_scripts files='jquery.SuperSlide.2.1.1.js,jquery.yomi.js,cart_common.js,cart_quick_links.js'}
+    <script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/dsc-common.js"></script>
+    <script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/asyLoadfloor.js"></script>
+    <script type="text/javascript" src="themes/<?php echo $GLOBALS['_CFG']['template']; ?>/js/jquery.purebox.js"></script>
+    <script type="text/javascript">
+		/*首页轮播*/
+		var slideType = $("*[data-mode='lunbo']").find("*[data-type='range']").data("slide");
+		var length = $(".banner .bd").find("li").length;
+		
+		if(slideType == "roll"){
+			slideType = "left";
+		}
+		
+		if(length>1){
+			$(".banner").slide({titCell:".hd ul",mainCell:".bd ul",effect:slideType,interTime:5000,delayTime:500,autoPlay:true,autoPage:true,trigger:"click",endFun:function(i,c,s){
+				$(window).resize(function(){
+					var width = $(window).width();
+					s.find(".bd li").css("width",width);
+				});
+			}});
+		}else{
+			$(".banner .hd").hide();
+		}
+		
+		//首页信息栏 新闻文章切换 
+		$(".vip-item").slide({titCell:".tit a",mainCell:".con"});
+		
+		//楼层二级分类商品切换
+		$("*[ectype='floorItem']").slide({titCell:".hd-tags li",mainCell:".floor-tabs-content",titOnClassName:"current"});
+		
+		$("*[ectype='floorItem']").slide({titCell:".floor-nav li",mainCell:".floor-tabs-content",titOnClassName:"current"});
+		
+		//第五套楼层模板
+		$(".floor-fd-slide").slide({mainCell:".bd ul",effect:"left",autoPlay:false,autoPage:true,vis:4,scroll:1,prevCell:".ff-prev",nextCell:".ff-next"});
+		
+		//第六套楼层模板
+		$(".floor-brand").slide({mainCell:".fb-bd ul",effect:"left",pnLoop:true,autoPlay:false,autoPage:true,vis:3,scroll:1,prevCell:".fs_prev",nextCell:".fs_next"});
+		
+		//楼层轮播图广告
+		$("*[data-purebox='homeFloor']").each(function(index, element) {
+			var f_slide_length = $(this).find(".floor-left-slide .bd li").length;
+			if(f_slide_length > 1){
+				$(element).find(".floor-left-slide").slide({titCell:".hd ul",mainCell:".bd ul",effect:"left",interTime:3500,delayTime:500,autoPlay:true,autoPage:true});
+			}else{
+				$(element).find(".floor-left-slide .hd").hide();
+			}
+        });
+
+		//异步加载出首页个人信息、秒杀活动、品牌信息
+        $(function(){
+            var site_domain = "{$site_domain}";
+            var brand_id = $('*[ectype="homeBrand"]').find(".brand-list").data("value");
+			var where = '';
+			if(!brand_id){
+				brand_id = '';
+			}
+			
+            if(site_domain){
+                $.ajax({
+                    type: "GET",
+                    url: "{$site_domain}ajax_dialog.php", /*jquery Ajax跨域*/
+                    data: "act=getUserInfo&is_jsonp=1&brand_id="+brand_id,
+                    dataType:"jsonp",
+                    jsonp:"jsoncallback",
+                    success: homeAjax
+                 });
+            }else{
+                Ajax.call('ajax_dialog.php?act=getUserInfo', 'brand_id=' + brand_id, homeAjax , 'POST', 'JSON');
+            }
+			
+			function homeAjax(data){
+				$("*[ectype='user_info']").html(data.content);
+				$("*[ectype='homeBrand']").html(data.brand_list);
+				
+				if($("*[data-mode='lunbo']").length > 0){
+					$("*[data-mode='lunbo']").after("<div class='visual-item w1200' ectype='channel'>"+data.seckill_goods+"</div>");
+				}else{
+					$(".content").find("*[ectype='visualItme']").eq(0).before("<div class='visual-item w1200' ectype='channel'>"+data.seckill_goods+"</div>");
+				}
+				$("*[ectype='time']").each(function(){
+					$(this).yomi();
+				});
+				
+				//秒杀活动
+				var seckill_goods = $("input[name='seckill_goods']").val();
+				if(seckill_goods == 0){
+					$(".lift-h-seckill").hide();
+				}else{
+					$(".lift-h-seckill").show();
+				}
+				
+				//首页秒杀商品滚动
+				$(".seckill-channel").slide({mainCell:".box-bd ul",effect:"leftLoop",autoPlay:true,autoPage:true,interTime:5000,delayTime:500,vis:5,scroll:1,trigger:"click"});
+				
+//				$.catetopLift();
+				
+//				$(window).scroll(function(){
+//					var scrollTop = $(document).scrollTop();
+//					var navTop = $("*[ectype='channel']").offset().top;  //by yanxin
+//
+//					if(scrollTop>navTop){
+//						$("*[ectype='suspColumn']").addClass("show");
+//					}else{
+//						$("*[ectype='suspColumn']").removeClass("show");
+//					}
+//				});
+			}
+                        
+			//重新加载商品模块
+			$("[data-mode='guessYouLike']").each(function(){
+				var _this = $(this);
+				var goods_ids = _this.data("goodsid");
+				var warehouse_id = $("input[name='warehouse_id']").val();
+				var area_id = $("input[name='area_id']").val();
+				if(goods_ids){
+					 Ajax.call('ajax_dialog.php?act=getguessYouLike', 'goods_ids=' + goods_ids + "&warehouse_id=" + warehouse_id + "&area_id=" + area_id, function(data){
+						 if(data.content){
+							_this.find(".view .lift-channel ul").html(data.content);
+						}
+					 } , 'POST', 'JSON');
+				}
+			});
+                       
+			$("li[ectype='floor_cat_content'].current").each(function(){
+				 get_homefloor_cat_content(this);
+			});
+			
+			$("[ectype='identi_floorgoods'].current").each(function(){
+				 get_homefloor_cat_content(this);
+			});
+        });
+		
+		function readyLoad(){
+			var homeWrap = $("*[ectype='homeWrap']");
+			var homeitem = homeWrap.find("*[ectype='visualItme']");
+			var mode = "";
+			var range = "";
+			var lift = "";
+			var id = "";
+			var floorItem = "";
+			var liftObj = $("*[ectype='lift']");
+			var returnTop = "";
+			
+			if(liftObj.data("type") == "one"){
+				returnTop = '<div class="lift-item lift-item-top" ectype="liftItem"><i class="iconfont icon-returntop"></i></div>';
+			}else{
+				returnTop = '<div class="lift-item lift-item-top" ectype="liftItem">TOP<i class="iconfont icon-top-alt"></i></div>';
+			}
+			
+			homeitem.each(function(k,v){
+				mode = $(this).data("mode");
+				if(mode != "lunbo" && mode != "h-streamer" && mode != "custom"){
+					range = $(this).find("*[data-type='range']");
+					lift = range.data("lift");
+					id = range.attr("id");
+					
+					var _div = '<div class="lift-item" ectype="liftItem" data-target="#'+ id +'" title="'+lift+'"><span>'+lift+'</span><i class="lift-arrow"></i></div>';
+					
+					$("*[ectype='liftList']").append(_div);
+				}
+				
+			});
+			
+			$("*[ectype='liftList']").append(returnTop);
+		}
+		readyLoad();
+		
+		//会员名称*号 by yanxin
+		/*var name = $(".suspend-login a.nick_name").text();
+		var star = new Array();
+		var nameLen = name.length > 2 ? name.length-2:"1";
+		for(var i=1;i<=nameLen;i++){
+			star.push("*");
+		}
+		star = star.join("");
+		if(name.length > 2){
+			var new_name = name[0] + star + name[name.length-1];
+		}else{
+			var new_name = name[0] + star;
+		}
+		$(".suspend-login a.nick_name").text(new_name);
+		*/		
+		//去掉悬浮框 我的购物车
+		$(".attached-search-container .shopCart-con a span").text("");
+		
+		$("*[ectype='time']").each(function(){
+			$(this).yomi();
+		});
+		
+		/*首页可视化 第八套模板 楼层左侧前后轮播 */
+		aroundSilder(".floor_silder")
+    </script>
+</body>
+<script type="text/javascript" src="themes/68ecshopcom_360buy/js/indexPrivate.min.js"></script>
+<script type="text/javascript" src="themes/68ecshopcom_360buy/js/home_index.js"></script>
+</html>

@@ -1,0 +1,106 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        ::-webkit-input-placeholder{text-overflow:ellipsis;overflow:hidden;cursor:text;color:gray;opacity:1;padding:0;border:0;}
+    </style>
+    <base href="">
+    <meta name="Generator" content="SLJD v7_2">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+    <title>产到销 - 产到销直供平台</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" href="animated_favicon.gif" type="image/gif">
+    <link rel="stylesheet" type="text/css" href="themes/68ecshopcom_360buy/css/68ecshop_commin.css">
+    <link type="text/css" rel="stylesheet" href="themes/68ecshopcom_360buy/css/passport.css">
+    <script type="text/javascript" src="themes/68ecshopcom_360buy/js/jquery-1.9.1.min.js"></script>
+    <style type="css/text">
+        label .error{
+            color: #900;
+        }
+    </style>
+</head>
+<body onclick="ecshop68_onclick();" style="cursor: auto;">
+<script>
+    function erweima1(obj, sType) { var oDiv = document.getElementById(obj); if (sType == 'show') {oDiv.style.display = 'block';} if (sType == 'hide') {oDiv.style.display = 'none';} }
+</script>
+<div class="Logo-r">
+    <div class="Logo-info-r">
+        <a href="./" class="logo"></a>
+        <span class="findpw">欢迎注册</span>
+    </div>
+</div>
+<div class="blank">
+</div>
+<div class="blank">
+</div>
+<div class="w">
+    <script type="text/javascript" src="js/utils.js"></script>
+    <div class="w" id="regist">
+        <div class="mcon register_con" style="height: 454px;">
+            <div id="reg-pic" class="box-pic box-pic1">
+            </div>
+            <div id="login-box" class="uc_box uc_box_reg">
+                <form action="register.php" method="post" id="formRegister" name="formRegister">
+                    <input type="hidden" id="register_type" name="register_type" value="${register_type}">
+                    <ul class="register_tab">
+                        <li id="li_register_type_mobile" class="tab_item fl cur" register_type="mobile">手机注册<span class="bg_ff"></span></li>
+                        <li class="have_account fr">已有账号！<a href="user.php?act=login">登录</a></li>
+                    </ul>
+                </form>
+                <form action="register.php" method="post" id="formUser" name="formUser">
+                    <div class="form">
+                        <img src="http://qr.liantu.com/api.php?text={$url}mobile/index.php?m=user%26c=purchaser%26a=index">
+                        <p style="color:#792f6e;text-align:center;font-size:14px;">
+                            请在手机端注册
+                        </p>
+                    </div>
+                </form>
+                <!--[if !ie]>form end<![endif]-->
+            </div>
+        </div>
+    </div>
+    <div class="blank">
+    </div>
+</div>
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+<!-- <div class="site-footer">
+    <div class="wrapper">
+        <div class="footer-info clearfix">
+            <div class="info-text">
+                <p class="nav_bottom">
+                    <a href="http://www.siliang.com/" target="_blank">关于我们</a><em>|</em>
+                    <a href="article.php?id=81" target="_blank">联系我们</a><em>|</em>
+                    <a href="http://www.chandaoxiao.com/sitemap.xml">站点地图</a><em>|</em>
+                    <a href="http://www.chandaoxiao.com/mobile" target="_blank">手机商城</a><em>|</em>
+                    <a href="#">销售联盟</a><em>|</em>
+                    <a href="#">商城社区</a><em>|</em>
+                    <a href="#">企业文化</a><em>|</em>
+                    <a href="help.php">帮助中心</a><em style="display:none">|</em>
+                    ICP备案证书号:
+                    <a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备13051735号-4</a>
+                </p>
+                <p>
+                    <a href="javascript:;">© 2016-2018 产供销网络科技 版权所有，并保留所有权利。</a><a href="javascript:;">广州市白云区鹤龙一路32号御丰广场10A01 </a>
+                    <a href="javascript:;">      Tel: 400-060-7168      </a>
+                    <a href="javascript:;">      E-mail: chandaoxiao@cgxlm.com      </a>
+                </p>
+                <div style="width:300px;margin:0 auto;">
+                    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44011102002174" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                    <img src="themes/cgxlm/images/bei.png" style="float:left;"/>
+                    <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">粤公网安备 44011102002174号</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div>
+    <object id="ClCache" click="sendMsg" host="" width="0" height="0"></object>
+</div>
+</body>
+</html>

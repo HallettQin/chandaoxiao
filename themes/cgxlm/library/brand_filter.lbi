@@ -1,0 +1,79 @@
+<div class="right-extra" >
+    <div class="u_cloose">
+        <dl>
+            <dt>已选条件：</dt>
+            <dd>
+                <!--{if !$get_bd.bd && !$g_price && !$parray && !$c_array.attr_value && !$g_array}-->
+                &nbsp;
+                <!--{/if}-->
+
+                <!--{if $get_bd.bd}-->
+                <div class="get_item" title="{$get_bd.bd}">
+                    <b>{$lang.brand}：</b>
+                    <em>{$get_bd.bd}</em>
+                    <a href="{$get_bd.br_url}"></a>
+                </div>
+                <!--{/if}-->
+
+            </dd>
+            <dd class="give_up_all"><a href="category.php?id={$category}" class="ftx-05">{$lang.All_undo}</a></dd>
+        </dl>
+    </div>
+    <div class="goods_list">
+        <ul class="attr_father">
+            <!--品牌 START-->
+            <!--{if $brands}-->
+            <li class="s-line">
+                <div class="s-l-wrap brand_img attr_list">
+                    <div class="s-l-tit brand_name_l">{$lang.brand}：</div>
+                    <div class="s-l-value brand_select_more">
+                        <div class="all_a_z">
+                            <ul class="a_z">
+                                <li class="all_brand curr">{$lang.all_brand}</li>
+                                {foreach from=$letter key=key item=letter}
+                                <li data-key="{$letter}">{$letter}</li>
+                                {/foreach}
+                                <li class="other_brand">{$lang.Other}</li>
+                            </ul>
+                        </div>
+                        <div class="wrap_brand">
+                            <div class="brand_div">
+                                <!--{foreach from=$brands item=brand}-->
+                                <div class="brand_img_word" brand ="{$brand.brand_letters}">
+                                    {if $brand.brand_logo}
+                                    <a href="{$brand.url}">
+                                        <img src="{$brand.brand_logo}" alt="{$brand.brand_name}" title="{$brand.brand_name}">
+                                        <span>{$brand.brand_name}</span>
+                                    </a>
+                                    {else}
+                                    <a href="{$brand.url}"><b>{$brand.brand_name}</b></a>
+                                    {/if}
+                                </div>
+                                <!--{/foreach}-->
+                            </div>
+                        </div>
+                        <div class="zimu_list">
+                            <ul class="get_more" >
+                                <!--{foreach from=$brands item=brand}-->
+                                <li class="is_no" brand ="{$brand.brand_letters}" url_id="{$brand.brand_id}"><span class="choose_ico"></span><a class="goods_brand_name" data-url="{$brand.url}">{$brand.brand_name}</a></li>
+                                <!--{/foreach}-->
+                            </ul>
+                        </div>
+                        <div class="enter_yes_no">
+                            <div class="ct_auto">
+                                <span class="yes_bt botton disabled">确定</span>
+                                <span class="no_bt botton">关闭</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="s-l-opt sl-ext">
+                        <div class="choose_open s-l-more"><i class="iconfont icon-down"></i></div>
+                        <div class="choose_more s-l-multiple"><i class="iconfont icon-plus"></i>多选</div>
+                    </div>
+                </div>
+            </li>
+            <!--{/if}-->
+            <!--品牌 END-->
+        </ul>
+    </div>
+</div>

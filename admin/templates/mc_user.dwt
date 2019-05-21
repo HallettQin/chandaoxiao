@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="javascript:;" ectype='goback' class="s-back">{$lang.back}</a>会员 - {$ur_here}</div>
+        <div class="content">
+        	<div class="tabs_info">
+            	<ul>
+                    <li><a href="users.php?act=add">添加会员</a></li>
+                    <li class="curr"><a href="javascript:;">会员批量添加</a></li>
+				</ul>
+            </div>	
+            <div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                    <li>可从管理平台手动添加一名新会员，并填写相关信息。</li>
+                    <li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>新增会员后可从会员列表中找到该条数据，并再次进行编辑操作，但该会员名称不可变。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-head">
+                    <div class="fl">
+                        <a href="{$action_link.href}"><div class="fbutton"><div class="reply" title="{$action_link.text}"><span><i class="icon icon-reply"></i>{$action_link.text}</span></div></div></a>
+                    </div>
+                </div>
+            	<div class="common-content">
+                	<div class="mian-info">
+                    	<form method="post" action="mc_user.php" name="theForm" id="user_form" enctype="multipart/form-data">
+                        	<div class="switch_info">
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;{$lang.batch_import_user}</div>
+                                    <div class="label_value">
+                                        <div class="type-file-box">
+                                            <input type="button" name="button" id="button" class="type-file-button" value="" />
+                                            <input type="file" class="type-file-file" id="file" name="upfile" size="30" hidefocus="true" data-state="txtfile" value="" />
+                                            <input type="text" name="textfile" class="type-file-text" id="textfield" autocomplete="off" readonly />
+                                        </div>
+                                        <div class="form_prompt"></div>
+                                        <div class="notic bf100 ml0">{$lang.notice_mc_order}</div>
+                                        <div class="fl bf100">
+                                            <a href="../mc_upfile/user_list.zip" target="_blank" class="mr30">1、{$lang.download_example}</a>&nbsp;&nbsp;<a href="../mc_upfile/user_list.html" target="_blank" class="mr30">2、{$lang.online_view}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;用户密码：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="password" class="text" id="password" autocomplete="off" />
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;确定密码：</div>
+                                    <div class="label_value">
+                                        <input type="text" name="confirm_password" class="text" id="confirm_password" autocomplete="off" />
+                                        <div class="form_prompt"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value info_btn">
+                                        <a href="javascript:;" class="button" id="submitBtn">{$lang.batch_add_user}</a>
+                                        <input type="hidden" name="act" value="mc_add" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+    <script type="text/javascript">
+	//表单验证
+	$(function(){
+		$("#submitBtn").click(function(){
+			if($("#user_form").valid()){
+				$("#user_form").submit();
+			}
+		});
+	
+		$('#user_form').validate({
+			errorPlacement:function(error, element){
+				var error_div = element.parents('div.label_value').find('div.form_prompt');
+				element.parents('div.label_value').find(".notic").hide();
+				error_div.append(error);
+			},
+			rules:{
+				textfile:{ 
+					required:true
+				},
+				password:{
+					required:true,
+					minlength:6
+				},
+				confirm_password:{
+					required:true,
+					equalTo:"#password"
+				}
+			},
+			messages:{
+				textfile:{
+					required : '<i class="icon icon-exclamation-sign"></i>上传文件不能为空'
+				},
+				password:{
+					required : '<i class="icon icon-exclamation-sign"></i>密码不能为空',
+					minlength : '<i class="icon icon-exclamation-sign"></i>密码长度不能少于6位'
+				},
+				confirm_password:{
+					required : '<i class="icon icon-exclamation-sign"></i>确认密码不能为空',
+					equalTo:'<i class="icon icon-exclamation-sign"></i>两次密码不一致'
+				}
+			}
+		});
+	});
+    </script>     
+</body>
+</html>

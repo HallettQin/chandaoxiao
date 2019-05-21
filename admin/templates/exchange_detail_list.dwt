@@ -1,0 +1,122 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+
+<body class="iframe_body">
+<div class="warpper">
+    <div class="title">报表 - 积分明细</div>
+    <div class="content">
+        <div class="tabs_info">
+            <ul>
+                <li {if $menu_select.current eq 'exchange_count'}class="curr"{/if}><a href="exchange_detail.php?act=detail">{$lang.exchange_count}</a></li>
+            </ul>
+        </div>
+        <div class="explanation" id="explanation">
+            <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+            <ul>
+                <li>统计所有商家总赠送消费积分、总赠送等级积分。</li>
+            </ul>
+        </div>
+        <div class="flexilist mt30">
+            <div class="common-content">
+                <div class="mian-info sale_info">
+                    <div class="switch_info">
+                        <div class="query_result">
+                            <div class="common-head">
+                                <div class="fl">
+                                    <div class="fbutton m0" id="fbutton_1"><a href="javascript:void(0);"><div class="csv" title="导出数据"><span><i class="icon icon-download-alt"></i>导出列表</span></div></a></div>
+                                </div>
+                                <div class="refresh">
+                                    <div class="refresh_tit" onclick="getList(this)" title="刷新数据"><i class="icon icon-refresh"></i></div>
+
+                                </div>
+                            </div>
+                            <div class="list-div" id="listDiv" style="position: relative">
+                            	{/if}
+                                <div class="refresh_span" style="position: absolute;left:135px;top: 0px;">刷新 - 共{$record_count}条记录</div>
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <thead>
+                                    <tr>
+                                        <th width="25%"><div class="tDiv">商家名称</div></th>
+                                        <th width="25%"><div class="tDiv">总赠送消费积分</div></th>
+                                        <th width="25%"><div class="tDiv">总赠送等级积分</div></th>
+                                        <th width="25%"><div class="tDiv">操作</div></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {foreach from=$detail item=vo}
+                                    <tr>
+                                        <td><div class="tDiv">{$vo.shop_name}</div></td>
+                                        <td><div class="tDiv">{$vo.give_integral|default:0}</div></td>
+                                        <td><div class="tDiv">{$vo.rank_integral|default:0}</div></td>
+                                        <td>
+											<div class="tDiv">
+												<a href="exchange_detail.php?act=exchange_goods&user_id={$vo.user_id}">查看商品</a>
+												<a href="exchange_detail.php?act=order_view&user_id={$vo.user_id}">查看订单</a>
+											</div>
+										</td>
+                                    </tr>
+                                    {foreachelse}
+                                    <tr>
+                                        <td colspan="12" class="no_record"><div class="tDiv">{$lang.no_records}</div></td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="12">
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                                {if $full_page}
+                                <script type="text/javascript">
+                                    //分页传值
+                                    listTable.recordCount = {$record_count|default:0};
+                                    listTable.pageCount = {$page_count|default:1};
+                                    listTable.url = "exchange_detail.php?is_ajax=1";
+									listTable.query = "detail_query";
+
+                                    {foreach from=$filter item=item key=key}
+                                    listTable.filter.{$key} = '{$item}';
+                                    {/foreach}
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ {include file ='library/pagefooter.lbi'}
+</body>
+<script type="text/javascript">
+    function getList()
+    {
+        var act = 'detail_query';
+        $.ajax({
+            url:"exchange_detail.php?is_ajax=1",
+            dataType:"json",
+            type:'post',
+            data:{
+                "act" : act,
+            },
+            success:function(data){
+                $('.list-div').eq(0).html(data.content);
+            }
+        })
+    }
+
+    //导出报表(销售明细)
+    $('#fbutton_1').click(function(){
+        location.href='exchange_detail.php?act=download';
+    })
+</script>
+</html>
+{/if}

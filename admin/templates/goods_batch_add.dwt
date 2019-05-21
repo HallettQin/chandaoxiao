@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">商品 - {$ur_here}</div>
+        <div class="content">
+        	{include file ='library/batch_tab.lbi'}
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>根据使用习惯，下载相应语言的csv文件，例如中国内地用户下载简体中文语言的文件，港台用户下载繁体语言的文件；</li>
+					<li>填写csv文件，可以使用excel或文本编辑器打开csv文件；
+					碰到“是否精品”之类，填写数字0或者1，0代表“否”，1代表“是”；
+					商品图片和商品缩略图请填写带路径的图片文件名，其中路径是相对于 [根目录]/images/ 的路径，例如图片路径为[根目录]/images/200610/abc.jpg，只要填写 200610/abc.jpg 即可；
+					如果是淘宝助理格式请确保cvs编码为在网站的编码，如编码不正确，可以用编辑软件转换编码。</li>
+					<li>将填写的商品图片和商品缩略图上传到相应目录，例如：[根目录]/images/200610/；
+					请首先上传商品图片和商品缩略图再上传csv文件，否则图片无法处理。</li>
+					<li>选择所上传商品的分类以及文件编码，上传csv文件</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info">
+                    	<form action="goods_batch.php?act=upload" method="post" enctype="multipart/form-data" name="theForm" id="goods_batch_form">
+                        	<div class="switch_info">
+                            <div class="item">
+                                <div class="label">{$lang.require_field}{$lang.goods_cat}</div>
+                                <div class="label_value">
+                                	<div class="search_select">
+                                    	<div class="categorySelect">
+                                            <div class="selection">
+                                                <input type="text" name="category_name" id="category_name" class="text w290 valid" value="请选择分类" autocomplete="off" readonly data-filter="cat_name" />
+                                                <input type="hidden" name="cat" id="cat" value="0" data-filter="cat_id" />
+                                            </div>
+                                            <div class="select-container" style="width:319px;display:none;">
+												{include file="library/filter_category.lbi"}
+                                            </div>
+                                            <div class="form_prompt"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">{$lang.export_format}：</div>
+                                <div class="label_value">
+                                	<div id="format" class="imitate_select select_w320">
+                                        <div class="cite">请选择</div>
+                                        <ul>
+											<li><a href="javascript:;" data-value="0" class="ftx-01">请选择</a></li>
+											{foreach from=$data_format item=data key=key}
+											<li><a href="javascript:;" data-value="{$key}" class="ftx-01">{$data}</a></li>
+											{/foreach}
+                                        </ul>
+                                        <input name="data_cat" type="hidden" value="0" id="format_val">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">{$lang.file_charset}</div>
+                                <div class="label_value">
+                                	<div id="file_code" class="imitate_select select_w320">
+                                        <div class="cite">{$lang_list.UTF8}</div>
+                                        <ul>
+											{foreach from=$lang_list item=data key=key}
+											<li><a href="javascript:;" data-value="{$key}" class="ftx-01">{$data}</a></li>
+											{/foreach}
+                                        </ul>
+                                        <input name="charset" type="hidden" value="UTF8" id="file_code_val">
+                                    </div>						
+                                </div>
+                            </div>
+                            <div class="item">
+                            	<div class="label">{$lang.require_field}{$lang.csv_file}</div>
+                                <div class="label_value">
+                                    <div class="type-file-box">
+                                        <input type="button" name="button" id="button" class="type-file-button" value="">
+                                        <input type="file" class="type-file-file" id="file" name="file" size="30" data-state="csvfile" hidefocus="true" value="">
+                                        <input type="text" name="textfile" class="type-file-text" id="textfield" readonly>
+                                    </div>
+                                    <div class="form_prompt"></div>
+									<div class="notic">{$lang.notice_file}</div>
+                                </div>
+                            </div>
+                            <div class="item">
+                            	<div class="label">&nbsp;</div>
+                                <div class="label_value">
+									{foreach from=$download_list item=download key=charset name=download}
+									<a href="goods_batch.php?act=download&charset={$charset}" class="mr10">{$smarty.foreach.download.iteration}、{$download}</a>
+									{/foreach}
+                                </div>
+                            </div>							
+                            <div class="item">
+                                <div class="label">&nbsp;</div>
+                                <div class="label_value info_btn">
+                                    <input type="submit" value="确定" class="button" id="submitBtn">	
+                                    <!--<input type="reset" value="重置" class="button button_reset">-->
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+ 	{include file ='library/pagefooter.lbi'}
+	{literal}
+	<script type="text/javascript">
+		$(function(){
+		//表单验证
+		$("#submitBtn").click(function(){
+			var cat_val = $("input[name='cat']").val();
+			var fald = false;
+			if(cat_val>0){
+				fald = true;
+				$(".categorySelect .form_prompt label").remove();
+			}else{
+				$("#category_name").addClass("error");
+				$(".categorySelect .form_prompt label").remove();
+				$(".categorySelect .form_prompt").append('<label class="label_error"><i class="icon icon-exclamation-sign"></i>请选择分类</label>')
+			}
+			
+			if($("#goods_batch_form").valid()){
+				$("#goods_batch_form").submit();
+			}
+		});
+	 
+		$('#goods_batch_form').validate({
+			errorPlacement:function(error, element){
+				var error_div = element.parents('div.label_value').find('div.form_prompt');
+				element.parents('div.label_value').find(".notic").hide();
+				error_div.append(error);
+			},
+			rules:{
+				textfile:{
+					required : true
+				}
+			},
+			messages:{
+				textfile:{
+					required : '<i class="icon icon-exclamation-sign"></i>请上传批量csv文件'
+				}
+			}			
+		});
+	});
+	</script>
+	{/literal}	
+</body>
+</html>

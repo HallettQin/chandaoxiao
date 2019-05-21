@@ -1,0 +1,15 @@
+#Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+.user.ini
+.htaccess
+/temp
+/data
+/.idea
+/images
+/seller_imgs
+/sms
+/seller/sms
+/cgxlm.sql

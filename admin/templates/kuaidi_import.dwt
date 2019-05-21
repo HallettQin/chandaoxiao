@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+{include file ='library/admin_html_head.lbi'}
+</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title"><a href="{$action_link.href}" class="s-back">{$lang.back}</a>快递公司 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>标识“<em>*</em>”的选项为必填项，其余为选填项。</li>
+                    <li>请按提示信息填写每一个字段。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+                <div class="common-content">
+                    <div class="mian-info">
+                        <form action="kuaidi.php" method="post" name="theForm" enctype="multipart/form-data" id="info_form">
+                            <div class="switch_info">
+                                <div class="item">
+                                    <div class="label">{$lang.require_field}&nbsp;{$lang.upload_file}</div>
+                                    <div class="label_value">
+                                        <div class="type-file-box">
+                                            <input type="button" name="button" id="button" class="type-file-button" value="" />
+                                            <input type="file" class="type-file-file" id="file" name="upload_file" size="30" hidefocus="true" data-state="xlsfile" value="" />
+                                            <input type="text" name="textfile" class="type-file-text" id="textfield" autocomplete="off" readonly />
+                                        </div>
+                                        <div class="form_prompt"></div>
+                                        <div class="notic bf100 ml0">{$lang.notice_mc_order}</div>
+                                        <div class="fl bf100">
+                                            <a href="../mc_upfile/kuaidi_template.xls" target="_blank" class="mr30">1、{$lang.download_example}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">每单运费+</div>
+                                    <div class="label_value">
+                                        <input type="number" name='add' value='1' class="text" autocomplete="off" />
+                                        <div class="form_prompt">元</div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="label_value info_btn">
+										<input type="submit" value="{$lang.button_submit}" class="button" id="submitBtn" />
+										<input type="reset" value="{$lang.button_reset}" class="button button_reset" />
+										<input type="hidden" name="act" value="{$form_act}" />
+										<input type="hidden" name="id" value="{$id}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+    </div>
+	{include file ='library/pagefooter.lbi'}
+    {literal}
+    <script type="text/javascript">
+	$(function(){
+		jQuery.validator.addMethod("specialchar", function(value, element) {
+		  return this.optional(element) || !/[@'\\"#$%&\^*]/.test(value);
+		},("不能包含特殊字符"));
+
+        jQuery.validator.addMethod("mobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+            return this.optional(element) || (length == 11 && mobile.test(value));
+        })
+
+
+		$('#info_form').validate({
+			errorPlacement:function(error, element){
+				var error_div = element.parents('div.label_value').find('div.form_prompt');
+				element.parents('div.label_value').find(".notic").hide();
+				error_div.append(error);
+			},
+			rules:{
+                login_name :{
+					required : true,
+					specialchar:""
+				},
+                company_name :{
+                    required : true,
+                    specialchar:""
+                },
+                mobile :{
+                    required : true,
+                    mobile: true
+                }
+			},
+			messages:{
+                username:{
+                    required : '<i class="icon icon-exclamation-sign"></i>登录名不能为空'
+				},
+                company_name:{
+                    required : '<i class="icon icon-exclamation-sign"></i>公司名称不能为空'
+				},
+                mobile:{
+                    required : '<i class="icon icon-exclamation-sign"></i>手机号不能为空',
+                    mobile: '<i class="icon icon-exclamation-sign"></i>手机号格式不对'
+                }
+			}
+		});
+	});
+    </script>
+	{/literal}
+</body>
+</html>

@@ -1,0 +1,35 @@
+{include file="supplier/header"}
+<div class="con">
+    <section class="login-info">
+        <h4>欢迎您，<span>{$shop_info.hopeloginname}</span>来到制造商手机版后台</h4>
+    </section>
+    <section class="account-info">
+        <div>当前可提现余额:<span style="color: red">{$seller_shopinfo.seller_money}</span></div>
+    </section>
+    <section class="index-box">
+        <ul class="index-menu">
+            <li>
+                <a href="{url('supplier/account/detail')}">
+                    <i class="iconfont icon-daifahuo4"></i>
+                    账户明细
+                </a>
+            </li>
+            <li>
+                <a href="{url('supplier/account/log')}">
+                    <i class="iconfont icon-bufen"></i>
+                    资金明细
+                </a>
+            </li>
+        </ul>
+    </section>
+</div>
+<!--快捷导航-->
+{include file="supplier/float_nav_footer"}
+<script type="text/javascript">
+    //订单列表
+   $(function(){
+
+   })
+</script>
+</body>
+</html>

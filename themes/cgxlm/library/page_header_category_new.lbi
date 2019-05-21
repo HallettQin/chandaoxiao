@@ -1,0 +1,1 @@
+{insert name='category_tree_nav' cat_model=$nav_cat_model cat_num=$nav_cat_num act_type=$act_type}

@@ -1,0 +1,212 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">模式 - {$ur_here}</div>
+        <div class="content">
+            <div class="tabs_info">
+                <ul>
+                    <li {if $menu_select.current eq '01_goods_list'}class="curr"{/if}>
+                    <a href="presale.php?act=list">普通商品 {if $menu_select.current neq '01_goods_list'}{if $goods_list_type}<em class="li_color"></em>{/if}{/if}</a>
+                    </li>
+                    <li {if $menu_select.current eq '01_review_status'}class="curr"{/if}>
+                    <a href="presale.php?act=review_status">商品审核 {if $menu_select.current neq '01_review_status'}{if $goods_list_type}<em class="li_color"></em>{/if}{/if}</a>
+                    </li>
+                </ul>
+            </div>
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit">
+					<i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+                    {if $open eq 1}
+                    <div class="view-case">
+                    	<div class="view-case-tit"><i></i>查看教程</div>
+                        <div class="view-case-info">
+                        	<a href="http://help.ecmoban.com/article-6554.html" target="_blank">第三方登录插件使用说明</a>
+                        </div>
+                    </div>
+                    {/if}
+				</div>
+                <ul>
+                	<li>展示了预订活动的相关信息列表。</li>
+                    <li>可通过搜索关键字商品名称，筛选店铺名称搜索出具体预订活动信息。</li>
+                    <li>可进行增加、编辑、修改、删除等操作，查看预订活动订单。</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                    <div class="fl">
+                        <a href="presale.php?act=review_status&type=not_audit"><div class="fbutton"><div class="edit" title="未审核"><span><i class="icon icon-edit"></i>未审核 ({$goods_list_type.not_status|default:0})</span></div></div></a>
+                        <a href="presale.php?act=review_status&type=not_pass"><div class="fbutton"><div class="add" title="审核未通过"><span><i class="icon icon-edit"></i>审核未通过 ({$goods_list_type.not_pass|default:0})</span></div></div></a>
+                    </div>
+                    <div class="refresh">
+                    	<div class="refresh_tit" title="刷新数据"><i class="icon icon-refresh"></i></div>
+                    	<div class="refresh_span">刷新 - 共{$record_count}条记录</div>
+                    </div>
+                </div>
+                <div class="common-content">
+					<form method="post" onsubmit="return confirmSubmit(this)">
+                	<div class="list-div" id="listDiv" >
+						{/if}
+                    	<table cellpadding="1" cellspacing="1" >
+                        	<thead>
+                            	<tr>
+                                	<th width="3%" class="sign"><div class="tDiv"><input type="checkbox" name="all_list" class="checkbox" id="all_list" /><label for="all_list" class="checkbox_stars"></label></div></th>
+                                    <th width="5%"><div class="tDiv">{$lang.record_id}</div></th>
+                                    <th width="20%"><div class="tDiv">{$lang.goods_name}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.goods_steps_name}</div></th>
+									<th width="10%"><div class="tDiv">{$lang.current_status}</div></th>
+                                    <th width="10%"><div class="tDiv">{$lang.end_date}</div></th>
+                                    <th width="6%"><div class="tDiv tc">{$lang.deposit}</div></th>
+                                    <th width="6%"><div class="tDiv tc">{$lang.valid_goods}</div></th>
+                                    <th width="7%"><div class="tDiv tc">{$lang.valid_order}</div></th>
+                                    <th width="8%"><div class="tDiv">{$lang.adopt_status}</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+							{foreach from=$list item=presale}
+                            	<tr>
+                                	<td class="sign"><div class="tDiv">
+										<input type="checkbox" name="checkboxes[]" value="{$presale.act_id}" class="checkbox" id="checkbox_{$presale.act_id}" />
+										<label for="checkbox_{$presale.act_id}" class="checkbox_stars"></label>
+									</div></td>
+                                    <td><div class="tDiv">{$presale.act_id}</div></td>
+                                	<td><div class="tDiv"><a href="../presale.php?id={$presale.act_id}&act=view" target="_blank">{$presale.act_name|escape:html}</div></a></td>
+									{if $priv_ru eq 1}
+                                    <td><div class="tDiv red">{$presale.shop_name}</div></td>
+                                    {/if}
+									<td><div class="tDiv">{$presale.cur_status}</div></td>
+                                    <td><div class="tDiv">{$presale.pay_end_time}</div></td>
+                                    <td><div class="tDiv tc">{$presale.deposit}</div></td>
+                                    <td><div class="tDiv tc">{$presale.valid_goods}</div></td>
+									<td><div class="tDiv tc">{$presale.valid_order}</div></td>
+                                    <td>
+                                    	<div class="tDiv">
+                                            {if $presale.review_status eq 1}
+                                            <font class="org2">{$lang.not_audited}</font>
+                                            {elseif $presale.review_status eq 2}
+                                            <font class="red">{$lang.audited_not_adopt}</font><br/>
+                                            <i class="tip yellow" title="{$presale.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
+                                            {elseif $presale.review_status eq 3}
+                                            <font class="blue">{$lang.audited_yes_adopt}</font>
+                                            {/if}
+                                        </div>
+                                    </td>
+                                </tr>
+							{foreachelse}
+							<tr><td class="no-records" align="center" colspan="20">{$lang.no_records}</td></tr>
+							{/foreach}
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+									<td colspan="14">
+                                        <div class="tDiv">
+                                            <div class="tfoot_btninfo">
+                                              <div class="shenhe">
+                                                  <input type="submit" name="audited" id="btnSubmit" value="{$lang.audited}" class="btn btn_disabled" disabled="true" ectype="btnSubmit" />
+                                              </div>
+                                            </div>
+                                            <div class="list-page">
+                                                {include file="library/page.lbi"}
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+						{if $full_page}
+                    </div>
+					</form>
+                </div>
+            </div>
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+<script type="text/javascript">
+	//列表导航栏设置下路选项
+	$(".ps-container").perfectScrollbar();
+
+	//分页传值
+	listTable.recordCount = {$record_count|default:0};
+	listTable.pageCount = {$page_count|default:1};
+
+
+    <!--{foreach from=$filter item=item key=key}-->
+    listTable.filter.{$key} = '{$item}';
+    <!--{/foreach}-->
+    /** **/
+
+    function confirmSubmit(frm) {
+        return false
+    }
+
+    $(document).on("click","input[ectype='btnSubmit']",function(){
+        var checkboxs = $('form input[name="checkboxes[]"]:checked')
+
+        var ids = [];
+        for (var i = 0; i < checkboxs.length; i++) {
+            ids.push($(checkboxs[i]).val())
+        }
+
+        var content  = 	'<form id="reviewForm" enctype="multipart/form-data" method="post" action="presale.php?act=update_review_status">' +
+            '<div class="item fl" style="width:333px">' +
+            '<div class="fl" style="padding-top:9px">商品审核：</div>' +
+            '<div class="checkbox_items" style="padding-top:10px; width:80%">' +
+            '<div class="checkbox_item">' +
+            '<input name="review_status" class="ui-radio review_status" id="pro_no" value="3" checked="checked" type="radio" onclick="handleReviewStatus(this);">' +
+            '<label for="pro_no" class="ui-radio-label">审核通过</label>' +
+            '</div>' +
+            '<div class="checkbox_item mr15">' +
+            '<input name="review_status" class="ui-radio review_status" id="pro_yes" value="2" type="radio" onclick="handleReviewStatus(this);">' +
+            '<label for="pro_yes" class="ui-radio-label">审核未通过</label> ' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="item fl hide" id="review_content" style="padding:20px 0px; width:333px">' +
+            '<textarea name="review_content" value="" cols="60" rows="4" class="textarea"></textarea>' +
+            '</div>' +
+            '<input name="ids" type="hidden" value="' + ids.join(',') + '">' +
+            '</form>';
+        pb({
+            id:"review_status_dialog",
+            title:"商品审核",
+            width:403,
+            content:content,
+            ok_title:"确定",
+            cl_title:"取消",
+            drag:true,
+            foot:true,
+            onOk:function(){
+                insert_review_status();
+            }
+        });
+    })
+
+    function insert_review_status(){
+        var actionUrl = "presale.php?act=update_review_status";
+        $("#reviewForm").ajaxSubmit({
+            type: "POST",
+            dataType: "JSON",
+            url: actionUrl,
+            data: { "action": "TemporaryImage" },
+            success: function (data) {
+                window.location.reload()
+            },
+            async: true
+        });
+    }
+
+    function handleReviewStatus(t){
+        if(t.value == 2){
+            $("#review_content").show();
+        }else{
+            $("#review_content").hide();
+            $(":input[name='review_content']").val('');
+        }
+    }
+</script>
+</body>
+</html>
+{/if}

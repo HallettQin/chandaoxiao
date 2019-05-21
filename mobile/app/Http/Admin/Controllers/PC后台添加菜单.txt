@@ -1,0 +1,19 @@
+--------------------------------
+includes/inc_menu.php
+搜索 $modules['13_backup']['07_transfer_choose']        = 'transfer_manage.php?act=choose';
+后面添加：
+$modules['13_backup']['08_db_fields']        = '../mobile/index.php?m=admin'; // 更新字段
+
+--------------------------------
+includes/inc_piv.php
+
+搜索 $purview['07_transfer_choose']   = 'transfer';
+后面添加:
+$purview['08_db_fields']   = 'db_fields';
+
+--------------------------------
+language/zh_cn/admin/common.php
+
+搜索 $_LANG['05_table_prefix'] = '修改表前缀';
+后面添加：
+$_LANG['08_db_fields'] = '更新字段';

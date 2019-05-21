@@ -1,0 +1,84 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+
+<body class="iframe_body">
+	<div class="warpper">
+    	<div class="title">同步 - {$ur_here}</div>
+        <div class="content">
+        	<div class="explanation" id="explanation">
+            	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+                <ul>
+                	<li>检查images下面的文件</li>
+                    <li>同步服务器图片到OSS，根据弹窗提示，耐心等待</li>
+                    <li>由于文件在同步的过程中有部分文件OSS上传会失败，您可以重新按F5刷新再次执行即可.</li>
+                    <li class="li_color">建议：以下两个跳转链接使用右键点击新窗口打开，避免F5刷新页面丢失.</li>
+                </ul>
+            </div>
+            <div class="flexilist">
+            	<div class="common-head">
+                	<div class="fl">
+                        <a href="goods.php?act=goods_img_list&type=1"><div class="fbutton"><div class="add" ><span>一键同步OSS并删除本地图片</span></div></div></a>
+					</div>
+                </div>
+                <div class="common-content">
+                    <div class="list-div"  id="listDiv"  >
+                        {/if}
+                        <table cellpadding="1" cellspacing="1" id="listTable">
+                            <thead>
+                                <tr>
+                                    <th width="45%"><div class="tDiv">目录名称</div></th>
+                                    <th><div class="tDiv">子目录名称</div></th>
+                                    <th><div class="tDiv">目录大小</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$file_list item=file key=okey}
+                                <tr>
+                                    <td><div class="tDiv">{$file.file_name}</div></td>
+                                    <td><div class="tDiv">goods_img<br/>source_img<br/>thumb_img</div></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            goods_img：{$file.goods_img.all_size_name|default:0}<br/>
+                                            source_img：{$file.source_img.all_size_name|default:0}<br/>
+                                            thumb_img：{$file.thumb_img.all_size_name|default:0}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr><td class="no-records"  colspan="12">{$lang.no_records}</td></tr>
+                                {/foreach}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="12">
+                                        <div class="list-page">
+                                            {include file="library/page.lbi"}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {if $full_page}
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+ {include file ='library/pagefooter.lbi'}
+<script type="text/javascript">
+
+	//分页传值
+	listTable.recordCount = {$record_count|default:0};
+	listTable.pageCount = {$page_count|default:1};
+	listTable.query = 'file_list_query';
+
+	{foreach from=$filter item=item key=key}
+	listTable.filter.{$key} = '{$item}';
+	{/foreach}		
+	
+</script>
+</body>
+</html>
+{/if}

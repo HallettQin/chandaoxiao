@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="Generator" content="ECSHOP v2.7.3">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>产到销 - 产到销直供平台</title>
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <style>
+        .zhezao{width: 100%;height: 100%;text-align: center;background-color:#f2f2f2;z-index: 999999999;position: fixed;top: 0;left: 0;}
+        .tishi{width: 90%;background-color: #fff;margin: 10px auto;padding: 10px 10px;overflow:hidden;font-size: 1rem;}
+        .fanhui{text-align: left;color: #00c786;}
+        .fanhui a{color:#00c786;}
+        a{
+            text-decoration: none;;
+        }
+        p{margin: 0;padding: 0;}
+        .xiaom{color: #b0b0b0;line-height: 1.5rem;margin-left: 1rem;}
+        .caozu{margin: 30px 0;}
+        .login{padding: 3px 30px; background-color: #00c786;margin-right: 20px;color: #fff;border-radius:15px;}
+        .register{padding: 3px 30px;color: #00c786;border-radius:15px;border: 1px solid #00c786;}
+        .mao{
+            line-height:1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="zhezao">
+    <div class="tishi">
+        <p class="fanhui">
+            <a href="/mobile/index.php">返回</a>
+        </p>
+        <span><img src="themesmobile/68ecshopcom_mobile/images/no_look.png"></span>
+        {if $company_type neq 'purchasers'}
+        <p class="mao">为了保护生产制造商会员知识产权，<br/>您暂无权访问，谢谢！</p>
+        <p class="xiaom">产到销平台只对实体终端零售商会员开放！</p>
+        {else}
+        <p class="mao">为了保护生产制造商会员知识产权，您暂无权访问，谢谢！</p>
+        <p class="xiaom">此通道只对实体终端零售商会员开放！</p>
+        <p class="xiaom">请您先注册成为实体终端零售商会员！</p>
+        <div class="caozu">
+            <a href="{url('user/purchaser/index',['back_act'=>'index.php'])}">
+                <span class="register">成为零售商</span>
+            </a>
+        </div>
+        {/if}
+    </div>
+</div>
+</body>
+</html>

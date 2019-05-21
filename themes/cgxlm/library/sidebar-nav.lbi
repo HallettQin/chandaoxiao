@@ -1,0 +1,210 @@
+<div class="sidebar-nav" style="height: 100%; top: 0px; bottom: auto;">
+  <div class="mods">
+    <div class="middle-items">
+      <div class="mod_head" id="right_login" onmouseover="fun1();" onmouseout="onmouseroutfun();">
+        <a href="user.php" class="btn_head" title="我的用户中心">
+      	 	<img src="themes/68ecshopcom_360buy/images/upgrade_ad/user_head.png">
+        </a>
+        <div class="dropdown" style="display: none; opacity: 1; margin-right: 0px;">
+                  <form name="formLogin" action="user.php" method="post" onsubmit="return userLogin()">
+          <div class="form">
+            <h2><strong>请登录</strong><span>还没有账号？<a href="register.php" class="right_register">立即注册</a></span></h2>
+            <div class="item"> <span class="label">账号</span>
+              <div>
+                <input name="username" type="text" class="text" value="" tabindex="1">
+              </div>
+            </div>
+            <div class="item"> <span class="label">密码</span>
+              <div>
+                <input type="password" id="password" name="password" class="text" tabindex="2">
+              </div>
+            </div>
+            <div class="item " id="o-authcode"> <span class="label_t">验证码</span>
+              <div>
+                <input type="text" id="authcode" name="captcha" class="text text-1" tabindex="3">
+                <label class="img"> <img src="captcha.php?is_login=1&amp;" alt="captcha" style="vertical-align: middle;cursor: pointer;" onclick="this.src='captcha.php?is_login=1&amp;'+Math.random()"> </label>
+              </div>
+            </div>
+            <div class="item" id="autoentry">
+              <div class="safety">
+                <input type="checkbox" value="1" name="remember" id="remember" class="checkbox">
+                <label for="remember" class="mar-b">记住密码</label>
+                <a class="forget_password" href="findPwd.php">忘记密码？</a>
+            </div>
+            </div>
+            <div class="item">
+              <input type="hidden" name="act" value="act_login">
+              <input type="hidden" name="back_act" value="">
+              <input type="submit" name="submit" class="btn-img" id="loginsubmit" value="立即登录">
+            </div>
+          </div>
+        </form>
+                  <span class="cart_arrow" style="background:none;border:none"><b class="arrow-1"></b> <b class="arrow-2"></b></span>
+        </div>
+      </div>
+      <div class="mod online-service J-stie-68"> <a href="javascript:;" class="btn">
+        <table>
+          <tbody>
+            <tr>
+              <td><i></i> <em>销 售</em></td>
+            </tr>
+            <tr>
+              <td>在 线<br>
+                销 售</td>
+            </tr>
+          </tbody>
+        </table>
+        </a>
+        <div class="dropdown" style="display: none; opacity: 1; margin-right: 0px;">
+          <div class="head clearfix">
+            <h3 class="grid-c-l">在线销售顾问</h3>
+          </div>
+          <div class="button-bar">
+
+            <div class="customer_service">
+  <dl class="sidebar_subdl">
+
+    <dd id="qqdd"> <img src="themes/68ecshopcom_360buy/images/chat/web_logo.png" width="30" height="29"> <a style="color:#000000; font-size:14px; margin-left:10px; vertical-align:middle" target="_self" href="javascript:chat_online();" alt="点击这里给我发消息" title="点击这里给我发消息">在线客服</a> </dd>
+      </dl>
+  <div class="clearbox"></div>
+</div>
+
+          </div>
+          <span class="cart_arrow"><b class="arrow-1"></b> <b class="arrow-2"></b></span></div>
+      </div>
+      <div class="mod vote_list J-stie-68"> <a href="javascript:;" class="btn">
+        <table>
+          <tbody>
+            <tr>
+              <td><i></i> <em>调 查</em></td>
+            </tr>
+            <tr>
+              <td>在 线<br>
+                调 查</td>
+            </tr>
+          </tbody>
+        </table>
+        </a>
+        <div class="dropdown" style="opacity: 1; margin-right: 0px; display: none;">
+          <div class="head clearfix">
+            <h3 class="grid-c-l">在线调查问卷</h3>
+          </div>
+          <div class="button-bar">
+
+
+          </div>
+          <span class="cart_arrow"><b class="arrow-1"></b> <b class="arrow-2"></b></span></div>
+      </div>
+      <div class="mod reserve" style="height:135px;" id="ECS_CARTINFO">
+
+<form id="formCart" name="formCart" method="post" action="flow.php">
+  <a href="flow.php" class="btn" style="height:135px; padding-top:5px; color:#fff;" id="collectBox"> <i></i> 购<br>
+  物<br>
+  车<br>
+  <span style="margin-top:7px;">0</span> </a>
+  <div class="dropdown" id="J-flow-drop" style="opacity: 1; margin-right: 0px; display: none;">
+        <div class="empty-tip">
+      <p></p>
+      <p><a href="index.php" rel="nofollow">您的进货单里什么都没有哦，再去看看吧</a></p>
+    </div>
+
+    <span class="cart_arrow"><b class="arrow-1"></b> <b class="arrow-2"></b></span> </div>
+  <script type="text/javascript">
+function deleteCartGoods(rec_id)
+{
+Ajax.call('delete_cart_goods.php', 'id='+rec_id, deleteCartGoodsResponse, 'POST', 'JSON');
+}
+
+/**
+ * 接收返回的信息
+ */
+function deleteCartGoodsResponse(res)
+{
+  if (res.error)
+  {
+    alert(res.err_msg);
+  }
+  else
+  {
+      document.getElementById('ECS_CARTINFO').innerHTML = res.content;
+  }
+}
+</script>
+  <script>
+$("#ECS_CARTINFO").mouseover(function() {
+    $("#J-flow-drop").show();
+});
+$("#ECS_CARTINFO").mouseout(function() {
+ $("#J-flow-drop").hide();
+});
+$("#ECS_CARTINFO").mouseenter(function() {
+    $("#J-flow-drop").show();
+});
+$("#ECS_CARTINFO").mouseleave(function() {
+ $("#J-flow-drop").hide();
+});
+</script>
+</form>
+      </div>
+      <div class="mod traffic" style="display: none;"> <span class="btn">
+        <table>
+          <tbody>
+            <tr>
+              <td><i></i> <em>关 注</em></td>
+            </tr>
+            <tr>
+              <td><a href="user.php?act=follow_shop" target="_blank" class="btn">关注<br>
+                店铺</a></td>
+            </tr>
+          </tbody>
+        </table>
+        </span> </div>
+      <div class="mod insure" id="collectGoods"> <span class="btn">
+        <table>
+          <tbody>
+            <tr>
+              <td><i></i> <em>收 藏</em></td>
+            </tr>
+            <tr>
+              <td><a href="user.php?act=collection_list" class="btn">收 藏<br>
+                商 品</a></td>
+            </tr>
+          </tbody>
+        </table>
+        </span> </div>
+
+       <div class="mod qrcode J-stie-68"> <a href="javascript:;" class="btn">
+        <table>
+          <tbody>
+            <tr>
+              <td><i></i></td>
+            </tr>
+            <tr>
+              <td>官 方<br>
+                微 信</td>
+            </tr>
+          </tbody>
+        </table>
+        </a>
+        <div class="dropdown  dropdown_t" style="display: none; opacity: 1; margin-right: 0px;"> <span></span>
+          <p>扫描二维码，码上有礼！</p>
+          <span class="cart_arrow" style="background:none;border:none"><b class="arrow-1"></b> <b class="arrow-2"></b></span> </div>
+      </div>
+    </div>
+    <div class="bottom-items">
+      <div class="mod top disabled"> <a href="javascript:;" class="btn">
+        <table>
+          <tbody>
+            <tr>
+              <td><i></i></td>
+            </tr>
+            <tr>
+              <td>回 到<br>
+                顶 部</td>
+            </tr>
+          </tbody>
+        </table>
+        </a> </div>
+    </div>
+  </div>
+</div>

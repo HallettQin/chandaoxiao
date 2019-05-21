@@ -1,0 +1,69 @@
+{if $full_page}
+<!doctype html>
+<html>
+<head>{include file ='library/admin_html_head.lbi'}</head>
+<body class="iframe_body">
+<div class="warpper">
+    <div class="title">统计 - {$ur_here}</div>
+    <div class="content" style="padding-top: 5px">
+        <div class="flexilist">
+            <div class="common-head">
+                <div class="search">
+                    <div class="input">
+                        <input type="text" name="keyword" class="text nofocus w140" placeholder="商品名称/货号/条形码" autocomplete="off">
+                        <button class="btn" name="secrch_btn"></button>
+                    </div>
+                </div>
+            </div>
+            <!--商品列表-->
+            <div class="common-content">
+                <form method="post" action="" name="listForm" onsubmit="return confirmSubmit(this)">
+                    <div class="list-div" id="listDiv">
+                        {/if}
+                        <div class="flexigrid ht_goods_list{if $add_handler} xn_goods_list{/if}">
+                            <table width="100%" class="ecsc-default-table ecsc-table-seller mt20">
+                                <tr>
+                                    <th width="80%">商品名称</th>
+                                    <th width="20%">累计收藏</th>
+                                </tr>
+                                {foreach from=$data_list item=list}
+                                <tr align="center">
+                                    <td class="tl" style="padding-left:10px; padding-right:10px;">{$list.goods_name}</td>
+                                    <td align="left">{$list.collect}次</td>
+                                </tr>
+                                {foreachelse}
+                                <tr><td class="no-records" colspan="7">{$lang.no_records}</td></tr>
+                                {/foreach}
+                                <tfoot>
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="list-page">
+                                            {include file="library/page.lbi"}
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        {if $full_page}
+                    </div>
+                </form>
+            </div>
+            <!--商品列表end-->
+        </div>
+    </div>
+</div>
+
+{literal}
+<script type="text/javascript">
+    listTable.recordCount = {$record_count|default:0};
+    listTable.pageCount = {$page_count|default:1};
+
+    <!--{foreach from=$filter item=item key=key}-->
+    listTable.filter.{$key} = '{$item}';
+    <!--{/foreach}-->
+</script>
+{/literal}
+</body>
+</html>
+{/if}

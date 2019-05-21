@@ -1,0 +1,149 @@
+{include file="page_header"}
+<style>
+.coupon-nav{margin:1rem auto 0;overflow:hidden;}
+.coupon-nav span{padding: .4rem 0;font-size:1.3rem;color: #333;background: #ddd;width:6rem;display: block;text-align: center;float:left;border-right:1px solid #ccc;}
+.coupon-nav span:first-child{border-radius: 5px 0 0 5px}
+.coupon-nav span:last-child{border-radius: 0 5px 5px 0;border-right:none;}
+.coupon-nav span.active{background:#ec5151;}
+.coupon-nav span.active a{color:#fff;}
+.coupon-nav-cont{display: inline-block;}
+.coupont-right .cou_is_receive {margin-top: 1.8rem;display: block;color: #74d2d4}
+</style>
+<div class="con">
+
+    <div class="goods-info user-order of-hidden ect-tab j-ect-tab ts-3" style="padding-top:0">
+        <nav class="tab-title b-color-f of-hidden">
+            <ul class="dis-box">
+                <li class="box-flex active"><a href="{url('coupont/index/index')}" >好券集市</a></li>
+                <li class="box-flex "><a href="{url('coupont/index/coupons_goods')}" >任务集市</a></li>
+            </ul>
+        </nav>
+        <div class="coupon-nav">
+            <div class="coupon-nav-cont">
+                <span class=" {if $status == 0}active{/if}"><a status="0" >全场券</a></span>
+                <span class=" {if $status == 1}active{/if}"><a status="1" >会员券</a></span>
+                <span class=" {if $status == 2}active{/if}"><a status="2" >免邮券</a></span>
+            </div>
+        </div>
+        <div id="j-tab-con" class="tab-con margin-lr">
+            <div class="swiper-wrapper">
+                <section class="swiper-slide store_info">
+                    <script id="j-product" type="text/html">
+                        <%if coupons_list.tab !=''%>
+                        <%each coupons_list.tab as order%>
+                        <section class="dis-box user-coupont-box b-color-f m-top10">
+                            <div class="coupont-left">
+                                <span>
+                                <%if order.cou_type == 5 %>
+                                免邮
+                                <%else%>
+                                <sup>¥</sup><%order.cou_money%>
+                                <%/if%>
+                                </span>
+                            </div>
+                            <div class="box-flex coupont-cont padding-all">
+                                <h4 class="coupont-cont-title">[<%order.cou_name%>]</h4>
+                                <%if order.cou_type == 5 %>
+                                <div class="f-05 m-top02">满 <%order.cou_man%>元可用</div>
+                                <%else%>
+                                <div class="f-05 m-top02">满 <%order.cou_man%>元 送<%order.cou_money%>元</div>
+                                <%/if%>
+								<p class="f-02 col-9 m-top02"><%order.store_name%>
+                                <p class="f-03 col-9 m-top02"><%order.begintime%> - <%order.endtime%></p>
+                            </div>
+                            <div class="coupont-right padding-all">
+                                <%if order.cou_is_receive == 1%>
+                                <span class="f-03 cou_is_receive">已领取</sapn>
+                                <%else%>
+                                <a href="#" class="ts-1active" cou_id="<%order.cou_id%>">
+                                    <span class="">领取</sapn>
+                                </a>
+                                <%/if%>
+                            </div>
+                        </section>
+                        <%/each%>
+                        <%else%>
+                        <div class="no-div-message">
+                            <i class="iconfont icon-biaoqingleiben"></i>
+                            <p>亲，还没有优惠券哦～！</p>
+                        </div>
+                        <%/if%>
+                    </script>
+                </section>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <!--快捷导航-->
+    {include file="float_nav"}
+    {include file="float_nav_footer"}
+    <script type="text/javascript">
+        // 调整子菜单样式
+        var coupon_nav_cont = $(".coupon-nav-cont").outerWidth(true);
+        $(".coupon-nav").css("width",coupon_nav_cont);
+
+        /*切换*/
+        var tabsSwiper = new Swiper('#j-tab-con', {
+            speed: 100,
+            noSwiping: true,
+            autoHeight: true,
+            onSlideChangeStart: function () {
+                $(".j-tab-title .active").removeClass('active')
+                $(".j-tab-title li").eq(tabsSwiper.activeIndex).addClass('active')
+            }
+        })
+        $(".j-tab-title li").on('touchstart mousedown', function (e) {
+            e.preventDefault()
+            $(".j-tab-title .active").removeClass('active')
+            $(this).addClass('active')
+            tabsSwiper.slideTo($(this).index())
+        })
+        $(".j-tab-title li").click(function (e) {
+            e.preventDefault()
+        });
+
+
+        // 加载列表
+        var infinite = $('.store_info').infinite({url: "{url('coupont/index/index')}", template: 'j-product', params: 'status={$status}'});
+        // 切换主菜单
+        $(".tab-title a").click(function () {
+            var status = $('.coupon-nav-cont .active a').attr('status');
+            infinite.onload('status=' + status);
+
+            $(this).parent().addClass("active").siblings().removeClass("active");
+        });
+        // 切换子菜单
+        $(".coupon-nav-cont span a").click(function () {
+            var status = $(this).attr('status');
+            infinite.onload('status=' + status);
+
+            $(this).parent().addClass("active").siblings().removeClass("active");
+        });
+
+        // 领取
+        $("#j-tab-con").on("click", ".ts-1active", function () {
+            var id = $(this).attr('cou_id');
+            $.get("{url('coupont/index/getcoupon')}", {cou_id: id}, function (info) {
+                if (info.error == '1') {
+                    layer.open({
+                        content: '还未登录，请登录之后领取',
+                        btn: ['确定', '取消'],
+                        shadeClose: false,
+                        yes: function() {
+                            window.location.href = ROOT_URL + "index.php?m=user&c=login";
+                        },
+                        no: function() {
+                        }
+                    });
+                };
+                if (info.error > '1') {
+                    d_messages(info.msg);
+                    return false;
+                }
+            },'json');
+        });
+
+    </script>
+</body>
+</html>

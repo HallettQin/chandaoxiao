@@ -1,0 +1,26 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+{if $user_info}
+<font class="sn-login-info">
+    <em>{$user_info.nick_name} 欢迎您回来！</em>
+    <a class="sn-login" href="user.php" target="_blank">用户中心</a>
+    <a class="sn-register" href="user.php?act=logout" target="_top">{$lang.user_logout}</a></a>
+    {if $company_type neq 'supplier'}
+    {if !$is_purchasers}
+    <a class="sn-register" href="register.php" target="_blank">成为零售商</a>
+    {/if}
+    {/if}
+    <script type="text/javascript">
+        var gu_ingo=true;
+    </script>
+</font>
+{else}
+	<font id="login-info" class="sn-login-info">
+        <em>欢迎光临本店!</em>
+        <a class="sn-login" href="user.php" target="_blank">用户登录</a>
+        <a class="sn-register" href="register.php" target="_blank">零售商注册</a>
+        <script type="text/javascript">
+            var gu_ingo=false;
+        </script>
+    </font>
+{/if}

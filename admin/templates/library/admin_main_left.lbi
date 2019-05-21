@@ -1,0 +1,29 @@
+<div class="admin-main-left">
+    <div class="admincj_nav">
+    	<div class="navLeftTab" id="adminNavTabs_index">
+            <div class="item current" data-type="home">
+                <div class="tit"><a href="javascript:void(0);" data-url="index.php?act=main" data-param="index|main" target="workspace"><i class="nav_icon i_home"></i><h4>首页</h4></a></div>
+            </div>
+        </div>
+        {foreach from=$nav_top item=nav}
+        <div class="navLeftTab" id="adminNavTabs_{$nav.type}" style="display:none;">
+            {foreach from=$nav.children item=menu key=k name=foo}
+            {if !$menu.action}
+            <div class="item">
+                <div class="tit"><a href="javascript:void(0)"><i class="nav_icon icon_{$k}"></i><h4>{$menu.label}</h4></a></div>
+                {if $menu.children}
+                <div class="sub-menu">
+                    <ul>
+                        {foreach from=$menu.children item=child name=childfoo key=key}
+                        <li {if $smarty.foreach.childfoo.first}class="curr"{/if}><s></s>{if $key eq '03_visualnews'}<a href="{$child.action}" target="_blank" >{$child.label}</a>{else}<a href="javascript:void(0);" data-url="{$child.action}" data-param="{$nav.type}|{$key}" target="workspace" >{$child.label}</a>{/if}</li>
+                        {/foreach}
+                    </ul>
+                </div>
+                {/if}
+            </div>
+            {/if}
+            {/foreach}
+        </div>
+        {/foreach}
+    </div>
+</div>

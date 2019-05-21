@@ -1,0 +1,165 @@
+<div class="n-footer"></div>
+<div class="site-footer">
+    <div class="container wrapper">
+        <div class="footer-service">
+            <ul class="list-service clearfix">
+                <li>
+                    <a class="ic1" rel="nofollow" href="###" target="_blank" >
+                        <strong>一线品牌同厂</strong>
+                        <b>制造商都经过</b>
+                        <b>严格审核认证</b>
+                    </a>
+                </li>
+                <li>
+                    <a class="ic2" rel="nofollow" href="###" target="_blank">
+                        <strong>真材实料承诺</strong>
+                        <b>产品规格参数内容</b>
+                        <b>与实物保证一致</b>
+                    </a>
+                </li>
+                <li>
+                    <a class="ic3" rel="nofollow" href="###" target="_blank" >
+                        <strong>全程质检跟踪</strong>
+                        <b>每一件产品都经</b>
+                        <b>严格检验方可出厂</b>
+                    </a>
+                </li>
+                <li>
+                    <a class="ic4" rel="nofollow" href="###" target="_blank">
+                        <strong>售后保障无忧</strong>
+                        <b>执行国家三包政策，配合</b>
+                        <b>门店采购商处理售后问题</b>
+                    </a>
+                </li>
+                <!-- <li>
+                  <a class="ic5" rel="nofollow" href="###" target="_blank">
+                    <strong>百余家售后网点</strong>
+                  </a>
+                </li> -->
+            </ul>
+        </div>
+        <div class="footer-links clearfix">
+            <dl class="col-links col-links-first">
+                <dt>新手上路 </dt>
+                <dd><a rel="nofollow" href="article.php?id=68" target="_blank">零售商注册</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=70" target="_blank">制造商入驻</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=11" target="_blank">采购方式</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=79" target="_blank">账户充值</a></dd>
+            </dl>
+            <dl class="col-links ">
+                <dt>购物指南</dt>
+                <dd><a rel="nofollow" href="article.php?id=20" target="_blank">常见问题</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=19" target="_blank">订购流程</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=18" target="_blank">联系客服</a></dd>
+                <dd><a rel="nofollow" href="https://m.kuaidi100.com/" target="_blank">快递查询</a></dd>
+            </dl>
+            <dl class="col-links ">
+                <dt>支付方式</dt>
+                <dd><a rel="nofollow" href="article.php?id=55" target="_blank">银行转账</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=17" target="_blank">余额支付</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=16" target="_blank">在线支付</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=15" target="_blank">银联支付</a></dd>
+            </dl>
+            <dl class="col-links ">
+                <dt>售后服务</dt>
+                <dd><a rel="nofollow" href="article.php?id=80" target="_blank">退换货原则</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=22" target="_blank">换货流程</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=72" target="_blank">退款说明</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=23" target="_blank">产品质量保证</a></dd>
+            </dl>
+            <dl class="col-links ">
+                <dt>关于我们 </dt>
+                <dd><a rel="nofollow" href="article.php?id=24" target="_blank">网站故障报告</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=26" target="_blank">投诉与建议</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=81" target="_blank">联系我们</a></dd>
+                <dd><a rel="nofollow" href="article.php?id=73" target="_blank">联盟位置</a></dd>
+            </dl>
+            <div class="col-contact">
+                <p class="phone">400-060-7168</p>
+                <p>周一至周日 9:00-17:30<br>
+                    （仅收市话费）</p>
+                <a rel="nofollow" class="btn2 btn-primary btn-small" href="javascript:void(0);" style="color:#fff">24小时在线客服</a> </div>
+        </div>
+        <div class="footer-info clearfix" >
+            <div class="info-text">
+                <p class="nav_bottom">
+                    <a href="###" target="_blank">关于我们</a><em >|</em>
+                    <a href="article.php?id=81" target="_blank">联系我们</a><em >|</em>
+                    <a href="http://www.chandaoxiao.com/sitemap.xml" >站点地图</a><em >|</em>
+                    <a href="###" >手机商城</a><em >|</em>
+                    <a href="###" >销售联盟</a><em >|</em>
+                    <a href="###" >商城社区</a><em >|</em>
+                    <a href="###" >企业文化</a><em >|</em>
+                    <a href="help.php" >帮助中心</a><em style="display:none">|</em>
+                    ICP备案证书号:<a href="http://www.miibeian.gov.cn/" target="_blank">粤ICP备13051735号-3</a>
+                </p>
+                <p>
+                    <a href="javascript:;">&copy; 2015-2018 产供销网络科技 版权所有，并保留所有权利。</a> <a href="javascript:;">广州市白云区鹤龙一路32号御丰广场10A01 </a>
+                    <a href="javascript:;">      Tel: 400-060-7168      </a>
+                    <a href="javascript:;">      E-mail: chandaoxiao@cgxlm.com      </a>
+                </p>
+                <p>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="model" class="model">
+    <div class="model-bg"></div>
+    <div class="model-box">
+        <div class="model-close">
+            <img src="/images/close.gif">
+        </div>
+        <div class="model-content">
+            <div class="zhizao">
+                <div class="zhizao-tishi">
+                    <span class="imgone"><img src="themes/68ecshopcom_360buy/images/no_look.png"></span>
+                    <p class="bigtitle god">为了保护生产制造商会员知识产权，您暂无权访问，谢谢</p>
+                    <p class="xiaom">此通道只对终端商（门店）会员开放</p>
+                    <p class="xiaom">请您先注册成为终端商（门店）会员。</p>
+                    <p class="xiaom">请终端商（门店）会员扫描二维码下载APP进入通道。</p>
+                    <div class="caozu">
+                        <a href="/user.php">
+                            <span class="login">登录</span></a>
+                        <a href="/register.php">
+                            <span class="register">注册</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var is_purchasers = '{$is_purchasers}';
+    function check_purchasers() {
+        if (is_purchasers && is_purchasers != '' && is_purchasers !== '0') {
+            return true;
+        }
+        var w = $(window).width(),
+                h = $(window).height();
+        $('#model').show();
+        $('#model').each(function(){
+            var _w = $(this).width(),
+                    _h = $(this).height();
+            $(this).css({left: (w - _w) / 2, top: (h - _h) / 2})
+        })
+
+        $('.model .model-close').bind('click', function(){
+            var model = $(this).parents('.model')
+            model.hide();
+        })
+        return false;
+    }
+    $(function(){
+        $('.purchasers').bind('click', check_purchasers)
+    })
+</script>
+<!-- {if $site_domain} -->
+
+<script type="text/jscript" src="{$site_domain}js/suggest.js"></script>
+<script type="text/jscript" src="{$site_domain}js/scroll_city.js"></script>
+<script type="text/jscript" src="{$site_domain}js/utils.js"></script>
+<!-- {else} -->
+{insert_scripts files='suggest.js,scroll_city.js,utils.js'}
+<!-- {/if} -->
